@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+    <data>
+        <variable
+            name="payment"
+            type="com.creative.share.apps.thiqah.models.Cities_Payment_Bank_Model.Payment" />
+    </data>
+    <RadioButton
+        android:id="@+id/rb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:button="@drawable/rb_bg"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:minHeight="40dp"
+        android:text="@{payment.title}"
+        />
+</layout>
