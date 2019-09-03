@@ -24,11 +24,16 @@ import com.creative.share.apps.thiqah.adapters.MyNotificationAdapter;
 import com.creative.share.apps.thiqah.databinding.ActivityNotificationBinding;
 import com.creative.share.apps.thiqah.interfaces.Listeners;
 import com.creative.share.apps.thiqah.language.LanguageHelper;
+import com.creative.share.apps.thiqah.models.FireBaseNotModel;
 import com.creative.share.apps.thiqah.models.NotificationDataModel;
 import com.creative.share.apps.thiqah.models.UserModel;
 import com.creative.share.apps.thiqah.preferences.Preferences;
 import com.creative.share.apps.thiqah.remote.Api;
 import com.creative.share.apps.thiqah.share.Common;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,11 +68,14 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_notification);
         initView();
+
     }
 
 
 
     private void initView() {
+        EventBus.getDefault().register(this);
+
         notificationModelList = new ArrayList<>();
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
@@ -118,6 +126,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
                             binding.progBar.setVisibility(View.GONE);
                             if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
                             {
+                                Log.e("fff","ttt");
                                 notificationModelList.clear();
                                 if (response.body().getData().size()>0)
                                 {
@@ -293,6 +302,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
+                                Log.e("sss","fff");
                                 getNotification();
                             } else {
                                 try {
@@ -354,11 +364,24 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void newNotification(FireBaseNotModel fireBaseNotModel)
+    {
+        getNotification();
+    }
+
     @Override
     public void back() {
         finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }
 

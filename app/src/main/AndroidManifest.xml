@@ -69,6 +69,7 @@
         <activity
             android:name=".activities_fragments.activity_notification.NotificationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:parentActivityName=".activities_fragments.activity_home.HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activities_fragments.activity_contact.ContactUsActivity"

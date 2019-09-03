@@ -118,6 +118,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
 
                     }
                 }
+
+
             if (orderModel.getStatus() == 0) {
                 binding.tvTransState.setVisibility(View.GONE);
                 binding.ll.setVisibility(View.VISIBLE);
@@ -136,6 +138,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
             else if (orderModel.getStatus() == 3) {
                 binding.ll.setVisibility(View.GONE);
                 binding.tvTransState.setVisibility(View.VISIBLE);
+                binding.btnEnd.setVisibility(View.GONE);
+
+
+
             } else if (orderModel.getStatus() == 4) {
                 binding.ll.setVisibility(View.VISIBLE);
                 binding.tvTransState.setVisibility(View.GONE);

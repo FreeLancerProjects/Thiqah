@@ -97,14 +97,18 @@ public class HomeActivity extends AppCompatActivity
         lang = Paper.book().read("lang",Locale.getDefault().getLanguage());
         fragmentManager = getSupportFragmentManager();
         initView();
+
         if (savedInstanceState==null)
         {
             displayFragmentMain();
         }
 
+
         updateUserToken();
 
     }
+
+
 
     private void initView() {
 

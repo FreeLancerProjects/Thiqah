@@ -72,7 +72,9 @@ public class MyNotificationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 notificationHolder.binding.tvDetails.setVisibility(View.GONE);
 
             }else {
-                    notificationHolder.binding.tvDetails.setVisibility(View.GONE);
+                notificationHolder.binding.tvReceiveMoney.setVisibility(View.GONE);
+
+                notificationHolder.binding.tvDetails.setVisibility(View.GONE);
 
                 }
             notificationHolder.binding.getRoot().setOnClickListener(view -> {

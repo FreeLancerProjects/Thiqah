@@ -107,6 +107,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             else if (orderModel.getStatus() == 3) {
                 orderRowBinding.ll.setVisibility(View.GONE);
                 orderRowBinding.tvTransState.setVisibility(View.VISIBLE);
+                orderRowBinding.tvOrderState.setText(context.getString(R.string.refused_transfer));
             } else if (orderModel.getStatus() == 4) {
                 orderRowBinding.ll.setVisibility(View.VISIBLE);
                 orderRowBinding.tvTransState.setVisibility(View.GONE);
