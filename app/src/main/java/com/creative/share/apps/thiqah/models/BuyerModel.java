@@ -174,7 +174,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
     }
 
     public void setPhone2(String phone2) {
-        this.phone2 = phone2;
+        this.phone2 = phone2.startsWith("0")?phone2.replaceFirst("0",""):phone2;
         notifyPropertyChanged(BR.phone2);
 
     }

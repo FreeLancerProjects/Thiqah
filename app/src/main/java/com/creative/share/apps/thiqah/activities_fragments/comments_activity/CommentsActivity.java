@@ -1,7 +1,6 @@
-package com.creative.share.apps.thiqah.activities_fragments.my_order;
+package com.creative.share.apps.thiqah.activities_fragments.comments_activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -17,14 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.thiqah.R;
-import com.creative.share.apps.thiqah.activities_fragments.order_details.OrderDetailsActivity;
-import com.creative.share.apps.thiqah.adapters.OrderAdapter;
-import com.creative.share.apps.thiqah.databinding.ActivityMyOrderBinding;
+import com.creative.share.apps.thiqah.adapters.CommentAdapter;
+import com.creative.share.apps.thiqah.databinding.ActivityCommentsBinding;
 import com.creative.share.apps.thiqah.interfaces.Listeners;
 import com.creative.share.apps.thiqah.language.LanguageHelper;
-import com.creative.share.apps.thiqah.models.OrderDataModel;
-import com.creative.share.apps.thiqah.models.UserModel;
-import com.creative.share.apps.thiqah.preferences.Preferences;
+import com.creative.share.apps.thiqah.models.CommentDataModel;
 import com.creative.share.apps.thiqah.remote.Api;
 
 import java.io.IOException;
@@ -37,16 +32,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyOrderActivity extends AppCompatActivity implements Listeners.BackListener {
-    private ActivityMyOrderBinding binding;
+public class CommentsActivity extends AppCompatActivity implements Listeners.BackListener {
+    private ActivityCommentsBinding binding;
     private String lang;
     private LinearLayoutManager manager;
-    private List<OrderDataModel.OrderModel> orderDataModelList;
-    private Preferences preferences;
-    private UserModel userModel;
-    private OrderAdapter adapter;
-    private int current_page=1;
+    private List<CommentDataModel.Testimonials.CommentModel> commentModelList;
+    private CommentAdapter adapter;
+    private int current_page = 1;
     private boolean isLoading = false;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -56,17 +50,15 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_my_order);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_comments);
         initView();
     }
 
 
 
-    private void initView() {
-        orderDataModelList = new ArrayList<>();
-        preferences = Preferences.newInstance();
-        userModel = preferences.getUserData(this);
-
+    private void initView()
+    {
+        commentModelList = new ArrayList<>();
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
@@ -74,7 +66,7 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
         binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         manager = new LinearLayoutManager(this);
         binding.recView.setLayoutManager(manager);
-        adapter = new OrderAdapter(orderDataModelList,this);
+        adapter = new CommentAdapter(commentModelList,this);
         binding.recView.setAdapter(adapter);
 
         binding.recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -88,8 +80,8 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                 {
                     if ((total_items-last_item_pos)==5&&!isLoading)
                     {
-                        orderDataModelList.add(null);
-                        adapter.notifyItemInserted(orderDataModelList.size()-1);
+                        commentModelList.add(null);
+                        adapter.notifyItemInserted(commentModelList.size()-1);
                         int page = current_page+1;
                         loadMore(page);
 
@@ -99,48 +91,45 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
             }
         });
 
-        getOrder();
-
+        getComments();
     }
-
-
-
-    private void getOrder()
+    private void getComments()
     {
         try {
 
             Api.getService(lang)
-                    .getOrder("Bearer "+userModel.getToken(),1)
-                    .enqueue(new Callback<OrderDataModel>() {
+                    .getAllComments(1)
+                    .enqueue(new Callback<CommentDataModel>() {
                         @Override
-                        public void onResponse(Call<OrderDataModel> call, Response<OrderDataModel> response) {
+                        public void onResponse(Call<CommentDataModel> call, Response<CommentDataModel> response) {
                             binding.progBar.setVisibility(View.GONE);
-                            if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                            if (response.isSuccessful()&&response.body()!=null&&response.body().getTestimonials()!=null&&response.body().getTestimonials().getData()!=null)
                             {
-                               orderDataModelList.clear();
-                               orderDataModelList.addAll(response.body().getData());
-                               adapter.notifyDataSetChanged();
-                               if (orderDataModelList.size()>0)
-                               {
-                                   binding.llNoOrder.setVisibility(View.GONE);
-                               }else
-                                   {
-                                       binding.llNoOrder.setVisibility(View.VISIBLE);
+                                commentModelList.clear();
+                                if (response.body().getTestimonials().getData().size()>0)
+                                {
+                                    commentModelList.addAll(response.body().getTestimonials().getData());
+                                    adapter.notifyDataSetChanged();
+                                    binding.llNoComment.setVisibility(View.GONE);
+                                }else
+                                {
+                                    binding.llNoComment.setVisibility(View.VISIBLE);
 
-                                   }
+                                }
 
                             }else
-                            { if (response.code() == 500) {
-                                    Toast.makeText(MyOrderActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                            {
+                                if (response.code() == 500) {
+                                    Toast.makeText(CommentsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
                                 }else if (response.code()==401)
                                 {
-                                    Toast.makeText(MyOrderActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CommentsActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
 
                                 }else
                                 {
-                                    Toast.makeText(MyOrderActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CommentsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
@@ -153,18 +142,17 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                         }
 
                         @Override
-                        public void onFailure(Call<OrderDataModel> call, Throwable t) {
+                        public void onFailure(Call<CommentDataModel> call, Throwable t) {
                             try {
-                                binding.progBar.setVisibility(View.GONE);
                                 if (t.getMessage()!=null)
                                 {
                                     Log.e("error",t.getMessage());
                                     if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
                                     {
-                                        Toast.makeText(MyOrderActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CommentsActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
                                     }else
                                     {
-                                        Toast.makeText(MyOrderActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CommentsActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -172,31 +160,29 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                         }
                     });
         }catch (Exception e){
-            Log.e("e",e.getMessage()+"__");
-            binding.progBar.setVisibility(View.GONE);
+
         }
     }
-
     private void loadMore(int page)
     {
 
         try {
-            orderDataModelList.remove(orderDataModelList.size()-1);
-            adapter.notifyItemRemoved(orderDataModelList.size()-1);
+            commentModelList.remove(commentModelList.size()-1);
+            adapter.notifyItemRemoved(commentModelList.size()-1);
 
             Api.getService(lang)
-                    .getOrder("Bearer "+userModel.getToken(),page)
-                    .enqueue(new Callback<OrderDataModel>() {
+                    .getAllComments(page)
+                    .enqueue(new Callback<CommentDataModel>() {
                         @Override
-                        public void onResponse(Call<OrderDataModel> call, Response<OrderDataModel> response) {
+                        public void onResponse(Call<CommentDataModel> call, Response<CommentDataModel> response) {
 
-                            if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                            if (response.isSuccessful()&&response.body()!=null&&response.body().getTestimonials()!=null&&response.body().getTestimonials().getData()!=null)
                             {
-                                if (response.body().getData().size()>0)
+                                if (response.body().getTestimonials().getData().size()>0)
                                 {
-                                    orderDataModelList.addAll(response.body().getData());
+                                    commentModelList.addAll(response.body().getTestimonials().getData());
                                     adapter.notifyDataSetChanged();
-                                    current_page = response.body().getCurrent_page();
+                                    current_page = response.body().getTestimonials().getCurrent_page();
                                     isLoading  =false;
                                 }
 
@@ -205,16 +191,16 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                                 isLoading  =false;
 
                                 if (response.code() == 500) {
-                                    Toast.makeText(MyOrderActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CommentsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
                                 }else if (response.code()==401)
                                 {
-                                    Toast.makeText(MyOrderActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CommentsActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
 
                                 }else
                                 {
-                                    Toast.makeText(MyOrderActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CommentsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
@@ -227,7 +213,7 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                         }
 
                         @Override
-                        public void onFailure(Call<OrderDataModel> call, Throwable t) {
+                        public void onFailure(Call<CommentDataModel> call, Throwable t) {
                             try {
                                 isLoading  =false;
 
@@ -236,10 +222,10 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
                                     Log.e("error",t.getMessage());
                                     if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
                                     {
-                                        Toast.makeText(MyOrderActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CommentsActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
                                     }else
                                     {
-                                        Toast.makeText(MyOrderActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CommentsActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -250,26 +236,11 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
 
         }
     }
-
     @Override
     public void back() {
         finish();
     }
 
-    public void setItemData(OrderDataModel.OrderModel orderModel) {
 
-        Intent intent= new Intent(this, OrderDetailsActivity.class);
-        intent.putExtra("data", orderModel);
-        startActivityForResult(intent,1010);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==1010&&resultCode==RESULT_OK)
-        {
-            getOrder();
-        }
-    }
 }
+

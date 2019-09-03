@@ -3,12 +3,12 @@ package com.creative.share.apps.thiqah.services;
 
 import com.creative.share.apps.thiqah.models.AboutAppModel;
 import com.creative.share.apps.thiqah.models.Cities_Payment_Bank_Model;
+import com.creative.share.apps.thiqah.models.CommentDataModel;
 import com.creative.share.apps.thiqah.models.GuideModel;
+import com.creative.share.apps.thiqah.models.NotificationDataModel;
+import com.creative.share.apps.thiqah.models.OrderDataModel;
 import com.creative.share.apps.thiqah.models.OrderIdModel;
-import com.creative.share.apps.thiqah.models.OrderModel;
 import com.creative.share.apps.thiqah.models.UserModel;
-
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -21,6 +21,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface Service {
 
@@ -123,7 +124,76 @@ public interface Service {
     );
 
     @GET("api/all-orders")
-    Call<List<OrderModel>> getOrder(@Header("Authorization") String header);
+    Call<OrderDataModel> getOrder(@Header("Authorization") String header,
+                                  @Query("page") int page
+    );
+
+    @GET("api/notifications")
+    Call<NotificationDataModel> getNotifications(@Header("Authorization") String header,
+                                                 @Query("page") int page
+    );
+
+
+    @FormUrlEncoded
+    @POST("/api/order-details")
+    Call<OrderDataModel.OrderModel> getOrderDetails(@Header("Authorization") String header,
+                                                    @Field("order_id") int order_id
+    );
+
+    @Multipart
+    @POST("/api/seller-update-order")
+    Call<ResponseBody> sellerUpdateOrder(@Header("Authorization") String header,
+                                         @Part("seller_bank_name") RequestBody seller_bank_name,
+                                         @Part("seller_bank_account") RequestBody seller_bank_account,
+                                         @Part("seller_bank_iban") RequestBody seller_bank_iban,
+                                         @Part("order_id") RequestBody order_id,
+                                         @Part("notification_id") RequestBody notification_id,
+                                         @Part MultipartBody.Part image
+    );
+
+    @Multipart
+    @POST("/api/buyer-update-order")
+    Call<ResponseBody> buyerUpdateOrder(@Header("Authorization") String header,
+                                        @Part("bank_account_id") RequestBody bank_account_id,
+                                        @Part("shipping_type_id") RequestBody shipping_type_id,
+                                        @Part("order_id") RequestBody order_id,
+                                        @Part("notification_id") RequestBody notification_id,
+                                        @Part MultipartBody.Part image
+    );
+
+    @GET("api/last-order")
+    Call<Integer> getOrderNumber(@Header("Authorization") String header
+    );
+
+
+    @GET("api/testimonials")
+    Call<CommentDataModel> getAllComments(@Query("page") int page);
+
+
+    @FormUrlEncoded
+    @POST("/api/seller-finish-order")
+    Call<ResponseBody> sellerFinishOrder(@Header("Authorization") String header,
+                                         @Field("order_id") int order_id,
+                                         @Field("comment") String comment,
+                                         @Field("rate") int rate
+    );
+
+    @FormUrlEncoded
+    @POST("/api/buyer-finish-order")
+    Call<ResponseBody> buyerFinishOrder(@Header("Authorization") String header,
+                                        @Field("order_id") int order_id,
+                                        @Field("comment") String comment,
+                                        @Field("rate") int rate
+    );
+
+    @FormUrlEncoded
+    @POST("/api/confirm-money-received")
+    Call<ResponseBody> confirmMoney(@Header("Authorization") String header,
+                                   @Field("order_id") int order_id,
+                                   @Field("notification_id") int notification_id
+    );
+
+
 }
 
 

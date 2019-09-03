@@ -123,6 +123,16 @@
     <string name="my_order">طلباتي</string>
     <string name="no_orders_to_display">لا توجد طلبات لعرضها</string>
     <string name="price">المبلغ</string>
+    <string name="no_notifications_to_display">لا توجد إشعارات لعرضها</string>
+    <string name="no_comments_to_display">لا توجد تعليقات لعرضها</string>
+    <string name="send_order">إرسال الطلب</string>
+    <string name="sa">SA</string>
+    <string name="end_order">إنهاء الطلب</string>
+    <string name="add_rate">إضافة تقييم</string>
+    <string name="add_comment">إضافة تعليق</string>
+    <string name="refused_transfer">تم رفض الحوالة</string>
+    <string name="transfer_purpose">الغرض من الحوالة</string>
+    <string name="received_money">تم إستلام المبلغ</string>
 
 
 </resources>

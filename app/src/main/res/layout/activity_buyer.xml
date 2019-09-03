@@ -94,8 +94,8 @@
                     android:textSize="15sp"
                     android:text="@string/order_number"
                     />
-                <EditText
-                    android:id="@+id/edtOrderNumber"
+                <TextView
+                    android:id="@+id/tvOrderNumber"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="8dp"
@@ -106,8 +106,6 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:gravity="center_vertical"
-                    android:text="@={buyerModel.order_number}"
-                    error="@{buyerModel.error_order_num}"
 
                     />
 
@@ -531,7 +529,7 @@
                     android:background="@drawable/btn_login_bg"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:text="@string/send"
+                    android:text="@string/send_order"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:onClick="@{()->buyerListener.send(buyerModel)}"

@@ -234,18 +234,14 @@ public class Fragment_Main extends Fragment {
     public void setItemPos(int pos) {
         if (pos == 0) {
             activity.displayFragmentChooseOrderType();
-
         } else if (pos == 1) {
             activity.navigateToAboutAppActivity(2);
         } else if (pos == 2) {
-
+            activity.navigateToCommentsActivity();
         } else if (pos == 3) {
             activity.navigateToGuideActivity();
-
-
         } else if (pos == 4) {
             activity.navigateToAboutAppActivity(3);
-
         }
 
     }

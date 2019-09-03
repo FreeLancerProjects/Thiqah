@@ -18,6 +18,6 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:minHeight="40dp"
-        android:text="@{payment.title}"
+        android:text='@{payment.title+" "+"("+payment.cost+@string/sar+")"}'
         />
 </layout>

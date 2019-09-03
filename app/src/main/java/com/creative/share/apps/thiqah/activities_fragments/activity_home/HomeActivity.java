@@ -1,6 +1,7 @@
 package com.creative.share.apps.thiqah.activities_fragments.activity_home;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.creative.share.apps.thiqah.activities_fragments.activity_notification
 import com.creative.share.apps.thiqah.activities_fragments.activity_sign_in.SignInActivity;
 import com.creative.share.apps.thiqah.activities_fragments.activity_video.VideoActivity;
 import com.creative.share.apps.thiqah.activities_fragments.bank_account.BankActivity;
+import com.creative.share.apps.thiqah.activities_fragments.comments_activity.CommentsActivity;
 import com.creative.share.apps.thiqah.activities_fragments.my_order.MyOrderActivity;
 import com.creative.share.apps.thiqah.databinding.DialogLanguageBinding;
 import com.creative.share.apps.thiqah.language.LanguageHelper;
@@ -329,75 +331,6 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-    private void logout() {
-        if (userModel != null) {
-
-            ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
-            dialog.setCancelable(false);
-            dialog.show();
-            Api.getService(lang)
-                    .logout("Bearer "+userModel.getToken())
-                    .enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
-                                preferences.clear(HomeActivity.this);
-                                navigateToSignInActivity();
-
-                            }else
-                                {
-                                    if (response.code()==500)
-                                    {
-                                        Toast.makeText(HomeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
-                                    }else if (response.code()==401)
-                                        {
-                                            Toast.makeText(HomeActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
-
-                                        }else
-                                            {
-                                                Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-
-                                            }
-                                    try {
-
-
-                                        Log.e("error_code",response.code()+"_"+response.errorBody().string());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            try {
-                                dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(HomeActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(HomeActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                            }catch (Exception e){}
-                        }
-                    });
-
-        } else {
-            new Handler()
-                    .postDelayed(this::navigateToSignInActivity, 500);
-
-        }
-
-    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -422,7 +355,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_bank_account) {
             navigateToBankActivity();
         } else if (id == R.id.nav_comments) {
-
+            navigateToCommentsActivity();
         } else if (id == R.id.nav_about) {
             navigateToAboutAppActivity(2);
 
@@ -449,6 +382,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 
 
@@ -479,7 +413,13 @@ public class HomeActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void navigateToContactActivity() {
+    public void navigateToCommentsActivity()
+    {
+        Intent intent = new Intent(this, CommentsActivity.class);
+        startActivity(intent);
+    }
+    private void navigateToContactActivity()
+    {
         Intent intent = new Intent(this, ContactUsActivity.class);
         startActivity(intent);
     }
@@ -539,6 +479,84 @@ public class HomeActivity extends AppCompatActivity
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+
+    }
+
+    private void logout() {
+        if (userModel != null) {
+
+
+            ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+            dialog.setCancelable(false);
+            dialog.show();
+            Api.getService(lang)
+                    .logout("Bearer "+userModel.getToken())
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful()&&response.body()!=null)
+                            {
+                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                if (manager!=null)
+                                {
+                                    manager.cancelAll();
+
+                                }
+
+                                preferences.clear(HomeActivity.this);
+                                navigateToSignInActivity();
+
+                            }else
+                            {
+                                if (response.code()==500)
+                                {
+                                    Toast.makeText(HomeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                }else if (response.code()==401)
+                                {
+                                    Toast.makeText(HomeActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
+
+                                }else
+                                {
+                                    Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                }
+                                try {
+
+
+                                    Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage()!=null)
+                                {
+                                    Log.e("error",t.getMessage());
+
+                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
+                                    {
+                                        Toast.makeText(HomeActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                    }else
+                                    {
+                                        Toast.makeText(HomeActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }catch (Exception e){}
+                        }
+                    });
+
+        } else {
+            new Handler()
+                    .postDelayed(this::navigateToSignInActivity, 500);
+
+        }
 
     }
 

@@ -41,6 +41,8 @@ import com.creative.share.apps.thiqah.interfaces.Listeners;
 import com.creative.share.apps.thiqah.language.LanguageHelper;
 import com.creative.share.apps.thiqah.models.BuyerModel;
 import com.creative.share.apps.thiqah.models.Cities_Payment_Bank_Model;
+import com.creative.share.apps.thiqah.models.NotificationDataModel;
+import com.creative.share.apps.thiqah.models.OrderDataModel;
 import com.creative.share.apps.thiqah.models.OrderIdModel;
 import com.creative.share.apps.thiqah.models.UserModel;
 import com.creative.share.apps.thiqah.preferences.Preferences;
@@ -58,6 +60,7 @@ import java.util.Locale;
 import io.paperdb.Paper;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,6 +88,8 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     private Preferences preferences;
     private UserModel userModel;
     private String city_id = "";
+    private NotificationDataModel.NotificationModel notificationModel;
+    private OrderDataModel.OrderModel orderModel;
 
 
     @Override
@@ -97,7 +102,17 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_buyer);
+        getDataFromIntent();
+
         initView();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent!=null&&intent.hasExtra("notification"))
+        {
+            notificationModel = (NotificationDataModel.NotificationModel) intent.getSerializableExtra("notification");
+        }
     }
 
 
@@ -108,7 +123,6 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         bankList = new ArrayList<>();
         bankList.add(new Cities_Payment_Bank_Model.Bank(getString(R.string.ch_bank)));
         cityList = new ArrayList<>();
-        cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
         buyerModel = new BuyerModel();
         period = new ArrayList<>();
         days = new ArrayList<>();
@@ -119,10 +133,26 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         binding.setBackListener(this);
         binding.setBuyerListener(this);
         binding.setBuyerModel(buyerModel);
-        if (userModel != null) {
-            binding.setUserModel(userModel);
+
+        if (notificationModel!=null)
+        {
+            getOrderNumber();
+            getOrderDetails();
+
+
+        }else
+        {
+            setUpAdapter();
+
+            if (userModel != null) {
+                binding.setUserModel(userModel);
+                getOrderNumber();
+
+            }
+
         }
-        setUpAdapter();
+
+
         binding.edtCondition.setEnabled(false);
         manager = new LinearLayoutManager(this);
         binding.recView.setLayoutManager(manager);
@@ -153,6 +183,8 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             }
             binding.setBuyerModel(buyerModel);
         });
+        binding.image.setOnClickListener(view -> CreateImageAlertDialog());
+
 
         binding.checkbox2.setOnClickListener(view -> {
             if (binding.checkbox2.isChecked()) {
@@ -182,25 +214,10 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             @Override
             public void afterTextChanged(Editable editable) {
                 try {
-                    double total;
                     if (editable.toString().trim().length() > 0) {
                         double value = Double.parseDouble(String.format(Locale.ENGLISH, editable.toString().trim()));
 
-                        if (chargeAmount != -1) {
-                            if (value < 600) {
-                                total = 0;
-                                total += value + 30 + chargeAmount;
-
-                            } else {
-                                total = 0;
-                                total += (value * 0.05) + value + chargeAmount;
-
-                            }
-
-                            binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
-                            buyerModel.setPrice(String.valueOf(total));
-                            binding.setBuyerModel(buyerModel);
-                        }
+                        calcTotalItemsValue(value);
 
 
                     } else {
@@ -216,8 +233,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             }
         });
 
-        cityAdapter = new CityAdapter(cityList, this);
-        binding.spinnerCity.setAdapter(cityAdapter);
+
         bankAdapter = new SpinnerBankAdapter(bankList, this);
         binding.spinnerBank.setAdapter(bankAdapter);
         binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -225,17 +241,44 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i ==0)
                 {
-                    city_id = "";
-                    buyerModel.setCity_id(city_id);
-                    binding.setBuyerModel(buyerModel);
-                }else
+
+                    if (notificationModel==null)
                     {
-                        try {
-                            city_id = String.valueOf(userModel.getUser().getCity_id());
+                        if (userModel!=null)
+                        {
+                            buyerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                            binding.setBuyerModel(buyerModel);
+                        }else
+                        {
+                            city_id = "";
                             buyerModel.setCity_id(city_id);
                             binding.setBuyerModel(buyerModel);
-                        }catch (Exception e){}
+                        }
+
+                    }else
+                    {
+
+                        if (orderModel!=null)
+                        {
+                            buyerModel.setCity_id(String.valueOf(orderModel.getSeller_city_id()));
+                            binding.setBuyerModel(buyerModel);
+                        }else
+                        {
+                            city_id = "";
+                            buyerModel.setCity_id(city_id);
+                            binding.setBuyerModel(buyerModel);
+                        }
+
                     }
+
+                }else
+                {
+                    try {
+                        city_id = String.valueOf(userModel.getUser().getCity_id());
+                        buyerModel.setCity_id(city_id);
+                        binding.setBuyerModel(buyerModel);
+                    }catch (Exception e){}
+                }
             }
 
             @Override
@@ -269,8 +312,12 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i==0)
                 {
-                    buyerModel.setPeriod("");
-                    binding.setBuyerModel(buyerModel);
+                    if (notificationModel==null)
+                    {
+                        buyerModel.setPeriod("");
+                        binding.setBuyerModel(buyerModel);
+                    }
+
                 }else
                     {
 
@@ -286,10 +333,32 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
             }
         });
+
         getCities();
 
 
 
+
+    }
+
+    private void calcTotalItemsValue(double value) {
+        double total;
+
+        if (chargeAmount != -1) {
+            if (value < 600) {
+                total = 0;
+                total += value + 30 + chargeAmount;
+
+            } else {
+                total = 0;
+                total += (value * 0.05) + value + chargeAmount;
+
+            }
+
+            binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
+            buyerModel.setPrice(String.valueOf(total));
+            binding.setBuyerModel(buyerModel);
+        }
     }
 
     private void getCities() {
@@ -305,6 +374,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
                                 updateCityAdapter(response.body());
+
                             } else {
 
                                 if (response.code() == 500) {
@@ -348,15 +418,35 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
     private void updateCityAdapter(Cities_Payment_Bank_Model body) {
 
-        if (userModel != null) {
-            cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
-            buyerModel.setCity_id("");
-            binding.setBuyerModel(buyerModel);
-        } else {
-            cityList.addAll(body.getCities());
-            adapter.notifyDataSetChanged();
+        if (notificationModel!=null)
+        {
+            if (orderModel!=null)
+            {
+                cityList.clear();
+                cityList.add(new Cities_Payment_Bank_Model.City(orderModel.getSeller_city_title(),orderModel.getSeller_city_title()));
+                cityAdapter = new CityAdapter(cityList, this);
+                binding.spinnerCity.setAdapter(cityAdapter);
+            }
 
-        }
+        }else
+            {
+                if (userModel != null) {
+                    cityList.clear();
+                    cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
+                    cityAdapter = new CityAdapter(cityList, this);
+                    binding.spinnerCity.setAdapter(cityAdapter);
+
+                    buyerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                    binding.setBuyerModel(buyerModel);
+
+                } else {
+                    cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
+                    cityList.addAll(body.getCities());
+                    cityAdapter = new CityAdapter(cityList, this);
+                    binding.spinnerCity.setAdapter(cityAdapter);
+                }
+            }
+
 
         bankList.addAll(body.getBanks());
         bankAdapter.notifyDataSetChanged();
@@ -365,6 +455,202 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         paymentAdapter.notifyDataSetChanged();
     }
 
+    private void getOrderDetails() {
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+            Api.getService(lang)
+                    .getOrderDetails("Bearer "+userModel.getToken(),notificationModel.getOrder_id())
+                    .enqueue(new Callback<OrderDataModel.OrderModel>() {
+                        @Override
+                        public void onResponse(Call<OrderDataModel.OrderModel> call, Response<OrderDataModel.OrderModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful()&&response.body()!=null)
+                            {
+                                orderModel = response.body();
+                                updateUI(response.body());
+
+                            }else
+                            {
+                                if (response.code() == 500) {
+                                    Toast.makeText(BuyerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                }else if (response.code()==401)
+                                {
+                                    Toast.makeText(BuyerActivity.this, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
+
+                                }else
+                                {
+                                    Toast.makeText(BuyerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<OrderDataModel.OrderModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage()!=null)
+                                {
+                                    Log.e("error",t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
+                                    {
+                                        Toast.makeText(BuyerActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                    }else
+                                    {
+                                        Toast.makeText(BuyerActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }catch (Exception e){}
+                        }
+                    });
+        }catch (Exception e){
+            dialog.dismiss();
+
+        }
+    }
+
+    private void updateUI(OrderDataModel.OrderModel orderModel) {
+        binding.tvName.setText(orderModel.getSeller_name());
+        binding.tvPhone.setText(orderModel.getSeller_phone());
+        binding.tvEmail.setText(orderModel.getSeller_email());
+
+
+        buyerModel.setCity_id(String.valueOf(orderModel.getSeller_city_id()));
+        binding.setBuyerModel(buyerModel);
+
+        binding.edtTransferPurpose.setText(orderModel.getReason());
+        binding.edtTransferPurpose.setEnabled(false);
+        buyerModel.setTransfer_purpose(orderModel.getReason());
+
+        binding.tvOrderNumber.setText(String.valueOf(orderModel.getId()));
+
+
+        binding.edtValue.setText(String.valueOf(orderModel.getPrice()));
+        binding.edtValue.setEnabled(false);
+        buyerModel.setItem_value(String.valueOf(orderModel.getPrice()));
+
+        //calcTotalItemsValue((double) orderModel.getPrice());
+
+        if (orderModel.getConditions()!=null)
+        {
+            binding.rb1.setChecked(true);
+            binding.rb2.setChecked(false);
+            binding.rb1.setEnabled(false);
+            binding.rb2.setEnabled(false);
+            buyerModel.setCondition(true);
+            buyerModel.setCondition(orderModel.getConditions());
+            binding.edtCondition.setText(orderModel.getConditions());
+            binding.edtCondition.setEnabled(false);
+            binding.edtCondition.setVisibility(View.VISIBLE);
+
+
+        }else
+        {
+            binding.rb1.setChecked(false);
+            binding.rb2.setChecked(true);
+            binding.rb1.setEnabled(false);
+            binding.rb2.setEnabled(false);
+            buyerModel.setCondition(false);
+            buyerModel.setCondition("");
+            binding.edtCondition.setVisibility(View.GONE);
+
+        }
+
+
+        period.clear();
+        period.add(orderModel.getDays_left()+getString(R.string.day));
+        adapter = new SpinnerAdapter(period,this);
+        binding.spinnerPeriod.setAdapter(adapter);
+
+        buyerModel.setPeriod(String.valueOf(orderModel.getDays_left()));
+
+        binding.edtPhone2.setText(userModel.getUser().getMobile_number());
+        binding.edtPhone2.setEnabled(false);
+        buyerModel.setPhone2(userModel.getUser().getMobile_number());
+
+        binding.setBuyerModel(buyerModel);
+
+
+    }
+
+
+    private void getOrderNumber() {
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+            Api.getService(lang)
+                    .getOrderNumber("Bearer "+userModel.getToken())
+                    .enqueue(new Callback<Integer>() {
+                        @Override
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful()&&response.body()!=null)
+                            {
+                                binding.tvOrderNumber.setText(String.valueOf(response.body()));
+
+
+                            }else
+                            {
+                                if (response.code() == 500) {
+                                    Toast.makeText(BuyerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                }else if (response.code()==401)
+                                {
+                                    Toast.makeText(BuyerActivity.this, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
+
+                                }else
+                                {
+                                    Toast.makeText(BuyerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Integer> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage()!=null)
+                                {
+                                    Log.e("error",t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
+                                    {
+                                        Toast.makeText(BuyerActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                    }else
+                                    {
+                                        Toast.makeText(BuyerActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }catch (Exception e){}
+                        }
+                    });
+        }catch (Exception e){
+            dialog.dismiss();
+
+        }
+    }
 
     private void setUpAdapter() {
         period.add(getString(R.string.choose));
@@ -376,30 +662,36 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         adapter = new SpinnerAdapter(period, this);
         binding.spinnerPeriod.setAdapter(adapter);
-        binding.image.setOnClickListener(view -> CreateImageAlertDialog());
     }
 
-    @Override
-    public void back() {
-        finish();
-    }
+
 
     @Override
     public void send(BuyerModel buyerModel) {
         this.buyerModel = buyerModel;
         binding.setBuyerModel(buyerModel);
-        if (buyerModel.isDataValid(this)) {
-            if (userModel != null) {
 
-                sendOrder(buyerModel);
+        if (userModel != null) {
+
+            if (buyerModel.isDataValid(this)) {
+
+                if (notificationModel==null)
+                {
+                    sendOrder(buyerModel);
+
+                }else
+                {
+                    buyerUpdateOrder();
+                }
 
 
-            } else {
-                Common.CreateNoSignAlertDialog(this);
             }
-        }
-    }
 
+        } else {
+            Common.CreateNoSignAlertDialog(this);
+        }
+
+    }
     private void sendOrder(BuyerModel buyerModel) {
         ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.setCancelable(false);
@@ -483,6 +775,85 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         }
 
     }
+
+    private void buyerUpdateOrder() {
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        try {
+
+            String token = "Bearer " + userModel.getToken();
+            RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_id());
+            RequestBody shipping_part = Common.getRequestBodyText(buyerModel.getShipping_method());
+            RequestBody order_id_part = Common.getRequestBodyText(String.valueOf(notificationModel.getOrder_id()));
+            RequestBody not_id_part = Common.getRequestBodyText(String.valueOf(notificationModel.getId()));
+
+            MultipartBody.Part image = Common.getMultiPart(this, Uri.parse(buyerModel.getImage_uri()), "bank_transfer_pic");
+
+            Api.getService(lang)
+                    .buyerUpdateOrder(token,bank_id_part,shipping_part,order_id_part,not_id_part,image)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null) {
+
+                                Toast.makeText(BuyerActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            } else {
+                                try {
+
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (response.code() == 422) {
+                                    Toast.makeText(BuyerActivity.this, "Validation Error", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 500) {
+                                    Toast.makeText(BuyerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                } else if (response.code()==401)
+                                {
+                                    Toast.makeText(BuyerActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+
+                                }else {
+                                    Toast.makeText(BuyerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(BuyerActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(BuyerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+
+                        }
+                    });
+        } catch (Exception e) {
+            dialog.dismiss();
+            Log.e("Exception", e.getMessage() + "__");
+        }
+
+    }
+
 
     private void CreateDialogAlert(int order_id) {
         final AlertDialog dialog = new AlertDialog.Builder(this)
@@ -705,5 +1076,10 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         } catch (Exception e) {
         }
+    }
+
+    @Override
+    public void back() {
+        finish();
     }
 }

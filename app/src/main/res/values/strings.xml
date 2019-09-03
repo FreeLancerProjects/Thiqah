@@ -122,6 +122,16 @@
     <string name="my_order">My order</string>
     <string name="no_orders_to_display">No Orders to display</string>
     <string name="price">Price</string>
+    <string name="no_notifications_to_display">No notifications to display</string>
+    <string name="no_comments_to_display">No comments to display</string>
+    <string name="send_order">Send Order</string>
+    <string name="sa">SA</string>
+    <string name="end_order">End order</string>
+    <string name="add_rate">Add rate</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="refused_transfer">Refused transfer</string>
+    <string name="transfer_purpose">Transfer purpose</string>
+    <string name="received_money">Received money</string>
 
 
 </resources>

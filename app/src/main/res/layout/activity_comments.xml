@@ -59,7 +59,7 @@
                     android:textColor="@color/white"
                     android:clickable="false"
                     android:longClickable="false"
-                    android:text="@string/notifications"
+                    android:text="@string/comments"
                     />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -83,7 +83,7 @@
             />
 
         <LinearLayout
-            android:id="@+id/llNoNotifications"
+            android:id="@+id/llNoComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -97,7 +97,7 @@
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/ic_notification"
+                android:src="@drawable/ic_comment"
 
                 />
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
                 android:textColor="@color/black"
-                android:text="@string/no_notifications_to_display"
+                android:text="@string/no_comments_to_display"
                 />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

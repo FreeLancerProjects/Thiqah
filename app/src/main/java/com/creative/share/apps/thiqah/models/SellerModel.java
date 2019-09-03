@@ -2,6 +2,7 @@ package com.creative.share.apps.thiqah.models;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
@@ -217,7 +218,7 @@ public class SellerModel extends BaseObservable implements Serializable {
     }
 
     public void setPhone2(String phone2) {
-        this.phone2 = phone2;
+        this.phone2 = phone2.startsWith("0")?phone2.replaceFirst("0",""):phone2;
         notifyPropertyChanged(BR.phone2);
 
     }
@@ -248,6 +249,18 @@ public class SellerModel extends BaseObservable implements Serializable {
 
     public boolean isDataValid(Context context)
     {
+        Log.e("city_id",city_id+"_");
+        Log.e("transfer_purpose",transfer_purpose+"_");
+        Log.e("item_value",item_value+"_");
+        Log.e("account_number",account_number+"_");
+        Log.e("iban_number",iban_number+"_");
+        Log.e("bank_name",bank_name+"_");
+        Log.e("image_uri",image_uri+"_");
+        Log.e("period",period+"_");
+        Log.e("phone2",phone2+"_");
+        Log.e("isAcceptRule1",isAcceptRule1+"_");
+        Log.e("city_id",isAcceptRule2+"_");
+
         if (!TextUtils.isEmpty(city_id)&&
                 !TextUtils.isEmpty(transfer_purpose)&&
                 !TextUtils.isEmpty(item_value)&&

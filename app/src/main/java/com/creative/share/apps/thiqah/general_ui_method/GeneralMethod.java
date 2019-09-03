@@ -2,7 +2,9 @@ package com.creative.share.apps.thiqah.general_ui_method;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,8 +13,13 @@ import androidx.databinding.BindingAdapter;
 
 import com.creative.share.apps.thiqah.R;
 import com.creative.share.apps.thiqah.tags.Tags;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class GeneralMethod {
 
@@ -70,27 +77,57 @@ public class GeneralMethod {
 
 
 
-    @BindingAdapter({"imageRound","orderType"})
-    public static void imageRound(RoundedImageView imageView,String image_endPoint,int order_type)
+    @BindingAdapter("imageRoundBank")
+    public static void imageRound(RoundedImageView imageView,String image_endPoint)
     {
 
-        if (order_type==1)
+        if (image_endPoint!=null)
         {
-            if (image_endPoint!=null)
-            {
-                Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_BANK_URL+image_endPoint)).fit().into(imageView);
-            }
-        }else
-            {
-                if (image_endPoint!=null)
-                {
-                    Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_ITEM_URL+image_endPoint)).fit().into(imageView);
-                }
-            }
+            Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_BANK_URL+image_endPoint)).fit().into(imageView);
+        }
+
+
 
 
 
     }
+
+    @BindingAdapter("imageRoundItem")
+    public static void imageRound2(RoundedImageView imageView,String image_endPoint)
+    {
+
+        if (image_endPoint!=null)
+        {
+            Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_ITEM_URL+image_endPoint)).fit().into(imageView);
+        }
+
+
+
+
+
+    }
+    @BindingAdapter("date")
+    public static void date (TextView textView,long date)
+    {
+        Log.e("date",date+"_");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
+        String m_date = dateFormat.format(new Date(date*1000));
+        textView.setText(m_date);
+
+    }
+
+    @BindingAdapter("rate")
+    public static void rate (SimpleRatingBar simpleRatingBar, float rate)
+    {
+        SimpleRatingBar.AnimationBuilder builder = simpleRatingBar.getAnimationBuilder()
+                .setRatingTarget(rate)
+                .setDuration(1000)
+                .setRepeatCount(0)
+                .setInterpolator(new LinearInterpolator());
+        builder.start();
+    }
+
+
 
 
 

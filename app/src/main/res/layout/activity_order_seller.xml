@@ -95,8 +95,8 @@
                     android:textSize="15sp"
                     android:text="@string/order_number"
                     />
-                <EditText
-                    android:id="@+id/edtOrderNumber"
+                <TextView
+                    android:id="@+id/tvOrderNumber"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="8dp"
@@ -106,6 +106,7 @@
                     android:background="@drawable/edt_order2_bg"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
+                    android:gravity="center_vertical"
                     />
 
                 <TextView
@@ -470,8 +471,11 @@
                     android:background="@drawable/edt_order"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
+                    android:maxLength="24"
+                    android:hint="@string/sa"
                     android:text="@={sellerModel.iban_number}"
                     error="@{sellerModel.error_iban_number}"
+
 
                     />
 
@@ -540,7 +544,7 @@
                     android:background="@drawable/btn_login_bg"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:text="@string/send"
+                    android:text="@string/send_order"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:onClick="@{()->sellerListener.send(sellerModel)}"

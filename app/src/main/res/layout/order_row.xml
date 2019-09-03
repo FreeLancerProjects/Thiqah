@@ -5,28 +5,45 @@
     >
     <data>
         <variable
-            name="orderModel"
-            type="com.creative.share.apps.thiqah.models.OrderModel" />
+            name="orderMode"
+            type="com.creative.share.apps.thiqah.models.OrderDataModel.OrderModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/edt_order"
+        android:layout_margin="3dp"
+
         >
 
 
+        <TextView
+            android:id="@+id/tvTransState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="@string/refused_transfer"
+            android:visibility="gone"
+            />
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="5"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTransState"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+
+
 
             >
             <LinearLayout
@@ -281,26 +298,39 @@
             app:layout_constraintStart_toEndOf="@id/tv"
             app:layout_constraintTop_toTopOf="@id/tv"
             android:layout_marginTop="5dp"
-            android:text='@{"#"+String.valueOf(orderModel.id)}'
+            android:text='@{"#"+String.valueOf(orderMode.id)}'
             android:textColor="@color/gray4"
             android:textSize="14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
 
 
             />
 
         <TextView
-            android:id="@+id/tvPurpose"
+            android:id="@+id/tvP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/tv"
             app:layout_constraintTop_toBottomOf="@id/tv"
             android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="@string/transfer_purpose"
+            />
+        <TextView
+            android:id="@+id/tvPurpose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tvP"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/tv"
             android:textColor="@color/gray4"
             android:textSize="15sp"
-            android:text="@{orderModel.reason}"
+            android:text="@{orderMode.reason}"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
 
 
             />
@@ -315,10 +345,10 @@
             android:text="@string/order_state"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintBottom_toTopOf="@id/view"
             android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+
 
 
             />
@@ -333,12 +363,14 @@
             android:textColor="@color/gray4"
             android:textSize="14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv2"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toStartOf="@id/btnDetails"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintWidth_default="wrap"
             android:maxLines="2"
             android:ellipsize="end"
-            state="@{orderModel.status}"
+            state="@{orderMode.status}"
 
             />
 
@@ -359,23 +391,12 @@
             android:paddingLeft="10dp"
             app:layout_constraintTop_toBottomOf="@id/tvOrderState"
             android:paddingRight="10dp"
-            app:layout_constraintBottom_toTopOf="@id/view"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="10dp"
 
 
             />
 
-        <View
-            android:id="@id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/gray2"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
 
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
