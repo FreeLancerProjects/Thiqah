@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.thiqah.R;
+import com.creative.share.apps.thiqah.activities_fragments.activity_home.HomeActivity;
 import com.creative.share.apps.thiqah.activities_fragments.activity_order_buyer.BuyerActivity;
 import com.creative.share.apps.thiqah.activities_fragments.activity_order_seller.OrderSellerActivity;
 import com.creative.share.apps.thiqah.adapters.MyNotificationAdapter;
@@ -56,6 +57,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
     private boolean isLoading = false;
     private UserModel userModel;
     private Preferences preferences;
+    private boolean isFromFireBase= false;
 
 
     @Override
@@ -68,9 +70,19 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_notification);
         initView();
+        getDataFromIntent();
 
     }
 
+    private void getDataFromIntent() {
+
+        Intent intent = getIntent();
+        if (intent!=null&&intent.hasExtra("notification"))
+        {
+            isFromFireBase = true;
+            Log.e("ddd","ffff");
+        }
+    }
 
 
     private void initView() {
@@ -372,7 +384,15 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
 
     @Override
     public void back() {
-        finish();
+        if (isFromFireBase)
+        {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }else
+            {
+
+            }
     }
 
     @Override
@@ -382,6 +402,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         {
             EventBus.getDefault().unregister(this);
         }
+
     }
 }
 

@@ -108,7 +108,6 @@ public class FireBaseMessaging extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, NotificationActivity.class);
         intent.putExtra("notification",true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -144,7 +143,6 @@ public class FireBaseMessaging extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, NotificationActivity.class);
         intent.putExtra("notification",true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
