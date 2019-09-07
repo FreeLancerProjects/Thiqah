@@ -41,6 +41,13 @@ public class GeneralMethod {
     {
         imageView.setImageResource(image_resource);
     }
+
+
+    @BindingAdapter("uri")
+    public static void displayImageuri(RoundedImageView imageView,Uri uri)
+    {
+        Picasso.with(imageView.getContext()).load(uri).fit().into(imageView);
+    }
     @BindingAdapter("state")
     public static void orderState(TextView textView,int state)
     {

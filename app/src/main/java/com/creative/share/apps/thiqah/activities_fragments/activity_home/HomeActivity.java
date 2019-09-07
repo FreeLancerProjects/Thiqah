@@ -3,8 +3,10 @@ package com.creative.share.apps.thiqah.activities_fragments.activity_home;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -358,6 +360,10 @@ public class HomeActivity extends AppCompatActivity
                 }
         } else if (id == R.id.nav_bank_account) {
             navigateToBankActivity();
+        } else if (id == R.id.nav_guide) {
+            navigateToGuideActivity();
+        }else if (id == R.id.nav_not) {
+            navigateToNotificationActivity();
         } else if (id == R.id.nav_comments) {
             navigateToCommentsActivity();
         } else if (id == R.id.nav_about) {
@@ -376,6 +382,13 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_contact) {
             navigateToContactActivity();
+        }else if (id == R.id.nav_rate) {
+
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+            }
         } else if (id == R.id.nav_lang) {
             CreateLangDialog();
         } else if (id == R.id.nav_logout) {

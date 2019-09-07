@@ -494,6 +494,8 @@
                     android:inputType="phone"
                     android:text="@={buyerModel.phone2}"
                     error="@{buyerModel.error_phone2}"
+                    android:maxLength="10"
+
 
                     />
                 <CheckBox

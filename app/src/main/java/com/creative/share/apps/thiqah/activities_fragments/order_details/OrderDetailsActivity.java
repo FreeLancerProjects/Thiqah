@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.creative.share.apps.thiqah.R;
+import com.creative.share.apps.thiqah.activity_appeal.AppealActivity;
 import com.creative.share.apps.thiqah.databinding.ActivityOrderDetailsBinding;
 import com.creative.share.apps.thiqah.databinding.DialogRateBinding;
 import com.creative.share.apps.thiqah.interfaces.Listeners;
@@ -43,19 +44,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
     private UserModel userModel;
     private Preferences preferences;
 
+
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
         super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_order_details);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details);
         initView();
         getDataFromIntent();
     }
-
 
 
     private void initView() {
@@ -66,58 +68,63 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         binding.btnEnd.setOnClickListener(view -> CreateRateDialog());
+        binding.btnAppeal.setOnClickListener(view -> {
+            int type = 0;
+            if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number())) {
+                type = 1;
+            } else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number())) {
+                type = 2;
+
+            }
+
+            Intent intent = new Intent(this, AppealActivity.class);
+            intent.putExtra("order_number", orderModel.getId());
+            intent.putExtra("type", type);
+            startActivity(intent);
+        });
+
+
 
     }
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
-        if (intent!=null)
-        {
+        if (intent != null) {
             orderModel = (OrderDataModel.OrderModel) intent.getSerializableExtra("data");
             binding.setOrderModel(orderModel);
 
-            if (orderModel.getStatus()<2)
-            {
-                if (orderModel.getBank_transfer_pic()!=null)
-                {
+            if (orderModel.getStatus() < 2) {
+                if (orderModel.getBank_transfer_pic() != null) {
                     binding.llTransferImage.setVisibility(View.VISIBLE);
-                }else
-                    {
-                        binding.llTransferImage.setVisibility(View.GONE);
+                } else {
+                    binding.llTransferImage.setVisibility(View.GONE);
 
-                    }
+                }
 
-                if (orderModel.getItem_pic()!=null)
-                {
+                if (orderModel.getItem_pic() != null) {
                     binding.llItemImage.setVisibility(View.VISIBLE);
-                }else
-                {
+                } else {
                     binding.llItemImage.setVisibility(View.GONE);
 
                 }
 
 
-            }else
-                {
-                    if (orderModel.getBank_transfer_pic()!=null)
-                    {
-                        binding.llTransferImage.setVisibility(View.VISIBLE);
-                    }else
-                    {
-                        binding.llTransferImage.setVisibility(View.GONE);
+            } else {
+                if (orderModel.getBank_transfer_pic() != null) {
+                    binding.llTransferImage.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llTransferImage.setVisibility(View.GONE);
 
-                    }
-
-                    if (orderModel.getItem_pic()!=null)
-                    {
-
-                        binding.llItemImage.setVisibility(View.VISIBLE);
-                    }else
-                    {
-                        binding.llItemImage.setVisibility(View.GONE);
-
-                    }
                 }
+
+                if (orderModel.getItem_pic() != null) {
+
+                    binding.llItemImage.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llItemImage.setVisibility(View.GONE);
+
+                }
+            }
 
 
             if (orderModel.getStatus() == 0) {
@@ -132,14 +139,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
                 binding.tvTransState.setVisibility(View.GONE);
 
                 step2();
-            }
-
-
-            else if (orderModel.getStatus() == 3) {
+            } else if (orderModel.getStatus() == 3) {
                 binding.ll.setVisibility(View.GONE);
                 binding.tvTransState.setVisibility(View.VISIBLE);
                 binding.btnEnd.setVisibility(View.GONE);
-
 
 
             } else if (orderModel.getStatus() == 4) {
@@ -160,180 +163,173 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
     }
 
 
-    private void step1()
-    {
+    private void step1() {
+        binding.btnAppeal.setVisibility(View.GONE);
         binding.btnEnd.setVisibility(View.GONE);
-        binding.tv1.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv1.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image1.setBackgroundResource(R.drawable.checked_circle);
-        binding.view1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view1.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv2.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv2.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image2.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view2.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view2.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
 
-        binding.tv3.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv3.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image3.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view3.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view3.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
-        binding.tv4.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv4.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image4.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view4.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view4.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
-        binding.tv5.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv5.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image5.setBackgroundResource(R.drawable.un_checked_circle);
 
     }
 
-    private void step2()
-    {
+    private void step2() {
+        binding.btnAppeal.setVisibility(View.GONE);
+
         binding.btnEnd.setVisibility(View.GONE);
 
-        binding.tv1.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv1.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image1.setBackgroundResource(R.drawable.checked_circle);
-        binding.view1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view1.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv2.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image2.setBackgroundResource(R.drawable.checked_circle);
-        binding.view2.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view2.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv3.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv3.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image3.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view3.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view3.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
-        binding.tv4.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv4.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image4.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view4.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view4.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
-        binding.tv5.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv5.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image5.setBackgroundResource(R.drawable.un_checked_circle);
 
 
     }
-    private void step3()
-    {
-        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number()))
-        {
-            if (orderModel.getBuyer_done()==0)
-            {
+
+    private void step3() {
+        //binding.btnAppeal.setVisibility(View.VISIBLE);
+
+        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number())) {
+            if (orderModel.getBuyer_done() == 0) {
                 binding.btnEnd.setVisibility(View.VISIBLE);
 
-            }else
-            {
+            } else {
                 binding.btnEnd.setVisibility(View.GONE);
 
             }
-        }else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number()))
-        {
+        } else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number())) {
 
-            if (orderModel.getSeller_done()==0)
-            {
+            if (orderModel.getSeller_done() == 0) {
                 binding.btnEnd.setVisibility(View.VISIBLE);
 
-            }else
-            {
+            } else {
                 binding.btnEnd.setVisibility(View.GONE);
 
             }
         }
 
-        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number()))
-        {
-            if (orderModel.getBuyer_done()==0)
-            {
+        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number())) {
+            if (orderModel.getBuyer_done() == 0) {
                 binding.btnEnd.setVisibility(View.VISIBLE);
 
-            }else
-                {
-                    binding.btnEnd.setVisibility(View.GONE);
+            } else {
+                binding.btnEnd.setVisibility(View.GONE);
 
-                }
-        }else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number()))
-        {
+            }
+        } else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number())) {
 
-            if (orderModel.getSeller_done()==0)
-            {
+            if (orderModel.getSeller_done() == 0) {
                 binding.btnEnd.setVisibility(View.VISIBLE);
 
-            }else
-            {
+            } else {
                 binding.btnEnd.setVisibility(View.GONE);
 
             }
         }
 
-        binding.tv1.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv1.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image1.setBackgroundResource(R.drawable.checked_circle);
-        binding.view1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view1.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv2.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image2.setBackgroundResource(R.drawable.checked_circle);
-        binding.view2.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view2.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
 
-        binding.tv3.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv3.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image3.setBackgroundResource(R.drawable.checked_circle);
-        binding.view3.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view3.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv4.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv4.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image4.setBackgroundResource(R.drawable.un_checked_circle);
-        binding.view4.setBackgroundColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.view4.setBackgroundColor(ContextCompat.getColor(this, R.color.gray4));
 
-        binding.tv5.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv5.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image5.setBackgroundResource(R.drawable.un_checked_circle);
 
 
     }
-    private void step4()
-    {
+
+    private void step4() {
 
 
+        binding.btnAppeal.setVisibility(View.VISIBLE);
 
-        binding.tv1.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv1.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image1.setBackgroundResource(R.drawable.checked_circle);
-        binding.view1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view1.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv2.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image2.setBackgroundResource(R.drawable.checked_circle);
-        binding.view2.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view2.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
 
-        binding.tv3.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv3.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image3.setBackgroundResource(R.drawable.checked_circle);
-        binding.view3.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view3.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv4.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv4.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image4.setBackgroundResource(R.drawable.checked_circle);
-        binding.view4.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view4.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv5.setTextColor(ContextCompat.getColor(this,R.color.gray4));
+        binding.tv5.setTextColor(ContextCompat.getColor(this, R.color.gray4));
         binding.image5.setBackgroundResource(R.drawable.un_checked_circle);
 
     }
-    private void step5()
-    {
 
+    private void step5() {
+
+        binding.btnAppeal.setVisibility(View.VISIBLE);
 
         binding.btnEnd.setVisibility(View.GONE);
 
-        binding.tv1.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv1.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image1.setBackgroundResource(R.drawable.checked_circle);
-        binding.view1.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view1.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv2.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image2.setBackgroundResource(R.drawable.checked_circle);
-        binding.view2.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view2.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
 
-        binding.tv3.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv3.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image3.setBackgroundResource(R.drawable.checked_circle);
-        binding.view3.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view3.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv4.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv4.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image4.setBackgroundResource(R.drawable.checked_circle);
-        binding.view4.setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.view4.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        binding.tv5.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        binding.tv5.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         binding.image5.setBackgroundResource(R.drawable.checked_circle);
 
     }
@@ -353,15 +349,13 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
         binding.btnRate.setOnClickListener((v) ->
                 {
                     String comment = binding.edtComment.getText().toString().trim();
-                    if (!TextUtils.isEmpty(comment))
-                    {
-                        EndOrder(rate,comment);
+                    if (!TextUtils.isEmpty(comment)) {
+                        EndOrder(rate, comment);
                         dialog.dismiss();
 
-                    }else
-                        {
-                            binding.edtComment.setError(getString(R.string.field_req));
-                        }
+                    } else {
+                        binding.edtComment.setError(getString(R.string.field_req));
+                    }
                 }
 
         );
@@ -375,13 +369,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
     private void EndOrder(int rate, String comment) {
 
 
-        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number()))
-        {
-            buyerFinishOrder(rate,comment);
+        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number())) {
+            buyerFinishOrder(rate, comment);
 
-        }else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number()))
-        {
-            sellerFinishOrder(rate,comment);
+        } else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number())) {
+            sellerFinishOrder(rate, comment);
 
 
         }
@@ -390,46 +382,40 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
     }
 
 
-
     private void sellerFinishOrder(int rate, String comment) {
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(lang)
-                    .sellerFinishOrder("Bearer "+userModel.getToken(),orderModel.getId(),comment,rate)
+                    .sellerFinishOrder("Bearer " + userModel.getToken(), orderModel.getId(), comment, rate)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
+                            if (response.isSuccessful() && response.body() != null) {
 
                                 setResult(RESULT_OK);
                                 finish();
 
-                            }else
-
-                            {
+                            } else {
                                 try {
 
-                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                                 if (response.code() == 422) {
-                                    Toast.makeText(OrderDetailsActivity.this,"Validation Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(OrderDetailsActivity.this, "Validation Error", Toast.LENGTH_SHORT).show();
                                 } else if (response.code() == 500) {
                                     Toast.makeText(OrderDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else if (response.code()==401)
-                                {
-                                    Toast.makeText(OrderDetailsActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 401) {
+                                    Toast.makeText(OrderDetailsActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(OrderDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -441,22 +427,20 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(OrderDetailsActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(OrderDetailsActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(OrderDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(OrderDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
@@ -464,42 +448,38 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
 
     private void buyerFinishOrder(int rate, String comment) {
 
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(lang)
-                    .buyerFinishOrder("Bearer "+userModel.getToken(),orderModel.getId(),comment,rate)
+                    .buyerFinishOrder("Bearer " + userModel.getToken(), orderModel.getId(), comment, rate)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
+                            if (response.isSuccessful() && response.body() != null) {
 
                                 setResult(RESULT_OK);
                                 finish();
-                            }else
-                            {
+                            } else {
                                 try {
 
-                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                                 if (response.code() == 422) {
-                                    Toast.makeText(OrderDetailsActivity.this,"Validation Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(OrderDetailsActivity.this, "Validation Error", Toast.LENGTH_SHORT).show();
                                 } else if (response.code() == 500) {
                                     Toast.makeText(OrderDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else if (response.code()==401)
-                                {
-                                    Toast.makeText(OrderDetailsActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 401) {
+                                    Toast.makeText(OrderDetailsActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(OrderDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -511,26 +491,25 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(OrderDetailsActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(OrderDetailsActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(OrderDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(OrderDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
     }
+
 
 
     @Override

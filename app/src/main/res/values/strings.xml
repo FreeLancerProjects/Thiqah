@@ -132,6 +132,10 @@
     <string name="refused_transfer">Refused transfer</string>
     <string name="transfer_purpose">Transfer purpose</string>
     <string name="received_money">Received money</string>
+    <string name="appeal">Appeal</string>
+    <string name="from">From</string>
+    <string name="reason">Reason</string>
+    <string name="rate_app">Rate app</string>
 
 
 </resources>

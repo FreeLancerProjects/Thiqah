@@ -449,6 +449,7 @@
                     android:paddingRight="8dp"
                     android:text="@={sellerModel.account_number}"
                     error="@{sellerModel.error_account_number}"
+                    android:maxLength="16"
 
                     />
 

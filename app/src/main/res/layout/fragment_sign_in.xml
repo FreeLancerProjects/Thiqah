@@ -138,6 +138,7 @@
                             app:layout_constraintEnd_toStartOf="@id/view2"
                             app:layout_constraintStart_toEndOf="@id/tvCode"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:maxLength="10"
 
 
                             />

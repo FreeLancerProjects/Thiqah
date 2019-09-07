@@ -84,7 +84,7 @@
     <string name="order_number">رقم الطلب</string>
     <string name="name">إسم الطرف الاول ثلاثي</string>
     <string name="city">المدينة</string>
-    <string name="purpose_of_the_transfer">الغرض من الحوالة</string>
+    <string name="purpose_of_the_transfer">الغرض من الصفقة</string>
     <string name="item_value">قيمة السلعة او الخدمة</string>
     <string name="shipping_method">طريقة الشحن</string>
     <string name="transfer_amount">المبلغ الإجمالي مع العمولة</string>
@@ -131,8 +131,12 @@
     <string name="add_rate">إضافة تقييم</string>
     <string name="add_comment">إضافة تعليق</string>
     <string name="refused_transfer">تم رفض الحوالة</string>
-    <string name="transfer_purpose">الغرض من الحوالة</string>
+    <string name="transfer_purpose">الغرض من الصفقة</string>
     <string name="received_money">تم إستلام المبلغ</string>
+    <string name="appeal">طلب إعتراض</string>
+    <string name="from">صفة طالب الإعتراض</string>
+    <string name="reason">السبب</string>
+    <string name="rate_app">تقييم التطبيق</string>
 
 
 </resources>

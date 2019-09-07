@@ -15,6 +15,9 @@
     <color name="end_color">#088090</color>
     <color name="not_bg">#ffd700</color>
     <color name="primary_dark">#03555F</color>
+    <color name="delete">#c40606</color>
+
+
 
 
 </resources>

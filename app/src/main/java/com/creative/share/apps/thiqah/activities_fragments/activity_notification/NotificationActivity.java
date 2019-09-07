@@ -391,7 +391,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
             finish();
         }else
             {
-
+                finish();
             }
     }
 
