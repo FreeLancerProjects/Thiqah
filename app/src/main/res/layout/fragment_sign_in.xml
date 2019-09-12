@@ -7,21 +7,21 @@
             type="String" />
         <variable
             name="loginModel"
-            type="com.creative.share.apps.thiqah.models.LoginModel" />
+            type="com.arab_developers_apps.theqah.models.LoginModel" />
         <variable
             name="loginListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.LoginListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.LoginListener" />
         <variable
             name="skipListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.SkipListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.SkipListener" />
 
         <variable
             name="createAccountListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.CreateAccountListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.CreateAccountListener" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.ShowCountryDialogListener" />
 
     </data>
     <ScrollView

@@ -9,17 +9,17 @@
             type="String" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.BackListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.BackListener" />
         <variable
             name="contactModel"
-            type="com.creative.share.apps.thiqah.models.ContactModel" />
+            type="com.arab_developers_apps.theqah.models.ContactModel" />
         <variable
             name="contactListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.ContactListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.ContactListener" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.ShowCountryDialogListener" />
 
     </data>
     <LinearLayout

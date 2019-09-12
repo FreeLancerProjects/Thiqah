@@ -6,7 +6,7 @@
     <data>
         <variable
             name="orderMode"
-            type="com.creative.share.apps.thiqah.models.OrderDataModel.OrderModel" />
+            type="com.arab_developers_apps.theqah.models.OrderDataModel.OrderModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

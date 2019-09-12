@@ -5,7 +5,7 @@
     <data>
         <variable
             name="commentModel"
-            type="com.creative.share.apps.thiqah.models.CommentDataModel.Testimonials.CommentModel" />
+            type="com.arab_developers_apps.theqah.models.CommentDataModel.Testimonials.CommentModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

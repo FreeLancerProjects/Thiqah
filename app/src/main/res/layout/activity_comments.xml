@@ -11,7 +11,7 @@
             type="String" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.BackListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.BackListener" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -10,18 +10,18 @@
 
         <variable
             name="signUpModel"
-            type="com.creative.share.apps.thiqah.models.SignUpModel" />
+            type="com.arab_developers_apps.theqah.models.SignUpModel" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.ShowCountryDialogListener" />
 
         <variable
             name="signUpListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.SignUpListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.SignUpListener" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.BackListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.BackListener" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

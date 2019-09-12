@@ -11,16 +11,16 @@
             type="String" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.BackListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.BackListener" />
         <variable
             name="sellerModel"
-            type="com.creative.share.apps.thiqah.models.SellerModel" />
+            type="com.arab_developers_apps.theqah.models.SellerModel" />
         <variable
             name="sellerListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.SellerListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.SellerListener" />
         <variable
             name="userModel"
-            type="com.creative.share.apps.thiqah.models.UserModel" />
+            type="com.arab_developers_apps.theqah.models.UserModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

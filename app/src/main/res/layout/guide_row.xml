@@ -6,46 +6,43 @@
     <data>
         <variable
             name="guideModel"
-            type="com.creative.share.apps.thiqah.models.GuideModel.Guide" />
+            type="com.arab_developers_apps.theqah.models.GuideModel.Guide" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="2dp"
-        app:cardCornerRadius="5dp"
-        app:cardBackgroundColor="@color/white"
-        app:contentPadding="5dp"
-        app:cardElevation="3dp"
+        android:orientation="vertical"
         >
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:text="@{guideModel.title}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@{guideModel.title}"
+            android:layout_gravity="center_horizontal"
 
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray4"
-                android:textSize="14sp"
-                android:text="@{guideModel.desc}"
-                android:layout_marginTop="8dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@{guideModel.desc}"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
 
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            />
+    </LinearLayout>
+
 </layout>

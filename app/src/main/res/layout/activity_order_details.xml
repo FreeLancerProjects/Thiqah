@@ -8,13 +8,13 @@
     <data>
         <variable
             name="orderModel"
-            type="com.creative.share.apps.thiqah.models.OrderDataModel.OrderModel" />
+            type="com.arab_developers_apps.theqah.models.OrderDataModel.OrderModel" />
         <variable
             name="lang"
             type="String" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.thiqah.interfaces.Listeners.BackListener" />
+            type="com.arab_developers_apps.theqah.interfaces.Listeners.BackListener" />
         <variable
             name="view"
             type="android.view.View" />

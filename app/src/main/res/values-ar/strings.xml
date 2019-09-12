@@ -137,6 +137,10 @@
     <string name="from">صفة طالب الإعتراض</string>
     <string name="reason">السبب</string>
     <string name="rate_app">تقييم التطبيق</string>
+    <string name="images">الصور</string>
+    <string name="date">التاريخ</string>
+    <string name="amount">الكمية</string>
+    <string name="blokced">تم حظر المستخدم</string>
 
 
 </resources>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="payment"
-            type="com.creative.share.apps.thiqah.models.Cities_Payment_Bank_Model.Payment" />
+            type="com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model.Payment" />
     </data>
     <RadioButton
         android:id="@+id/rb"
