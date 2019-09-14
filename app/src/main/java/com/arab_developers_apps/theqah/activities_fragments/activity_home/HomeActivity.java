@@ -97,6 +97,11 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Paper.init(this);
         lang = Paper.book().read("lang",Locale.getDefault().getLanguage());
+        Uri data = this.getIntent().getData();
+        if (data != null && data.isHierarchical()) {
+            String uri = this.getIntent().getDataString();
+            Log.e("MyApp", "Deep link clicked " + uri);
+        }
         fragmentManager = getSupportFragmentManager();
         initView();
 

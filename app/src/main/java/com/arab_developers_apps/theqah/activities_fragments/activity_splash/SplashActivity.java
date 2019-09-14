@@ -2,6 +2,7 @@ package com.arab_developers_apps.theqah.activities_fragments.activity_splash;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
