@@ -1047,13 +1047,13 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                     double value = Double.parseDouble(String.format(Locale.ENGLISH, binding.edtValue.getText().toString().trim()));
 
                     if (chargeAmount != -1) {
-                        if (value < 600) {
+                        if (value <1500) {
                             total = 0;
-                            total += value + 30 + chargeAmount;
+                            total += value + 45 + chargeAmount;
 
                         } else {
                             total = 0;
-                            total += (value * 0.05) + value + chargeAmount;
+                            total += (value * 0.03) + value + chargeAmount;
 
                         }
 
