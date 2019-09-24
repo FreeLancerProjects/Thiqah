@@ -31,6 +31,7 @@ public class AboutAppActivity extends AppCompatActivity implements Listeners.Bac
     private ActivityAboutAppBinding binding;
     private String lang;
     private int type;
+    private boolean show= false;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -53,7 +54,14 @@ public class AboutAppActivity extends AppCompatActivity implements Listeners.Bac
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-
+        binding.btnSend.setOnClickListener(view -> {
+            Intent intent = getIntent();
+            if (intent!=null)
+            {
+                setResult(RESULT_OK,intent);
+            }
+            finish();
+        });
     }
 
     private void getDataFromIntent() {
@@ -61,6 +69,11 @@ public class AboutAppActivity extends AppCompatActivity implements Listeners.Bac
         if (intent!=null)
         {
            type = intent.getIntExtra("type",1);
+           if (intent.hasExtra("show"))
+           {
+               show = true;
+           }
+
             if (type == 1)
             {
                 binding.tvTitle.setText(getString(R.string.terms_and_conditions));
@@ -94,6 +107,11 @@ public class AboutAppActivity extends AppCompatActivity implements Listeners.Bac
                                 if (type ==1)
                                 {
                                     binding.tvContent.setText(response.body().getTerms());
+                                    if (show)
+                                    {
+                                        binding.btnSend.setVisibility(View.VISIBLE);
+
+                                    }
                                 }else if (type==2)
                                 {
                                     binding.tvContent.setText(response.body().getAbout_us());
@@ -146,6 +164,8 @@ public class AboutAppActivity extends AppCompatActivity implements Listeners.Bac
         } catch (Exception e) {
         }
     }
+
+
 
     @Override
     public void back() {

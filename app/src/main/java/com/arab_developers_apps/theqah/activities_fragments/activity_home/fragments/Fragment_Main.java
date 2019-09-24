@@ -55,6 +55,7 @@ public class Fragment_Main extends Fragment {
     private UserModel userModel;
     private Preferences preferences;
     private HomeActivity activity;
+    private boolean isFirstTime = true;
 
     public static Fragment_Main newInstance() {
 
@@ -119,6 +120,12 @@ public class Fragment_Main extends Fragment {
         binding.imageLeft.setOnClickListener((view -> binding.discreteScrollView.smoothScrollToPosition(binding.discreteScrollView.getCurrentItem() + 1)));
         binding.imageRight.setOnClickListener((view -> binding.discreteScrollView.smoothScrollToPosition(binding.discreteScrollView.getCurrentItem() - 1)));
 
+        binding.btnPlay.setOnClickListener(view -> {
+            binding.videoView.setVisibility(View.GONE);
+            binding.webView.setVisibility(View.VISIBLE);
+            binding.btnPlay.setVisibility(View.GONE);
+            setUpWebView();
+        });
         updateUI();
         getVideoUrl();
     }
@@ -136,8 +143,7 @@ public class Fragment_Main extends Fragment {
 
                                 videoPath = response.body().getVideo_link();
                                 activity.videoPath = videoPath;
-                                setUpWebView();
-
+                                binding.btnPlay.setVisibility(View.VISIBLE);
                             } else {
 
                                 if (response.code() == 422) {
@@ -182,6 +188,7 @@ public class Fragment_Main extends Fragment {
     }
 
     private void setUpWebView() {
+        isFirstTime = false;
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.getSettings().setPluginState(WebSettings.PluginState.ON);
         binding.webView.getSettings().setBuiltInZoomControls(false);
@@ -246,5 +253,34 @@ public class Fragment_Main extends Fragment {
             activity.navigateToAboutAppActivity(3);
         }
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFirstTime)
+        {
+            binding.webView.onResume();
+        }
+    }
+
+    public void pauseVideo()
+    {
+        binding.webView.onPause();
+
+    }
+
+    public void playVideo()
+    {
+        binding.webView.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.webView.onPause();
+        Log.e("sss","ggg");
     }
 }

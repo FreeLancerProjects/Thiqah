@@ -17,7 +17,7 @@
     <string name="home">الرئيسية</string>
     <string name="notifications">الاشعارات</string>
     <string name="more">المزيد</string>
-    <string name="bank_account"> الحسابات البنكية والعموله</string>
+    <string name="bank_account"> الحسابات البنكية + العمولة </string>
     <string name="terms_and_conditions">الشروط والاحكام</string>
     <string name="about_app">عن التطبيق</string>
     <string name="contact_us">اتصل بنا</string>
@@ -84,7 +84,7 @@
     <string name="order_number">رقم الطلب</string>
     <string name="name">إسم الطرف الاول ثلاثي</string>
     <string name="city">المدينة</string>
-    <string name="purpose_of_the_transfer">الغرض من الصفقة</string>
+    <string name="purpose_of_the_transfer">تفاصيل الاتفاقية بين الطرفين</string>
     <string name="item_value">قيمة السلعة او الخدمة</string>
     <string name="shipping_method">طريقة الشحن</string>
     <string name="transfer_amount">المبلغ الإجمالي مع العمولة</string>
@@ -141,8 +141,10 @@
     <string name="date">التاريخ</string>
     <string name="amount">الكمية</string>
     <string name="blokced">تم حظر المستخدم</string>
-    <string name="most">يجب ان يكون 22 خانه</string>
-    <string name="most2">يجب ان يكون 9 خانه</string>
+    <string name="most">يجب ان يكون 22 خانة</string>
+    <string name="most2">يجب ان يكون 9 خانة</string>
+    <string name="app_fee">عمولة التطبيق <font color='#025f6b'>3%</font> والحد الادنى <font color='#025f6b'>35</font> ريال.</string>
+    <string name="complete_order">إكمال الطلب</string>
 
 
 </resources>

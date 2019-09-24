@@ -672,19 +672,10 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         if (userModel != null) {
 
-            if (buyerModel.isDataValid(this)) {
-
-                if (notificationModel==null)
-                {
-                    sendOrder(buyerModel);
-
-                }else
-                {
-                    buyerUpdateOrder();
-                }
-
-
-            }
+            Intent intent = new Intent(this,AboutAppActivity.class);
+            intent.putExtra("type",1);
+            intent.putExtra("show",true);
+            startActivityForResult(intent,100);
 
         } else {
             Common.CreateNoSignAlertDialog(this);
@@ -991,6 +982,21 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                 }
             }
 
+        }else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null)
+        {
+            if (buyerModel.isDataValid(this)) {
+
+                if (notificationModel==null)
+                {
+                    sendOrder(buyerModel);
+
+                }else
+                {
+                    buyerUpdateOrder();
+                }
+
+
+            }
         }
     }
 

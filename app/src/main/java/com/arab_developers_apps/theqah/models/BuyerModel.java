@@ -228,9 +228,10 @@ public class BuyerModel extends BaseObservable implements Serializable {
                 !TextUtils.isEmpty(period)&&
                 !TextUtils.isEmpty(phone2)&&
                 phone2.length()==9&&
-                isAcceptRule1&&isAcceptRule2
+                isAcceptRule1
         )
         {
+            //isAcceptRule2
 
             error_order_num.set(null);
             error_transfer_purpose.set(null);
@@ -368,11 +369,11 @@ public class BuyerModel extends BaseObservable implements Serializable {
                     Toast.makeText(context, R.string.cnt_comp, Toast.LENGTH_SHORT).show();
                 }
 
-                if (!isAcceptRule2)
+                /*if (!isAcceptRule2)
                 {
 
                     Toast.makeText(context, R.string.cont_comp2, Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 return false;
             }
 

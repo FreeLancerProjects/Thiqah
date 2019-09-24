@@ -16,7 +16,7 @@
     <string name="home">Home</string>
     <string name="notifications">Notifications</string>
     <string name="more">More</string>
-    <string name="bank_account">Bank account and commission </string>
+    <string name="bank_account">Bank account + commission </string>
     <string name="terms_and_conditions">Terms And Conditions</string>
     <string name="about_app">About Tour</string>
     <string name="contact_us">Contact Us</string>
@@ -83,7 +83,7 @@
     <string name="order_number">Order number</string>
     <string name="name">Name</string>
     <string name="city">City</string>
-    <string name="purpose_of_the_transfer">Purpose of the transfer</string>
+    <string name="purpose_of_the_transfer">Details of the agreement between the parties</string>
     <string name="item_value">Value of item or service</string>
     <string name="shipping_method">Shipping method</string>
     <string name="transfer_amount">Total amount with commission</string>
@@ -142,6 +142,8 @@
     <string name="blokced">User is blocked</string>
     <string name="most">should 22 sell</string>
     <string name="most2">should 9 sell</string>
+    <string name="app_fee">Application fee is <font color='#025f6b'>3%</font> and the minimum is <font color='#025f6b'>35</font> SAR.</string>
+    <string name="complete_order">Complete Order</string>
 
 
 </resources>

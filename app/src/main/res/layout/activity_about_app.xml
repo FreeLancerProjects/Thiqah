@@ -65,6 +65,7 @@
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -73,13 +74,35 @@
             app:layout_constraintBottom_toBottomOf="parent"
             >
 
-            <TextView
-                android:id="@+id/tvContent"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                >
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/btnSend"
+
+                    />
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="@string/send_order"
+                    android:visibility="gone"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </ScrollView>
 
         <ProgressBar

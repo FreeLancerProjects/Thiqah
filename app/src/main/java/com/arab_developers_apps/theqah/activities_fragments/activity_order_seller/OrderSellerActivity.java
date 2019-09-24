@@ -568,19 +568,11 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
         if (userModel != null) {
 
-            if (sellerModel.isDataValid(this)) {
+            Intent intent = new Intent(this,AboutAppActivity.class);
+            intent.putExtra("type",1);
+            intent.putExtra("show",true);
+            startActivityForResult(intent,100);
 
-                if (notificationModel==null)
-                {
-                    sendOrder(sellerModel);
-
-                }else
-                {
-
-                    sellerUpdateOrder(sellerModel);
-                }
-
-            }
         } else {
             Common.CreateNoSignAlertDialog(this);
         }
@@ -883,6 +875,21 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                 }
             }
 
+        }else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
+
+            if (sellerModel.isDataValid(this)) {
+
+                if (notificationModel==null)
+                {
+                    sendOrder(sellerModel);
+
+                }else
+                {
+
+                    sellerUpdateOrder(sellerModel);
+                }
+
+            }
         }
     }
 

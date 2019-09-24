@@ -290,6 +290,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (fragment_main.isAdded())
         {
+            fragment_main.playVideo();
             fragmentManager.beginTransaction().show(fragment_main).commit();
         }else
             {
@@ -323,6 +324,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (fragment_main!=null&&fragment_main.isAdded())
         {
+            fragment_main.pauseVideo();
             fragmentManager.beginTransaction().hide(fragment_main).commit();
 
         }
