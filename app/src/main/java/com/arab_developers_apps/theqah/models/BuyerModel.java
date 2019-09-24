@@ -227,6 +227,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
                 !TextUtils.isEmpty(image_uri)&&
                 !TextUtils.isEmpty(period)&&
                 !TextUtils.isEmpty(phone2)&&
+                phone2.length()==9&&
                 isAcceptRule1&&isAcceptRule2
         )
         {
@@ -286,7 +287,14 @@ public class BuyerModel extends BaseObservable implements Serializable {
                 {
                     error_phone2.set(null);
                 }
+                if(phone2.length()!=9){
+                    error_phone2.set(context.getString(R.string.most2));
 
+                }
+                else {
+                    error_phone2.set(null);
+
+                }
 
                 if (TextUtils.isEmpty(city_id))
                 {

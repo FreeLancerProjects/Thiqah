@@ -190,7 +190,7 @@ public class Fragment_Main extends Fragment {
                                              @Override
                                              public void onPageStarted(WebView view, String url, Bitmap favicon) {
                                                  super.onPageStarted(view, url, favicon);
-                                                 binding.webView.onPause();
+                                              //   binding.webView.onPause();
 
                                              }
 

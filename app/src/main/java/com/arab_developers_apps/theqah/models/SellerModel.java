@@ -359,7 +359,7 @@ public class SellerModel extends BaseObservable implements Serializable {
                 {
                     error_phone2.set(null);
                 }
-                if(iban_number.length()!=9){
+                if(phone2.length()!=9){
                     error_phone2.set(context.getString(R.string.most2));
 
                 }
