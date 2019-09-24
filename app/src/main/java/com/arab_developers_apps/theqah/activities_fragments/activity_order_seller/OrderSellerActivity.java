@@ -596,14 +596,14 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         try {
 
             String token = "Bearer " + userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText(sellerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText("966"+sellerModel.getPhone2());
             RequestBody reason_part = Common.getRequestBodyText(sellerModel.getTransfer_purpose());
             RequestBody price_part = Common.getRequestBodyText(sellerModel.getItem_value());
             RequestBody day_part = Common.getRequestBodyText(sellerModel.getPeriod());
             RequestBody conditions_part = Common.getRequestBodyText(sellerModel.getCondition());
             RequestBody bank_id_part = Common.getRequestBodyText(sellerModel.getBank_name());
             RequestBody bank_account_part = Common.getRequestBodyText(sellerModel.getAccount_number());
-            RequestBody bank_iban_part = Common.getRequestBodyText(sellerModel.getIban_number());
+            RequestBody bank_iban_part = Common.getRequestBodyText(sellerModel.getIban_number()+"SA");
 
             MultipartBody.Part image = Common.getMultiPart(this, Uri.parse(sellerModel.getImage_uri()), "item_pic");
 

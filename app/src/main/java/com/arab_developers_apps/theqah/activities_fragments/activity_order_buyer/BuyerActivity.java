@@ -700,7 +700,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
             Log.e("phone",buyerModel.getPhone2());
             String token = "Bearer "+userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText(buyerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText("966"+buyerModel.getPhone2());
             RequestBody reason_part = Common.getRequestBodyText(buyerModel.getTransfer_purpose());
             RequestBody price_part = Common.getRequestBodyText(buyerModel.getPrice());
             RequestBody day_part = Common.getRequestBodyText(buyerModel.getPeriod());
