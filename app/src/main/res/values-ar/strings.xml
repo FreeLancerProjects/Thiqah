@@ -17,7 +17,7 @@
     <string name="home">الرئيسية</string>
     <string name="notifications">الاشعارات</string>
     <string name="more">المزيد</string>
-    <string name="bank_account">الحسابات البنكية</string>
+    <string name="bank_account"> الحسابات البنكية والعموله</string>
     <string name="terms_and_conditions">الشروط والاحكام</string>
     <string name="about_app">عن التطبيق</string>
     <string name="contact_us">اتصل بنا</string>
@@ -141,6 +141,8 @@
     <string name="date">التاريخ</string>
     <string name="amount">الكمية</string>
     <string name="blokced">تم حظر المستخدم</string>
+    <string name="most">يجب ان يكون 22 خانه</string>
+    <string name="most2">يجب ان يكون 9 خانه</string>
 
 
 </resources>

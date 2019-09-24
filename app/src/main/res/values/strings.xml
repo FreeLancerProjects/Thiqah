@@ -140,6 +140,8 @@
     <string name="date">Date</string>
     <string name="amount">Amount</string>
     <string name="blokced">User is blocked</string>
+    <string name="most">should 22 sell</string>
+    <string name="most2">should 9 sell</string>
 
 
 </resources>

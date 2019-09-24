@@ -270,7 +270,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                             dialog.dismiss();
                             if (response.isSuccessful()&&response.body()!=null)
                             {
-                                binding.tvOrderNumber.setText(String.valueOf(response.body()));
+                                binding.tvOrderNumber.setText(String.valueOf(response.body()+100));
 
 
                             }else

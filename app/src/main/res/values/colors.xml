@@ -6,11 +6,15 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
 
-    <color name="gray0">#fafafa</color>
-    <color name="gray1">#f5f5f5</color>
-    <color name="gray2">#eee</color>
-    <color name="gray3">#e0e0e0</color>
+    <color name="gray">#f9f8f2</color>
+    <color name="gray0">#FAFAFA</color>
+    <color name="gray1">#F5F5F5</color>
+    <color name="gray2">#EEEEEE</color>
+    <color name="gray3">#E0E0E0</color>
     <color name="gray4">#bababa</color>
+    <color name="gray5">#424242</color>
+    <color name="gray6">#212121</color>
+    <color name="gray7">#757575</color>
     <color name="transparent">#00000000</color>
     <color name="end_color">#088090</color>
     <color name="not_bg">#ffd700</color>

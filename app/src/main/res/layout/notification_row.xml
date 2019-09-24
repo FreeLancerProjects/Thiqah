@@ -56,7 +56,7 @@
             app:layout_constraintTop_toTopOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/colorPrimary"
-            date="@{notificationModel.notification_time}"
+            time="@{notificationModel.notification_time}"
             />
 
         <TextView

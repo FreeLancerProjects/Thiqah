@@ -144,7 +144,14 @@ public class GeneralMethod {
         textView.setText(m_date);
 
     }
+    @BindingAdapter("time")
+    public static void time (TextView textView,long date)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa",Locale.ENGLISH);
+        String m_date = dateFormat.format(new Date(date*1000));
+        textView.setText(m_date);
 
+    }
     @BindingAdapter("rate")
     public static void rate (SimpleRatingBar simpleRatingBar, float rate)
     {

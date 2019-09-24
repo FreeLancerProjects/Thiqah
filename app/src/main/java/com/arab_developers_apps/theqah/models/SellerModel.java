@@ -266,10 +266,12 @@ public class SellerModel extends BaseObservable implements Serializable {
                 !TextUtils.isEmpty(item_value)&&
                 !TextUtils.isEmpty(account_number)&&
                 !TextUtils.isEmpty(iban_number)&&
+                (iban_number.length()==22)&&
                 !TextUtils.isEmpty(bank_name)&&
                 !TextUtils.isEmpty(image_uri)&&
                 !TextUtils.isEmpty(period)&&
                 !TextUtils.isEmpty(phone2)&&
+                phone2.length()==9&&
                 isAcceptRule1&&isAcceptRule2
         )
         {
@@ -357,7 +359,14 @@ public class SellerModel extends BaseObservable implements Serializable {
                 {
                     error_phone2.set(null);
                 }
+                if(iban_number.length()!=9){
+                    error_phone2.set(context.getString(R.string.most2));
 
+                }
+                else {
+                    error_phone2.set(null);
+
+                }
 
                 if (TextUtils.isEmpty(city_id))
                 {
@@ -395,7 +404,14 @@ public class SellerModel extends BaseObservable implements Serializable {
                 {
                     error_iban_number.set(null);
                 }
+if(iban_number.length()!=22){
+    error_iban_number.set(context.getString(R.string.most));
 
+}
+else {
+    error_iban_number.set(null);
+
+}
                 if (TextUtils.isEmpty(bank_name))
                 {
                     error_bank_name.set(context.getString(R.string.field_req));
