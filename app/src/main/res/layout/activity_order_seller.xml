@@ -544,7 +544,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:inputType="phone"
-                        android:text="@={buyerModel.phone2}"
+                        android:text="@={sellerModel.phone2}"
                         error="@{buyerModel.error_phone2}"
                         android:maxLength="10"
 
