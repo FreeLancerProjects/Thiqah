@@ -39,6 +39,7 @@ import com.arab_developers_apps.theqah.databinding.DialogAlertBinding;
 import com.arab_developers_apps.theqah.databinding.DialogSelectImageBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
 import com.arab_developers_apps.theqah.language.LanguageHelper;
+import com.arab_developers_apps.theqah.models.AboutAppModel;
 import com.arab_developers_apps.theqah.models.BuyerModel;
 import com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model;
 import com.arab_developers_apps.theqah.models.NotificationDataModel;
@@ -90,6 +91,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     private String city_id = "";
     private NotificationDataModel.NotificationModel notificationModel;
     private OrderDataModel.OrderModel orderModel;
+    private AboutAppModel aboutAppModel;
 
 
     @Override
@@ -117,6 +119,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
 
     private void initView() {
+
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         paymentList = new ArrayList<>();
@@ -137,6 +140,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         if (notificationModel!=null)
         {
             getOrderNumber();
+            getCommission();
             getOrderDetails();
 
 
@@ -147,6 +151,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             if (userModel != null) {
                 binding.setUserModel(userModel);
                 getOrderNumber();
+                getCommission();
 
             }
 
@@ -344,20 +349,84 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     private void calcTotalItemsValue(double value) {
         double total;
 
-        if (chargeAmount != -1) {
-            if (value <= 1500) {
-                total = 0;
-                total += value + 45 + chargeAmount;
+        if (aboutAppModel!=null)
+        {
+            if (chargeAmount != -1) {
+                if (value <= aboutAppModel.getThiqah_average_amount()) {
+                    total = 0;
+                    total += value + aboutAppModel.getThiqah_average_value() + chargeAmount;
 
-            } else {
-                total = 0;
-                total += (value * 0.03) + value + chargeAmount;
+                } else {
+                    total = 0;
+                    total += (value * aboutAppModel.getThiqah_rate()/100) + value + chargeAmount;
 
+                }
+
+                binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
+                buyerModel.setPrice(String.valueOf(total));
+                binding.setBuyerModel(buyerModel);
             }
+        }
 
-            binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
-            buyerModel.setPrice(String.valueOf(total));
-            binding.setBuyerModel(buyerModel);
+    }
+
+    private void getCommission() {
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+
+            Api.getService(lang)
+                    .appData()
+                    .enqueue(new Callback<AboutAppModel>() {
+                        @Override
+                        public void onResponse(Call<AboutAppModel> call, Response<AboutAppModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null) {
+                                aboutAppModel = response.body();
+                            } else {
+
+                                if (response.code() == 422) {
+                                    Toast.makeText(BuyerActivity.this, getString(R.string.em_exist), Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 500) {
+                                    Toast.makeText(BuyerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                }else
+                                {
+                                    Toast.makeText(BuyerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AboutAppModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(BuyerActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(BuyerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            dialog.dismiss();
+
         }
     }
 
@@ -1052,21 +1121,24 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                 if (!binding.edtValue.getText().toString().trim().isEmpty()) {
                     double value = Double.parseDouble(String.format(Locale.ENGLISH, binding.edtValue.getText().toString().trim()));
 
-                    if (chargeAmount != -1) {
-                        if (value <1500) {
-                            total = 0;
-                            total += value + 45 + chargeAmount;
+                    if (aboutAppModel!=null){
+                        if (chargeAmount != -1) {
+                            if (value <aboutAppModel.getThiqah_average_amount()) {
+                                total = 0;
+                                total += value + aboutAppModel.getThiqah_average_value() + chargeAmount;
 
-                        } else {
-                            total = 0;
-                            total += (value * 0.03) + value + chargeAmount;
+                            } else {
+                                total = 0;
+                                total += (value * aboutAppModel.getThiqah_rate()/100) + value + chargeAmount;
 
+                            }
+
+                            binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
+                            buyerModel.setPrice(String.valueOf(total));
+                            binding.setBuyerModel(buyerModel);
                         }
-
-                        binding.tvAmount.setText(String.format("%s %s", total, getString(R.string.sar)));
-                        buyerModel.setPrice(String.valueOf(total));
-                        binding.setBuyerModel(buyerModel);
                     }
+
 
 
                 } else {

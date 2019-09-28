@@ -145,6 +145,13 @@
     <string name="most2">يجب ان يكون 9 خانة</string>
     <string name="app_fee">عمولة التطبيق <font color='#025f6b'>3%</font> والحد الادنى <font color='#025f6b'>35</font> ريال.</string>
     <string name="complete_order">إكمال الطلب</string>
+    <string name="commission">العمولة</string>
+    <string name="more3">أكثر</string>
+    <string name="less">أقل</string>
+    <string name="application_fee_is">عمولة التطبيق</string>
+    <string name="and_the_minimum_is">والحد الأدنى</string>
+    <string name="item_or_service_value">قيمة السلعة او الخدمة</string>
+    <string name="value">القيمة</string>
 
 
 </resources>

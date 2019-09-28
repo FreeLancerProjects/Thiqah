@@ -1,8 +1,11 @@
 package com.arab_developers_apps.theqah.activities_fragments.bank_account;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -17,8 +20,10 @@ import com.arab_developers_apps.theqah.adapters.BankAdapter;
 import com.arab_developers_apps.theqah.databinding.ActivityBankBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
 import com.arab_developers_apps.theqah.language.LanguageHelper;
+import com.arab_developers_apps.theqah.models.AboutAppModel;
 import com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model;
 import com.arab_developers_apps.theqah.remote.Api;
+import com.arab_developers_apps.theqah.share.Common;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +41,7 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
     private List<Cities_Payment_Bank_Model.Bank> bankList;
     private BankAdapter adapter;
     private LinearLayoutManager manager;
+    private AboutAppModel aboutAppModel;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -51,6 +57,10 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
 
 
     private void initView() {
+        binding.setValue(0);
+        binding.setMaxNum(0);
+        binding.setPercent(3);
+
         bankList = new ArrayList<>();
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
@@ -61,7 +71,61 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
         binding.recView.setLayoutManager(manager);
         adapter = new BankAdapter(bankList,this);
         binding.recView.setAdapter(adapter);
+        getCommission();
         getBankData();
+
+        binding.edtPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                try {
+                    if (editable.toString().trim().length() > 0) {
+                        double value = Double.parseDouble(String.format(Locale.ENGLISH, editable.toString().trim()));
+
+                        calcTotalItemsValue(value);
+
+
+                    } else {
+                        binding.tvResult.setText("");
+
+                    }
+                } catch (Exception e) {
+
+                }
+
+
+            }
+        });
+
+    }
+
+    private void calcTotalItemsValue(double value) {
+        double total;
+
+        if (aboutAppModel!=null)
+        {
+            if (value <= aboutAppModel.getThiqah_average_amount()) {
+                total = 0;
+                total += value + aboutAppModel.getThiqah_average_value() ;
+
+            } else {
+                total = 0;
+                total += (value * aboutAppModel.getThiqah_rate()/100) + value ;
+
+            }
+
+            binding.tvResult.setText(String.format("%s %s", (total-value), getString(R.string.sar)));
+        }
+
     }
 
 
@@ -117,6 +181,68 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
                         }
                     });
         } catch (Exception e) {
+        }
+    }
+
+    private void getCommission() {
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+
+            Api.getService(lang)
+                    .appData()
+                    .enqueue(new Callback<AboutAppModel>() {
+                        @Override
+                        public void onResponse(Call<AboutAppModel> call, Response<AboutAppModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null) {
+                                aboutAppModel = response.body();
+                                binding.setPercent(aboutAppModel.getThiqah_rate());
+                                binding.setMaxNum(aboutAppModel.getThiqah_average_amount());
+                                binding.setValue(aboutAppModel.getThiqah_average_value());
+                            } else {
+
+                                if (response.code() == 422) {
+                                    Toast.makeText(BankActivity.this, getString(R.string.em_exist), Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 500) {
+                                    Toast.makeText(BankActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                }else
+                                {
+                                    Toast.makeText(BankActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AboutAppModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(BankActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(BankActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            dialog.dismiss();
         }
     }
 

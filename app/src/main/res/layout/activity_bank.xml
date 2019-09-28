@@ -7,6 +7,15 @@
     >
     <data>
         <variable
+            name="percent"
+            type="Integer" />
+        <variable
+            name="maxNum"
+            type="Integer" />
+        <variable
+            name="value"
+            type="Integer" />
+        <variable
             name="lang"
             type="String" />
         <variable
@@ -20,6 +29,7 @@
         tools:context=".activities_fragments.activity_choose_order_type.ChooseOrderTypeActivity"
         android:background="@drawable/bg"
         >
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -65,7 +75,7 @@
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
         <TextView
-            android:id="@+id/tv"
+            android:id="@+id/tvCommission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -74,14 +84,192 @@
             android:layout_marginEnd="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="@string/app_fee"
+            android:text='@{@string/application_fee_is+" "+percent+"% "+@string/and_the_minimum_is+" "+maxNum}'
             android:gravity="center"
             />
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCommission"
+            android:layout_marginTop="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+
+                >
+                <TextView
+                    android:id="@+id/tvPercent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_cell"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center_vertical"
+                    android:text='@{percent+" %"}'
+
+                    />
+                <TextView
+                    android:id="@+id/tvMaxNum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/table_cell"
+                    android:textColor="@color/black"
+                    android:text='@{@string/more3+" _ "+maxNum}'
+
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+
+
+
+                >
+                <TextView
+                    android:id="@+id/tvValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_cell"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{String.valueOf(value)}"
+
+
+                    />
+                <TextView
+                    android:id="@+id/tvMaxNum2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/table_cell"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/black"
+                    android:text='@{@string/less+" _ "+maxNum}'
+
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center_vertical"
+                    android:text="@string/item_or_service_value"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center_vertical"
+                    android:text="@string/commission"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="8dp"
+                >
+                <EditText
+                    android:id="@+id/edtPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_cell"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:singleLine="true"
+                    android:hint="@string/value"
+
+                    />
+                <TextView
+                    android:id="@+id/tvResult"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/table_cell"
+                    android:textColor="@color/black"
+
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tv"
+            app:layout_constraintTop_toBottomOf="@id/ll"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="10dp"
 
