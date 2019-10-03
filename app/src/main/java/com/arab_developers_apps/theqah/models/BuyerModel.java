@@ -77,7 +77,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
 
     @Bindable
     public String getOrder_number() {
-        return order_number;
+        return order_number+100;
     }
 
     public void setOrder_number(String order_number) {

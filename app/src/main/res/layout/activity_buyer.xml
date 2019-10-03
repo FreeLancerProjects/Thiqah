@@ -517,16 +517,7 @@
                 android:background="@drawable/edt_order"
 
                 >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".15"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:text="966"
-                    android:gravity="center"
-                    />
+
                 <EditText
                     android:id="@+id/edtPhone2"
                     android:layout_width="0dp"
@@ -541,8 +532,19 @@
                     android:inputType="phone"
                     android:text="@={buyerModel.phone2}"
                     error="@{buyerModel.error_phone2}"
-                    android:maxLength="10"
+                    android:maxLength="9"
 
+
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".15"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:text="966"
+                    android:gravity="center"
 
                     />
             </LinearLayout>

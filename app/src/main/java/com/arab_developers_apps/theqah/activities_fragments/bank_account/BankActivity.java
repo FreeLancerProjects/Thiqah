@@ -42,18 +42,19 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
     private BankAdapter adapter;
     private LinearLayoutManager manager;
     private AboutAppModel aboutAppModel;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
         super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_bank);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bank);
         initView();
     }
-
 
 
     private void initView() {
@@ -66,10 +67,10 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setBackListener(this);
-        binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         manager = new LinearLayoutManager(this);
         binding.recView.setLayoutManager(manager);
-        adapter = new BankAdapter(bankList,this);
+        adapter = new BankAdapter(bankList, this);
         binding.recView.setAdapter(adapter);
         getCommission();
         getBankData();
@@ -111,19 +112,20 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
     private void calcTotalItemsValue(double value) {
         double total;
 
-        if (aboutAppModel!=null)
-        {
+        if (aboutAppModel != null) {
             if (value <= aboutAppModel.getThiqah_average_amount()) {
                 total = 0;
-                total += value + aboutAppModel.getThiqah_average_value() ;
+                total += value + aboutAppModel.getThiqah_average_value();
 
             } else {
                 total = 0;
-                total += (value * aboutAppModel.getThiqah_rate()/100) + value ;
+                total += (value * aboutAppModel.getThiqah_rate() / 100) + value;
 
             }
 
-            binding.tvResult.setText(String.format("%s %s", (total-value), getString(R.string.sar)));
+            binding.tvResult.setText(String.format("%s %s",
+
+                    Math.round(total - value), getString(R.string.sar)));
         }
 
     }
@@ -149,13 +151,12 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
                                     Toast.makeText(BankActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(BankActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
-                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -185,7 +186,7 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
     }
 
     private void getCommission() {
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
@@ -210,13 +211,12 @@ public class BankActivity extends AppCompatActivity implements Listeners.BackLis
                                     Toast.makeText(BankActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(BankActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
-                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }

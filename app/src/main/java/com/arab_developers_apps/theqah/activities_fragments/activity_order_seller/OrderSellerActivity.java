@@ -655,7 +655,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
-                                CreateDialogAlert(response.body().getId());
+                                CreateDialogAlert(response.body().getId()+100);
                             } else {
                                 try {
 
@@ -794,7 +794,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
         DialogAlertBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_alert, null, false);
 
-        binding.tvMsg.setText(String.format("%s %s%s", getString(R.string.order_sent_suc), "#", order_id));
+        binding.tvMsg.setText(String.format("%s %s%s", getString(R.string.order_sent_suc), "#", order_id+100));
         binding.btnCancel.setOnClickListener((v) ->
                 {
                     dialog.dismiss();

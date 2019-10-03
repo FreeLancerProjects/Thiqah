@@ -24,6 +24,7 @@ public class OrderDataModel implements Serializable {
         private int buyer_done;
         private int seller_done;
         private String buyer_phone;
+
         private String seller_phone;
         private String reason;
         private int price;

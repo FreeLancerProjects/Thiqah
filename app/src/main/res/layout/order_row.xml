@@ -398,7 +398,7 @@
             app:layout_constraintStart_toEndOf="@id/tv3"
             app:layout_constraintTop_toTopOf="@id/tvOrderState"
             android:layout_marginTop="5dp"
-            android:textColor="@color/gray4"
+            android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv3"
             android:layout_marginStart="8dp"
