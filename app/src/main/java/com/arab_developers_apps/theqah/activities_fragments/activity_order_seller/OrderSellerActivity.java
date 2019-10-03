@@ -29,6 +29,7 @@ import com.arab_developers_apps.theqah.R;
 import com.arab_developers_apps.theqah.activities_fragments.about_app.AboutAppActivity;
 import com.arab_developers_apps.theqah.adapters.CityAdapter;
 import com.arab_developers_apps.theqah.adapters.SpinnerAdapter;
+import com.arab_developers_apps.theqah.adapters.SpinnerBankAdapter;
 import com.arab_developers_apps.theqah.databinding.ActivityOrderSellerBinding;
 import com.arab_developers_apps.theqah.databinding.DialogAlertBinding;
 import com.arab_developers_apps.theqah.databinding.DialogSelectImageBinding;
@@ -63,7 +64,7 @@ import retrofit2.Response;
 public class OrderSellerActivity extends AppCompatActivity implements Listeners.BackListener, Listeners.SellerListener {
     private ActivityOrderSellerBinding binding;
     private String lang;
-    private List<String> period;
+   // private List<String> period;
     private List<Integer> days;
     private SpinnerAdapter adapter;
     private SellerModel sellerModel;
@@ -78,6 +79,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
     private UserModel userModel;
     private NotificationDataModel.NotificationModel notificationModel;
     private OrderDataModel.OrderModel orderModel;
+    private SpinnerBankAdapter bankAdapter;
+    private List<Cities_Payment_Bank_Model.Bank> bankList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -106,8 +109,10 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
     private void initView() {
         days = new ArrayList<>();
         cityList = new ArrayList<>();
+        bankList = new ArrayList<>();
+        bankList.add(new Cities_Payment_Bank_Model.Bank(getString(R.string.ch_bank)));
         sellerModel = new SellerModel();
-        period = new ArrayList<>();
+       // period = new ArrayList<>();
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         Paper.init(this);
@@ -126,7 +131,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
         }else
         {
-            setUpAdapter();
+           // setUpAdapter();
 
             if (userModel != null) {
                 binding.setUserModel(userModel);
@@ -176,7 +181,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
 
         binding.image.setOnClickListener(view -> CreateImageAlertDialog());
-
+        bankAdapter = new SpinnerBankAdapter(bankList, this);
+        binding.spinnerBank.setAdapter(bankAdapter);
         binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -225,7 +231,28 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
             }
         });
-        binding.spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i==0)
+                {
+                    sellerModel.setBank_name("");
+                    binding.setSellerModel(sellerModel);
+
+                }else
+                {
+                    sellerModel.setBank_name(String.valueOf(bankList.get(i).getId()));
+                    binding.setSellerModel(sellerModel);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+       /* binding.spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
@@ -246,7 +273,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
             }
         });
-
+*/
 
         getCities();
 
@@ -402,6 +429,10 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.edtTransferPurpose.setEnabled(false);
         sellerModel.setTransfer_purpose(orderModel.getReason());
 
+        binding.edtPeriod.setText(orderModel.getDays_left());
+        binding.edtPeriod.setEnabled(false);
+        sellerModel.setPeriod(orderModel.getDays_left());
+
         binding.tvOrderNumber.setText(String.valueOf(orderModel.getId()));
 
 
@@ -434,10 +465,10 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
             }
 
-        period.clear();
+       /* period.clear();
         period.add(orderModel.getDays_left()+getString(R.string.day));
         adapter = new SpinnerAdapter(period,this);
-        binding.spinnerPeriod.setAdapter(adapter);
+        binding.spinnerPeriod.setAdapter(adapter);*/
 
         sellerModel.setPeriod(String.valueOf(orderModel.getDays_left()));
 
@@ -538,12 +569,16 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
 
 
+        bankList.addAll(body.getBanks());
+        bankAdapter.notifyDataSetChanged();
+
+
 
 
 
     }
 
-    private void setUpAdapter() {
+   /* private void setUpAdapter() {
         period.add(getString(R.string.choose));
         for (int i = 1; i < 31; i++) {
             days.add(i);
@@ -552,7 +587,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
         adapter = new SpinnerAdapter(period, this);
         binding.spinnerPeriod.setAdapter(adapter);
-    }
+    }*/
 
 
 

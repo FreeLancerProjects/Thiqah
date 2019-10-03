@@ -69,7 +69,7 @@ import retrofit2.Response;
 public class BuyerActivity extends AppCompatActivity implements Listeners.BackListener, Listeners.BuyerListener {
     private ActivityBuyerBinding binding;
     private String lang;
-    private List<String> period;
+   // private List<String> period;
     private List<Integer> days;
     private SpinnerAdapter adapter;
     private BuyerModel buyerModel;
@@ -127,7 +127,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         bankList.add(new Cities_Payment_Bank_Model.Bank(getString(R.string.ch_bank)));
         cityList = new ArrayList<>();
         buyerModel = new BuyerModel();
-        period = new ArrayList<>();
+       // period = new ArrayList<>();
         days = new ArrayList<>();
 
         Paper.init(this);
@@ -146,7 +146,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         }else
         {
-            setUpAdapter();
+            //setUpAdapter();
 
             if (userModel != null) {
                 binding.setUserModel(userModel);
@@ -312,7 +312,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
             }
         });
-        binding.spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      /*  binding.spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i==0)
@@ -337,7 +337,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         getCities();
 
@@ -603,6 +603,12 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         binding.edtTransferPurpose.setEnabled(false);
         buyerModel.setTransfer_purpose(orderModel.getReason());
 
+        binding.edtPeriod.setText(orderModel.getDays_left());
+        binding.edtPeriod.setEnabled(false);
+        buyerModel.setPeriod(orderModel.getDays_left());
+       // binding.setBuyerModel(buyerModel);
+
+
         binding.tvOrderNumber.setText(String.valueOf(orderModel.getId()));
 
 
@@ -638,10 +644,10 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         }
 
 
-        period.clear();
+        /*period.clear();
         period.add(orderModel.getDays_left()+getString(R.string.day));
         adapter = new SpinnerAdapter(period,this);
-        binding.spinnerPeriod.setAdapter(adapter);
+        binding.spinnerPeriod.setAdapter(adapter);*/
 
         buyerModel.setPeriod(String.valueOf(orderModel.getDays_left()));
 
@@ -721,7 +727,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         }
     }
 
-    private void setUpAdapter() {
+    /*private void setUpAdapter() {
         period.add(getString(R.string.choose));
         for (int i = 1; i < 31; i++) {
             days.add(i);
@@ -731,7 +737,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         adapter = new SpinnerAdapter(period, this);
         binding.spinnerPeriod.setAdapter(adapter);
     }
-
+*/
 
 
     @Override

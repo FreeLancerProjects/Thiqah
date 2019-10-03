@@ -16,7 +16,7 @@
     <string name="home">Home</string>
     <string name="notifications">Notifications</string>
     <string name="more">More</string>
-    <string name="bank_account">Bank account + commission </string>
+    <string name="bank_account">Bank account </string>
     <string name="terms_and_conditions">Terms And Conditions</string>
     <string name="about_app">About Tour</string>
     <string name="contact_us">Contact Us</string>
@@ -151,6 +151,8 @@
     <string name="and_the_minimum_is">and the minimum is</string>
     <string name="item_or_service_value">Item or service value</string>
     <string name="value">Value</string>
+    <string name="hot_line">الخط الساخن</string>
+    <string name="phone_num">920028544</string>
 
 
 </resources>

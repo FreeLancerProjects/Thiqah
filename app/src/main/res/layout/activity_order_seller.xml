@@ -243,6 +243,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp"
+                    android:text="@string/app_fee"
+                    android:layout_marginTop="8dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
                     android:text="@string/purpose_of_the_transfer"
                     android:layout_marginTop="8dp"
                     />
@@ -392,7 +400,7 @@
                     android:text="@string/period_to_close_deal"
                     android:layout_marginTop="8dp"
                     />
-                <FrameLayout
+               <!-- <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@drawable/edt_order"
@@ -405,9 +413,24 @@
                         app:backgroundTint="@color/colorPrimary"
 
                         />
-                </FrameLayout>
+                </FrameLayout>-->
 
+                <EditText
+                    android:id="@+id/edtPeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:singleLine="true"
+                    android:background="@drawable/edt_order"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:inputType="number"
+                    android:text="@={sellerModel.period}"
+                    error="@{sellerModel.error_period}"
 
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -416,7 +439,7 @@
                     android:text="@string/bank_name"
                     android:layout_marginTop="8dp"
                     />
-                <EditText
+               <!-- <EditText
                     android:id="@+id/edtBankName"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -430,8 +453,21 @@
                     android:text="@={sellerModel.bank_name}"
                     error="@{sellerModel.error_bank_name}"
 
-                    />
+                    />-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/edt_order"
+                    android:layout_marginTop="8dp"
+                    >
+                    <Spinner
+                        android:id="@+id/spinnerBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:backgroundTint="@color/colorPrimary"
 
+                        />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

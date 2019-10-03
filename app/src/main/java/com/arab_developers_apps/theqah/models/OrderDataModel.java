@@ -30,7 +30,7 @@ public class OrderDataModel implements Serializable {
         private int shipping_cost;
         private String bank_transfer_pic;
         private String item_pic;
-        private int days_left;
+        private String days_left;
         private String conditions;
         private String seller_bank_name;
         private String seller_bank_account;
@@ -96,7 +96,7 @@ public class OrderDataModel implements Serializable {
             return item_pic;
         }
 
-        public int getDays_left() {
+        public String getDays_left() {
             return days_left;
         }
 
