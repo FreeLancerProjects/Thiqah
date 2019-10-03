@@ -51,8 +51,16 @@ public class OrderDataModel implements Serializable {
         private int buyer_complained;
         private int seller_complained;
 
+        private String created_at;
+        private String updated_at;
 
+        public String getCreated_at() {
+            return created_at;
+        }
 
+        public String getUpdated_at() {
+            return updated_at;
+        }
 
         public int getId() {
             return id+100;

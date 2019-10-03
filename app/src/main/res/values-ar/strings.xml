@@ -154,6 +154,7 @@
     <string name="value">القيمة</string>
     <string name="hot_line">الرقم الموحد </string>
     <string name="phone_num">920028544</string>
+    <string name="time">الوقت :  </string>
 
 
 </resources>
