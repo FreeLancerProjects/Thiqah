@@ -251,7 +251,9 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                     {
                         if (userModel!=null)
                         {
-                            buyerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                            city_id = "";
+                            buyerModel.setCity_id(city_id);
+                           // buyerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
                             binding.setBuyerModel(buyerModel);
                         }else
                         {
@@ -265,7 +267,9 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
                         if (orderModel!=null)
                         {
-                            buyerModel.setCity_id(String.valueOf(orderModel.getSeller_city_id()));
+                            buyerModel.setCity_id("");
+
+                            //  buyerModel.setCity_id(String.valueOf(orderModel.getSeller_city_id()));
                             binding.setBuyerModel(buyerModel);
                         }else
                         {
@@ -279,7 +283,8 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                 }else
                 {
                     try {
-                        city_id = String.valueOf(userModel.getUser().getCity_id());
+                        city_id=cityList.get(i).getId()+"";
+                        //city_id = String.valueOf(userModel.getUser().getCity_id());
                         buyerModel.setCity_id(city_id);
                         binding.setBuyerModel(buyerModel);
                     }catch (Exception e){}
@@ -492,7 +497,9 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             if (orderModel!=null)
             {
                 cityList.clear();
-                cityList.add(new Cities_Payment_Bank_Model.City(orderModel.getSeller_city_title(),orderModel.getSeller_city_title()));
+                cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
+                cityList.addAll(body.getCities());
+                //cityList.add(new Cities_Payment_Bank_Model.City(orderModel.getSeller_city_title(),orderModel.getSeller_city_title()));
                 cityAdapter = new CityAdapter(cityList, this);
                 binding.spinnerCity.setAdapter(cityAdapter);
             }
@@ -501,7 +508,9 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             {
                 if (userModel != null) {
                     cityList.clear();
-                    cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
+                    cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
+                    cityList.addAll(body.getCities());
+                  //  cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
                     cityAdapter = new CityAdapter(cityList, this);
                     binding.spinnerCity.setAdapter(cityAdapter);
 

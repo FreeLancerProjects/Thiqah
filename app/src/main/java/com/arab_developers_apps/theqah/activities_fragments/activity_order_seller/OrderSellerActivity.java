@@ -193,7 +193,9 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                     {
                         if (userModel!=null)
                         {
-                            sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                           /* sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                            binding.setSellerModel(sellerModel);*/
+                            sellerModel.setCity_id("");
                             binding.setSellerModel(sellerModel);
                         }else
                         {
@@ -206,7 +208,10 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
                         if (orderModel!=null)
                         {
-                            sellerModel.setCity_id(String.valueOf(orderModel.getBuyer_city_id()));
+
+                            sellerModel.setCity_id("");
+
+                            //  sellerModel.setCity_id(String.valueOf(orderModel.getBuyer_city_id()));
                             binding.setSellerModel(sellerModel);
                         }else
                         {
@@ -219,7 +224,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                 }else
                 {
                     try {
-                        sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                        sellerModel.setCity_id(cityList.get(i).getId()+"");
+                       // sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
                         binding.setSellerModel(sellerModel);
                     }catch (Exception e){}
                 }
@@ -543,7 +549,11 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
             if (orderModel!=null)
             {
                 cityList.clear();
-                cityList.add(new Cities_Payment_Bank_Model.City(orderModel.getBuyer_city_title(),orderModel.getBuyer_city_title()));
+                cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
+
+                cityList.addAll(body.getCities());
+
+//                cityList.add(new Cities_Payment_Bank_Model.City(orderModel.getBuyer_city_title(),orderModel.getBuyer_city_title()));
                 cityAdapter = new CityAdapter(cityList, this);
                 binding.spinnerCity.setAdapter(cityAdapter);
             }
@@ -552,7 +562,11 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         {
             if (userModel != null) {
                 cityList.clear();
-                cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
+                cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
+
+                cityList.addAll(body.getCities());
+
+                // cityList.add(new Cities_Payment_Bank_Model.City(userModel.getUser().getCity_title_ar(), userModel.getUser().getCity_title_en()));
                 cityAdapter = new CityAdapter(cityList, this);
                 binding.spinnerCity.setAdapter(cityAdapter);
 
