@@ -81,7 +81,7 @@
     <string name="resend">أعد الارسال</string>
     <string name="confirm">تحقق</string>
     <string name="share">مشاركة</string>
-    <string name="order_number">رقم الطلب</string>
+    <string name="order_number">رقم الطلب :</string>
     <string name="name">إسم الطرف الاول ثلاثي</string>
     <string name="city">المدينة</string>
     <string name="purpose_of_the_transfer">تفاصيل الاتفاقية بين الطرفين</string>
@@ -113,7 +113,7 @@
     <string name="ver_code_sent">لقد تم إرسال رمز التحقق من قبل.</string>
     <string name="order_sent_suc">تم إرسال طلبك بنجاح رقم طلبك هو</string>
     <string name="ch_period">إختر المدة المتفق عليها</string>
-    <string name="order_state">حالة الطلب</string>
+    <string name="order_state"> حالة الطلب :</string>
     <string name="details">تفاصيل الطلب</string>
     <string name="beneficiary_transfer">تحويل مستفيد</string>
     <string name="shipping">الشحن</string>
@@ -131,7 +131,7 @@
     <string name="add_rate">إضافة تقييم</string>
     <string name="add_comment">إضافة تعليق</string>
     <string name="refused_transfer">تم رفض الحوالة</string>
-    <string name="transfer_purpose">الغرض من الصفقة</string>
+    <string name="transfer_purpose"> الغرض من الصفقة :</string>
     <string name="received_money">تم إستلام المبلغ</string>
     <string name="appeal">طلب إعتراض</string>
     <string name="from">صفة طالب الإعتراض</string>
@@ -152,7 +152,7 @@
     <string name="and_the_minimum_is">والحد الأدنى</string>
     <string name="item_or_service_value">قيمة السلعة او الخدمة</string>
     <string name="value">القيمة</string>
-    <string name="hot_line">الخط الساخن</string>
+    <string name="hot_line">الرقم الموحد </string>
     <string name="phone_num">920028544</string>
 
 

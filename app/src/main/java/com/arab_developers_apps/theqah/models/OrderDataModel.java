@@ -55,7 +55,7 @@ public class OrderDataModel implements Serializable {
 
 
         public int getId() {
-            return id;
+            return id+100;
         }
 
         public int getOrder_type() {
@@ -191,7 +191,7 @@ public class OrderDataModel implements Serializable {
             private int shipping_type_id;
 
             public int getId() {
-                return id;
+                return id+100;
             }
 
             public String getTitle() {

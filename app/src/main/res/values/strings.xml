@@ -80,7 +80,7 @@
     <string name="resend">Resend</string>
     <string name="confirm">Confirm</string>
     <string name="share">Share</string>
-    <string name="order_number">Order number</string>
+    <string name="order_number">Order number :</string>
     <string name="name">Name</string>
     <string name="city">City</string>
     <string name="purpose_of_the_transfer">Details of the agreement between the parties</string>
@@ -112,7 +112,7 @@
     <string name="ver_code_sent">Verification code is sent</string>
     <string name="order_sent_suc">Order sent successfully.the order number is</string>
     <string name="ch_period">Choose period</string>
-    <string name="order_state">Order state</string>
+    <string name="order_state">Order state :</string>
     <string name="details">Order details</string>
     <string name="beneficiary_transfer">Beneficiary transfer</string>
     <string name="shipping">Shipping</string>
@@ -130,7 +130,7 @@
     <string name="add_rate">Add rate</string>
     <string name="add_comment">Add Comment</string>
     <string name="refused_transfer">Refused transfer</string>
-    <string name="transfer_purpose">Transfer purpose</string>
+    <string name="transfer_purpose">Transfer purpose :</string>
     <string name="received_money">Received money</string>
     <string name="appeal">Appeal</string>
     <string name="from">From</string>
