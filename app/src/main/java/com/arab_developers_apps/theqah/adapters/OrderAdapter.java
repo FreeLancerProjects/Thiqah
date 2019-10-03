@@ -65,6 +65,12 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 activity.setItemData(orderModel1);
             });
+            myHolder.orderRowBinding.btnAppeal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.makeApeal(orderList.get(myHolder.getLayoutPosition()));
+                }
+            });
         } else {
             LoadHolder loadHolder = (LoadHolder) holder;
             loadHolder.binding.progBar.setIndeterminate(true);
@@ -89,6 +95,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void BindData(OrderDataModel.OrderModel orderModel) {
+
             if (orderModel.getStatus() == 0) {
                 orderRowBinding.tvTransState.setVisibility(View.GONE);
                 orderRowBinding.ll.setVisibility(View.VISIBLE);

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arab_developers_apps.theqah.R;
+import com.arab_developers_apps.theqah.activities_fragments.activity_appeal.AppealActivity;
 import com.arab_developers_apps.theqah.activities_fragments.order_details.OrderDetailsActivity;
 import com.arab_developers_apps.theqah.adapters.OrderAdapter;
 import com.arab_developers_apps.theqah.databinding.ActivityMyOrderBinding;
@@ -271,5 +272,20 @@ public class MyOrderActivity extends AppCompatActivity implements Listeners.Back
         {
             getOrder();
         }
+    }
+
+    public void makeApeal(OrderDataModel.OrderModel orderModel) {
+        int type = 0;
+        if (orderModel.getBuyer_phone().equals(userModel.getUser().getMobile_number())) {
+            type = 1;
+        } else if (orderModel.getSeller_phone().equals(userModel.getUser().getMobile_number())) {
+            type = 2;
+
+        }
+
+        Intent intent = new Intent(this, AppealActivity.class);
+        intent.putExtra("order_number", orderModel.getId());
+        intent.putExtra("type", type);
+        startActivityForResult(intent, 1);
     }
 }
