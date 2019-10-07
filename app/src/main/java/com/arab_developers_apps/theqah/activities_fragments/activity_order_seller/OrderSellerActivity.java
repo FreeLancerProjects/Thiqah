@@ -303,7 +303,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                             dialog.dismiss();
                             if (response.isSuccessful()&&response.body()!=null)
                             {
-                                binding.tvOrderNumber.setText(String.valueOf(response.body()+100));
+                                binding.tvOrderNumber.setText(String.valueOf(response.body()));
 
 
                             }else
@@ -637,7 +637,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         try {
 
             String token = "Bearer " + userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText("966"+sellerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText(sellerModel.getPhone2());
             RequestBody reason_part = Common.getRequestBodyText(sellerModel.getTransfer_purpose());
             RequestBody price_part = Common.getRequestBodyText(sellerModel.getItem_value());
             RequestBody day_part = Common.getRequestBodyText(sellerModel.getPeriod());
@@ -655,7 +655,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
-                                CreateDialogAlert(response.body().getId()+100);
+                                CreateDialogAlert(response.body().getId());
                             } else {
                                 try {
 
@@ -794,7 +794,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
         DialogAlertBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_alert, null, false);
 
-        binding.tvMsg.setText(String.format("%s %s%s", getString(R.string.order_sent_suc), "#", order_id+100));
+        binding.tvMsg.setText(String.format("%s %s%s", getString(R.string.order_sent_suc), "#", order_id));
         binding.btnCancel.setOnClickListener((v) ->
                 {
                     dialog.dismiss();

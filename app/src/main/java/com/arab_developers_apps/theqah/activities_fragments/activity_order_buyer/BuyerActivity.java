@@ -684,7 +684,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                             dialog.dismiss();
                             if (response.isSuccessful()&&response.body()!=null)
                             {
-                                binding.tvOrderNumber.setText(String.valueOf(response.body()+100));
+                                binding.tvOrderNumber.setText(String.valueOf(response.body()));
 
 
                             }else
@@ -775,7 +775,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
             Log.e("phone",buyerModel.getPhone2());
             String token = "Bearer "+userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText("966"+buyerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText(buyerModel.getPhone2());
             RequestBody reason_part = Common.getRequestBodyText(buyerModel.getTransfer_purpose());
             RequestBody price_part = Common.getRequestBodyText(buyerModel.getPrice());
             RequestBody day_part = Common.getRequestBodyText(buyerModel.getPeriod());
@@ -936,7 +936,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         DialogAlertBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_alert, null, false);
 
-        binding.tvMsg.setText(String.format("%s %s%s",getString(R.string.order_sent_suc),"#",order_id+100));
+        binding.tvMsg.setText(String.format("%s %s%s",getString(R.string.order_sent_suc),"#",order_id));
         binding.btnCancel.setOnClickListener((v) ->
         {
             dialog.dismiss();
