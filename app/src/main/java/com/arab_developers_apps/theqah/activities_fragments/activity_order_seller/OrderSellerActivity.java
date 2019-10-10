@@ -709,7 +709,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
     private void sellerUpdateOrder(SellerModel sellerModel)
     {
-
+Log.e("data",notificationModel.getOrder_id()+"");
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();

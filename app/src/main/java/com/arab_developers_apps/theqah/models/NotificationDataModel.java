@@ -58,7 +58,7 @@ public class NotificationDataModel implements Serializable {
         }
 
         public int getOrder_id() {
-            return order_id+100;
+            return order_id;
         }
 
         public int getUser_id() {
