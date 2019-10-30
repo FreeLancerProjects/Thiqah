@@ -1,17 +1,22 @@
 package com.arab_developers_apps.theqah.activities_fragments.activity_contact;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.arab_developers_apps.theqah.R;
@@ -43,7 +48,9 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
     private CountryPicker countryPicker;
     private String phone="";
     private String email="";
+    private static final int REQUEST_PHONE_CALL = 1;
 
+    Intent intent;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -63,6 +70,8 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
     private void initView() {
         contactModel = new ContactModel();
         Paper.init(this);
+        intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel","+"+ binding.call.getText().toString(), null));
+
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setBackListener(this);
@@ -70,6 +79,21 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
         binding.setShowCountryListener(this);
         binding.setContactModel(contactModel);
         createCountryDialog();
+        binding.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(intent!=null) {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(ContactUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(ContactUsActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
+                        } else {
+                            startActivity(intent);
+                        }
+                    } else {
+                        startActivity(intent);
+                    }
+                } }
+        });
         binding.imageWhats.setOnClickListener(view -> {
             if (!phone.isEmpty())
             {
@@ -120,6 +144,34 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
 
         getAppData();
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PHONE_CALL: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    Activity#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for Activity#requestPermissions for more details.
+                            return;
+                        }
+                    }
+                    startActivity(intent);
+                }
+                else {
+
+                }
+                return;
+            }
+        }
     }
 
     private void getAppData() {
