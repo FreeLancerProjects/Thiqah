@@ -166,7 +166,6 @@ public class HomeActivity extends AppCompatActivity
             updateVisit(now,(Calendar.getInstance().getTimeInMillis()/1000));
 
         }
-
     }
 
     private void updateUserToken() {
@@ -620,4 +619,38 @@ public class HomeActivity extends AppCompatActivity
            // EventBus.getDefault().unregister(this);
         }
     }
+    /*
+    private void getNotificationCount()
+    {
+        Api.getService(Tags.base_url)
+                .getNotifications(userModel.getUser().getId(),"count_unread")
+                .enqueue(new Callback<NotificationCountModel>() {
+                    @Override
+                    public void onResponse(Call<NotificationCountModel> call, Response<NotificationCountModel> response) {
+                        if (response.isSuccessful())
+                        {
+                            if (response.body()!=null)
+                            {
+                                updateNotificationCount(response.body().getCount_unread());
+                            }
+
+                        }else
+                        {
+                            try {
+                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<NotificationCountModel> call, Throwable t) {
+                        try
+                        {
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+    }*/
 }

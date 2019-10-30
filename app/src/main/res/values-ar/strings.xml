@@ -117,7 +117,7 @@
     <string name="details">تفاصيل الطلب</string>
     <string name="beneficiary_transfer">تحويل مستفيد</string>
     <string name="shipping">الشحن</string>
-    <string name="confirmation">تأكيد الطرفين</string>
+    <string name="confirmation">تم التسليم</string>
     <string name="transfer_error">خطأ الحوالة</string>
     <string name="receipt_payment">إستلام المبلغ</string>
     <string name="my_order">طلباتي</string>
