@@ -36,7 +36,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:visibility="gone"
-android:background="@drawable/videobackground"
                     >
 
 
@@ -45,7 +44,8 @@ android:background="@drawable/videobackground"
                     android:id="@+id/videoView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/black"
+                    android:background="@drawable/videobackground"
+
                     >
                     <ImageView
                         android:id="@+id/btnPlay"
