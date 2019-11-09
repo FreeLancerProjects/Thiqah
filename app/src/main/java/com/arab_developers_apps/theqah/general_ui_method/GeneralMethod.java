@@ -2,6 +2,7 @@ package com.arab_developers_apps.theqah.general_ui_method;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -150,6 +152,30 @@ public class GeneralMethod {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa",Locale.ENGLISH);
         String m_date = dateFormat.format(new Date(date*1000));
         textView.setText(m_date);
+
+    }
+    @BindingAdapter({"created","updated"})
+    public static void change (TextView textView,String created,String updated)
+    { SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:aa ",Locale.ENGLISH);
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy hh:mm ",Locale.ENGLISH);
+        Date date ;
+        try {
+
+            if (updated==null) {
+                date=(Date)dateFormat.parse(updated);
+            }
+            else {
+                date=(Date)dateFormat.parse(created);
+
+            }
+            String m_date = dateFormat2.format(date.getTime());
+       //     Log.e("lll",m_date+date.toString());
+            textView.setText(m_date);
+        }
+        catch (Exception e){
+Log.e("llkkcks",e.getMessage());
+        }
+
 
     }
     @BindingAdapter("rate")

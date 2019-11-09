@@ -406,8 +406,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintWidth_default="wrap"
-            android:text='@{orderMode.updated_at.equals(null)?orderMode.created_at:orderMode.updated_at}'
-
+            created="@{orderMode.created_at}"
+updated="@{orderMode.updated_at}"
             />
 <LinearLayout
     android:layout_width="wrap_content"
