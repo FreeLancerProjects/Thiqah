@@ -614,18 +614,19 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
     public void send(SellerModel sellerModel) {
         this.sellerModel = sellerModel;
         binding.setSellerModel(sellerModel);
+        if (sellerModel.isDataValid(this)) {
 
-        if (userModel != null) {
+            if (userModel != null) {
 
-            Intent intent = new Intent(this,AboutAppActivity.class);
-            intent.putExtra("type",1);
-            intent.putExtra("show",true);
-            startActivityForResult(intent,100);
+                Intent intent = new Intent(this, AboutAppActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("show", true);
+                startActivityForResult(intent, 100);
 
-        } else {
-            Common.CreateNoSignAlertDialog(this);
+            } else {
+                Common.CreateNoSignAlertDialog(this);
+            }
         }
-
     }
 
     private void sendOrder(SellerModel sellerModel) {
@@ -926,7 +927,6 @@ Log.e("data",notificationModel.getOrder_id()+"");
 
         }else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
 
-            if (sellerModel.isDataValid(this)) {
 
                 if (notificationModel==null)
                 {
@@ -938,7 +938,7 @@ Log.e("data",notificationModel.getOrder_id()+"");
                     sellerUpdateOrder(sellerModel);
                 }
 
-            }
+
         }
     }
 

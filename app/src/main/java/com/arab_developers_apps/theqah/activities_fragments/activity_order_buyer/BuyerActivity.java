@@ -753,18 +753,19 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     public void send(BuyerModel buyerModel) {
         this.buyerModel = buyerModel;
         binding.setBuyerModel(buyerModel);
+        if (buyerModel.isDataValid(this)) {
 
-        if (userModel != null) {
+            if (userModel != null) {
 
-            Intent intent = new Intent(this,AboutAppActivity.class);
-            intent.putExtra("type",1);
-            intent.putExtra("show",true);
-            startActivityForResult(intent,100);
+                Intent intent = new Intent(this, AboutAppActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("show", true);
+                startActivityForResult(intent, 100);
 
-        } else {
-            Common.CreateNoSignAlertDialog(this);
+            } else {
+                Common.CreateNoSignAlertDialog(this);
+            }
         }
-
     }
     private void sendOrder(BuyerModel buyerModel) {
         ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
@@ -1068,7 +1069,6 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         }else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null)
         {
-            if (buyerModel.isDataValid(this)) {
 
                 if (notificationModel==null)
                 {
@@ -1080,7 +1080,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                 }
 
 
-            }
+
         }
     }
 
