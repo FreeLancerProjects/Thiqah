@@ -156,26 +156,18 @@ public class GeneralMethod {
     }
     @BindingAdapter({"created","updated"})
     public static void change (TextView textView,String created,String updated)
-    { SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:aa ",Locale.ENGLISH);
-        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy hh:mm ",Locale.ENGLISH);
-        Date date ;
-        try {
-
-            if (updated==null) {
-                date=(Date)dateFormat.parse(updated);
-            }
-            else {
-                date=(Date)dateFormat.parse(created);
-
-            }
-            String m_date = dateFormat2.format(date.getTime());
-       //     Log.e("lll",m_date+date.toString());
-            textView.setText(m_date);
-        }
-        catch (Exception e){
-Log.e("llkkcks",e.getMessage());
-        }
-
+    {
+        int in;
+        String date;
+       if(updated==null){
+in=created.lastIndexOf(":");
+date=created.substring(0,in);
+       }
+       else {
+           in=updated.lastIndexOf(":");
+           date=updated.substring(0,in);
+       }
+textView.setText(date);
 
     }
     @BindingAdapter("rate")
