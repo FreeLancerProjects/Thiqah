@@ -111,7 +111,6 @@
                         android:textColor="@color/gray4"
                         android:textSize="14sp"
                         android:text="@{bankModel.account_iban}"
-                        android:layout_marginTop="8dp"
 
 
                         />
@@ -136,7 +135,6 @@
                     android:textColor="@color/gray4"
                     android:textSize="14sp"
                     android:text="@{bankModel.account_number}"
-                    android:layout_marginTop="8dp"
 
                     />
             </LinearLayout>
