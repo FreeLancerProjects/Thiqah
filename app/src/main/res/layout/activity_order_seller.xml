@@ -488,6 +488,7 @@
                     android:background="@drawable/edt_order"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
+                    android:inputType="number"
                     android:text="@={sellerModel.account_number}"
                     error="@{sellerModel.error_account_number}"
                     android:maxLength="16"
@@ -526,7 +527,7 @@
                     android:text="@={sellerModel.iban_number}"
                     error="@{sellerModel.error_iban_number}"
 
-
+android:inputType="number"
                     />
 
                 <TextView
