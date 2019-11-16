@@ -79,8 +79,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
     private UserModel userModel;
     private NotificationDataModel.NotificationModel notificationModel;
     private OrderDataModel.OrderModel orderModel;
-    private SpinnerBankAdapter bankAdapter;
-    private List<Cities_Payment_Bank_Model.Bank> bankList;
+    private SpinnerAdapter bankAdapter;
+    private List<String> bankList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -110,7 +110,19 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         days = new ArrayList<>();
         cityList = new ArrayList<>();
         bankList = new ArrayList<>();
-        bankList.add(new Cities_Payment_Bank_Model.Bank(getString(R.string.ch_bank)));
+        bankList.add("البنك الأهلي التجاري");
+        bankList.add("البنك السعودي التجاري");
+        bankList.add("البنك السعودي الفرنسي");
+        bankList.add("البنك الأول");
+        bankList.add("البنك السعودي للأستسمار");
+        bankList.add("البنك العربي الوطني");
+        bankList.add("بنك البلاد");
+        bankList.add("بنك الجزيرة");
+        bankList.add("بنك الرياض");
+        bankList.add("(سامبا)");
+        bankList.add("مصرف الراجحي");
+        bankList.add("مصرف الإنماء");
+
         sellerModel = new SellerModel();
        // period = new ArrayList<>();
         preferences = Preferences.newInstance();
@@ -181,7 +193,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
 
         binding.image.setOnClickListener(view -> CreateImageAlertDialog());
-        bankAdapter = new SpinnerBankAdapter(bankList, this);
+        bankAdapter = new SpinnerAdapter(bankList, this);
         binding.spinnerBank.setAdapter(bankAdapter);
         binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -247,7 +259,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
                 }else
                 {
-                    sellerModel.setBank_name(String.valueOf(bankList.get(i).getId()));
+                    sellerModel.setBank_name(String.valueOf(bankList.get(i)));
+                    Log.e("bannnnnnk",bankList.get(i));
                     binding.setSellerModel(sellerModel);
 
                 }
@@ -583,7 +596,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
 
 
-        bankList.addAll(body.getBanks());
+       // bankList.addAll(body.getBanks());
         bankAdapter.notifyDataSetChanged();
 
 
