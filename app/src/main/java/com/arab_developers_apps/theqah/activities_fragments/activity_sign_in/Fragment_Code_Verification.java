@@ -175,7 +175,7 @@ public class Fragment_Code_Verification extends Fragment {
 
     private void startCounter()
     {
-        countDownTimer = new CountDownTimer(60000, 1000) {
+        countDownTimer = new CountDownTimer(180000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {

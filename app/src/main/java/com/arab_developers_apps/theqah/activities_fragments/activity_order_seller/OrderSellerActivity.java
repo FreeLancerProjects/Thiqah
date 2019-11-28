@@ -110,6 +110,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         days = new ArrayList<>();
         cityList = new ArrayList<>();
         bankList = new ArrayList<>();
+        bankList.add("اختر");
         bankList.add("البنك الأهلي التجاري");
         bankList.add("البنك السعودي التجاري");
         bankList.add("البنك السعودي الفرنسي");

@@ -33,7 +33,6 @@ import com.arab_developers_apps.theqah.activities_fragments.about_app.AboutAppAc
 import com.arab_developers_apps.theqah.adapters.CityAdapter;
 import com.arab_developers_apps.theqah.adapters.PaymentAdapter;
 import com.arab_developers_apps.theqah.adapters.SpinnerAdapter;
-import com.arab_developers_apps.theqah.adapters.SpinnerBankAdapter;
 import com.arab_developers_apps.theqah.databinding.ActivityBuyerBinding;
 import com.arab_developers_apps.theqah.databinding.DialogAlertBinding;
 import com.arab_developers_apps.theqah.databinding.DialogSelectImageBinding;
@@ -80,8 +79,8 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     private final String camera_permission = Manifest.permission.CAMERA;
     private double chargeAmount = -1;
     private CityAdapter cityAdapter;
-    private SpinnerBankAdapter bankAdapter;
-    private List<Cities_Payment_Bank_Model.Bank> bankList;
+    private SpinnerAdapter bankAdapter;
+    private List<String> bankList;
     private List<Cities_Payment_Bank_Model.City> cityList;
     private List<Cities_Payment_Bank_Model.Payment> paymentList;
     private PaymentAdapter paymentAdapter;
@@ -124,7 +123,19 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         userModel = preferences.getUserData(this);
         paymentList = new ArrayList<>();
         bankList = new ArrayList<>();
-        bankList.add(new Cities_Payment_Bank_Model.Bank(getString(R.string.ch_bank)));
+        bankList.add("اختر");
+        bankList.add("البنك الأهلي التجاري");
+        bankList.add("البنك السعودي التجاري");
+        bankList.add("البنك السعودي الفرنسي");
+        bankList.add("البنك الأول");
+        bankList.add("البنك السعودي للأستسمار");
+        bankList.add("البنك العربي الوطني");
+        bankList.add("بنك البلاد");
+        bankList.add("بنك الجزيرة");
+        bankList.add("بنك الرياض");
+        bankList.add("(سامبا)");
+        bankList.add("مصرف الراجحي");
+        bankList.add("مصرف الإنماء");
         cityList = new ArrayList<>();
         buyerModel = new BuyerModel();
        // period = new ArrayList<>();
@@ -239,7 +250,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         });
 
 
-        bankAdapter = new SpinnerBankAdapter(bankList, this);
+        bankAdapter = new SpinnerAdapter(bankList, this);
         binding.spinnerBank.setAdapter(bankAdapter);
         binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -301,12 +312,12 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i==0)
                 {
-                    buyerModel.setBank_id("");
+                    buyerModel.setBank_name("");
                     binding.setBuyerModel(buyerModel);
 
                 }else
                     {
-                        buyerModel.setBank_id(String.valueOf(bankList.get(i).getId()));
+                        buyerModel.setBank_name(String.valueOf(bankList.get(i)));
                         binding.setBuyerModel(buyerModel);
 
                     }
@@ -526,8 +537,8 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             }
 
 
-        bankList.addAll(body.getBanks());
-        bankAdapter.notifyDataSetChanged();
+     //  bankList.addAll(body.getBanks());
+       // bankAdapter.notifyDataSetChanged();
 
         paymentList.addAll(body.getShippingTypes());
         paymentAdapter.notifyDataSetChanged();
@@ -781,7 +792,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
             RequestBody price_part = Common.getRequestBodyText(buyerModel.getPrice());
             RequestBody day_part = Common.getRequestBodyText(buyerModel.getPeriod());
             RequestBody conditions_part = Common.getRequestBodyText(buyerModel.getCondition());
-            RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_id());
+            RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_name());
             RequestBody shipping_id_part = Common.getRequestBodyText(buyerModel.getShipping_method());
 
             MultipartBody.Part image = Common.getMultiPart(this,Uri.parse(buyerModel.getImage_uri()),"bank_transfer_pic");
@@ -860,7 +871,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         try {
 
             String token = "Bearer " + userModel.getToken();
-            RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_id());
+            RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_name());
             RequestBody shipping_part = Common.getRequestBodyText(buyerModel.getShipping_method());
             RequestBody order_id_part = Common.getRequestBodyText(String.valueOf(notificationModel.getOrder_id()));
             RequestBody not_id_part = Common.getRequestBodyText(String.valueOf(notificationModel.getId()));

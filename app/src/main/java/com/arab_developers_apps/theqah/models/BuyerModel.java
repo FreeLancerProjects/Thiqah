@@ -21,7 +21,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
     private String item_value;
     private String shipping_method;
     private String price;
-    private String bank_id;
+    private String bank_name;
     private String image_uri;
     private String period;
     private String condition;
@@ -48,7 +48,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
         item_value="";
         shipping_method="";
         price="";
-        bank_id="";
+        bank_name ="";
         image_uri = "";
         period="";
         condition="";
@@ -58,14 +58,14 @@ public class BuyerModel extends BaseObservable implements Serializable {
         isAcceptRule2 = false;
     }
 
-    public BuyerModel(String order_number, String name, String phone, String email, String city_id, String transfer_purpose, String item_value, String shipping_method, String price, String bank_id, String image_uri, String period, String condition, String phone2, boolean isCondition, boolean isAcceptRule1, boolean isAcceptRule2) {
+    public BuyerModel(String order_number, String name, String phone, String email, String city_id, String transfer_purpose, String item_value, String shipping_method, String price, String bank_name, String image_uri, String period, String condition, String phone2, boolean isCondition, boolean isAcceptRule1, boolean isAcceptRule2) {
         setOrder_number(order_number);
         setCity_id(city_id);
         setTransfer_purpose(transfer_purpose);
         setItem_value(item_value);
         setShipping_method(shipping_method);
         setPrice(price);
-        setBank_id(bank_id);
+        setBank_name(bank_name);
         setImage_uri(image_uri);
         setPeriod(period);
         setCondition(condition);
@@ -135,12 +135,12 @@ public class BuyerModel extends BaseObservable implements Serializable {
 
     }
     @Bindable
-    public String getBank_id() {
-        return bank_id;
+    public String getBank_name() {
+        return bank_name;
     }
 
-    public void setBank_id(String bank_id) {
-        this.bank_id = bank_id;
+    public void setBank_name(String bank_name) {
+        this.bank_name = bank_name;
     }
     @Bindable
     public String getImage_uri() {
@@ -210,7 +210,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
         Log.e("item_value",item_value+"_");
         Log.e("shipping_method",shipping_method+"_");
         Log.e("price",price+"_");
-        Log.e("bank_id",bank_id+"_");
+        Log.e("bank_name", bank_name +"_");
         Log.e("image_uri",image_uri+"_");
         Log.e("period",period+"_");
         Log.e("phone2",phone2+"_");
@@ -223,7 +223,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
                 !TextUtils.isEmpty(item_value)&&
                 !TextUtils.isEmpty(shipping_method)&&
                 !TextUtils.isEmpty(price)&&
-                !TextUtils.isEmpty(bank_id)&&
+                !TextUtils.isEmpty(bank_name)&&
                 !TextUtils.isEmpty(image_uri)&&
                 !TextUtils.isEmpty(period)&&
                 !TextUtils.isEmpty(phone2)&&
@@ -334,7 +334,7 @@ public class BuyerModel extends BaseObservable implements Serializable {
                     error_price.set(null);
                 }
 
-                if (TextUtils.isEmpty(bank_id))
+                if (TextUtils.isEmpty(bank_name))
                 {
                     Toast.makeText(context, R.string.ch_bank, Toast.LENGTH_SHORT).show();
 
