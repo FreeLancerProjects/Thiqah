@@ -184,14 +184,14 @@ public class Fragment_Code_Verification extends Fragment {
                 int AllSeconds = (int) (millisUntilFinished / 1000);
                 int minute=AllSeconds/60;
                 int seconds= AllSeconds%60;
-
                 binding.btnResend.setText(minute+":"+seconds);
             }
 
             @Override
             public void onFinish() {
                 canResend = true;
-                binding.btnConfirm.setText(getString(R.string.resend));
+
+                binding.btnResend.setText(getString(R.string.resend));
             }
         }.start();
     }
