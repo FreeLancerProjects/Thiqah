@@ -111,7 +111,8 @@
                         android:textColor="@color/gray4"
                         android:textSize="14sp"
                         android:text="@{bankModel.account_iban}"
-
+                        android:textIsSelectable="true"
+                        android:enabled="true"
 
                         />
                 </LinearLayout>
@@ -135,6 +136,8 @@
                     android:textColor="@color/gray4"
                     android:textSize="14sp"
                     android:text="@{bankModel.account_number}"
+                    android:textIsSelectable="true"
+                    android:enabled="true"
 
                     />
             </LinearLayout>

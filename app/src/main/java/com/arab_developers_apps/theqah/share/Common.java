@@ -230,7 +230,7 @@ public class Common {
     public static MultipartBody.Part getMultiPart(Context context, Uri uri, String partName) {
         File file = getFileFromImagePath(getImagePath(context, uri));
         RequestBody requestBody = getRequestBodyImage(file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
+        MultipartBody.Part part = MultipartBody.Part.createFormData(partName, System.currentTimeMillis()+".png", requestBody);
         return part;
 
     }

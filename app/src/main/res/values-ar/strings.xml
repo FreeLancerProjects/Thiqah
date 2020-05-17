@@ -89,7 +89,7 @@
     <string name="shipping_method">طريقة الشحن</string>
     <string name="transfer_amount">المبلغ الإجمالي مع العمولة</string>
     <string name="transfer_image">صورة الحوالة</string>
-    <string name="period_to_close_deal">المدة المتفق عليها لإنهاء الصفقة</string>
+    <string name="period_to_close_deal">المدة المتفق عليها</string>
     <string name="is_there_a_condition">هل يوجد شرط ؟</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
@@ -155,6 +155,8 @@
     <string name="hot_line">الرقم الموحد </string>
     <string name="phone_num">920028544</string>
     <string name="time">الوقت :  </string>
+    <string name="make_sure_that_you_are_in_the_safe_place_for_your_financial_transactions">تأكد إنك في المكان الامن لمعاملاتك المالية</string>
+    <string name="only_number">ارقام فقط</string>
 
 
 </resources>

@@ -88,7 +88,7 @@
     <string name="shipping_method">Shipping method</string>
     <string name="transfer_amount">Total amount with commission</string>
     <string name="transfer_image">Transfer image</string>
-    <string name="period_to_close_deal">Period to close deal</string>
+    <string name="period_to_close_deal">Agreed time</string>
     <string name="is_there_a_condition">Is there a condition?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -154,6 +154,8 @@
     <string name="hot_line">الخط الساخن</string>
     <string name="phone_num">920028544</string>
     <string name="time">Time :</string>
+    <string name="make_sure_that_you_are_in_the_safe_place_for_your_financial_transactions">Make sure that you are in the safe place for your financial transactions</string>
+    <string name="only_number">Only numbers</string>
 
 
 </resources>

@@ -246,6 +246,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 android:text="@string/are_you_forgot_password"
+
                 />
             <Button
                 android:id="@+id/btnLogin"

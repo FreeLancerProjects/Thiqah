@@ -166,6 +166,16 @@ public class HomeActivity extends AppCompatActivity
             updateVisit(now,(Calendar.getInstance().getTimeInMillis()/1000));
 
         }
+
+        if (userModel==null)
+        {
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+
+        }else {
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+        }
     }
 
     private void updateUserToken() {
@@ -355,6 +365,15 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_new_order) {
             displayFragmentChooseOrderType();
+
+            /*if (userModel!=null)
+            {
+                displayFragmentChooseOrderType();
+
+            }else
+            {
+                Common.CreateNoSignAlertDialog(HomeActivity.this);
+            }*/
         }else if (id == R.id.nav_my_order) {
             if (userModel!=null)
             {
@@ -402,6 +421,9 @@ public class HomeActivity extends AppCompatActivity
             CreateLangDialog();
         } else if (id == R.id.nav_logout) {
             logout();
+        }
+        else if (id == R.id.nav_login) {
+            navigateToSignInActivity();
         }
 
 

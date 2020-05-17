@@ -280,7 +280,8 @@ public class SellerModel extends BaseObservable implements Serializable {
                 !TextUtils.isEmpty(period) &&
                 !TextUtils.isEmpty(phone2) &&
                 phone2.length() == 9 &&
-                isAcceptRule1
+                isAcceptRule1&&
+                isAcceptRule2
         ) {
 
             //isAcceptRule2
@@ -397,7 +398,7 @@ public class SellerModel extends BaseObservable implements Serializable {
             if (iban_number.length() != 22) {
                 error_iban_number.set(context.getString(R.string.most));
 
-            } else {
+            }else {
                 error_iban_number.set(null);
 
             }
@@ -415,7 +416,7 @@ public class SellerModel extends BaseObservable implements Serializable {
 
             if (TextUtils.isEmpty(period)) {
                 error_period.set(context.getString(R.string.field_req));
-            } else {
+            }else {
                 error_period.set(null);
             }
 
@@ -433,10 +434,10 @@ public class SellerModel extends BaseObservable implements Serializable {
                 Toast.makeText(context, R.string.cnt_comp, Toast.LENGTH_SHORT).show();
             }
 
-            /*if (!isAcceptRule2) {
+            if (!isAcceptRule2) {
 
                 Toast.makeText(context, R.string.cont_comp2, Toast.LENGTH_SHORT).show();
-            }*/
+            }
             return false;
         }
 

@@ -56,6 +56,26 @@ public class Preferences {
         return preferences.getString("session","");
     }
 
+
+
+    public void saveAccountIBAN(Context context,String iban)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("ibanPref",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("iban",iban);
+        editor.apply();
+    }
+
+
+    public String getIBAN(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("ibanPref",Context.MODE_PRIVATE);
+        return preferences.getString("iban","");
+    }
+
+
+
+
     public void saveSelectedLanguage(Context context)
     {
         SharedPreferences preferences = context.getSharedPreferences("langPref",Context.MODE_PRIVATE);

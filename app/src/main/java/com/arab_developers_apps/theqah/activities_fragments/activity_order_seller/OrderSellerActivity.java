@@ -64,7 +64,7 @@ import retrofit2.Response;
 public class OrderSellerActivity extends AppCompatActivity implements Listeners.BackListener, Listeners.SellerListener {
     private ActivityOrderSellerBinding binding;
     private String lang;
-   // private List<String> period;
+    // private List<String> period;
     private List<Integer> days;
     private SpinnerAdapter adapter;
     private SellerModel sellerModel;
@@ -99,8 +99,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
-        if (intent!=null&&intent.hasExtra("notification"))
-        {
+        if (intent != null && intent.hasExtra("notification")) {
             notificationModel = (NotificationDataModel.NotificationModel) intent.getSerializableExtra("notification");
 
         }
@@ -125,7 +124,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         bankList.add("مصرف الإنماء");
 
         sellerModel = new SellerModel();
-       // period = new ArrayList<>();
+        // period = new ArrayList<>();
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         Paper.init(this);
@@ -135,16 +134,19 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.setSellerListener(this);
         binding.setSellerModel(sellerModel);
 
+        if (!preferences.getIBAN(this).isEmpty()) {
+            sellerModel.setIban_number(preferences.getIBAN(this));
+            binding.setSellerModel(sellerModel);
+            binding.edtIban.setText(preferences.getIBAN(this));
+        }
 
-        if (notificationModel!=null)
-        {
+        if (notificationModel != null) {
             getOrderNumber();
             getOrderDetails();
 
 
-        }else
-        {
-           // setUpAdapter();
+        } else {
+            // setUpAdapter();
 
             if (userModel != null) {
                 binding.setUserModel(userModel);
@@ -199,48 +201,41 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i ==0)
-                {
+                if (i == 0) {
 
-                    if (notificationModel==null)
-                    {
-                        if (userModel!=null)
-                        {
+                    if (notificationModel == null) {
+                        if (userModel != null) {
                            /* sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
                             binding.setSellerModel(sellerModel);*/
                             sellerModel.setCity_id("");
                             binding.setSellerModel(sellerModel);
-                        }else
-                        {
+                        } else {
                             sellerModel.setCity_id("");
                             binding.setSellerModel(sellerModel);
                         }
 
-                    }else
-                    {
+                    } else {
 
-                        if (orderModel!=null)
-                        {
+                        if (orderModel != null) {
 
                             sellerModel.setCity_id("");
 
                             //  sellerModel.setCity_id(String.valueOf(orderModel.getBuyer_city_id()));
                             binding.setSellerModel(sellerModel);
-                        }else
-                        {
+                        } else {
                             sellerModel.setCity_id("");
                             binding.setSellerModel(sellerModel);
                         }
 
                     }
 
-                }else
-                {
+                } else {
                     try {
-                        sellerModel.setCity_id(cityList.get(i).getId()+"");
-                       // sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
+                        sellerModel.setCity_id(cityList.get(i).getId() + "");
+                        // sellerModel.setCity_id(String.valueOf(userModel.getUser().getCity_id()));
                         binding.setSellerModel(sellerModel);
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                 }
 
             }
@@ -253,15 +248,13 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.spinnerBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i==0)
-                {
+                if (i == 0) {
                     sellerModel.setBank_name("");
                     binding.setSellerModel(sellerModel);
 
-                }else
-                {
+                } else {
                     sellerModel.setBank_name(String.valueOf(bankList.get(i)));
-                    Log.e("bannnnnnk",bankList.get(i));
+                    Log.e("bannnnnnk", bankList.get(i));
                     binding.setSellerModel(sellerModel);
 
                 }
@@ -298,45 +291,38 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         getCities();
 
 
-
-
-
     }
 
     private void getOrderNumber() {
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(lang)
-                    .getOrderNumber("Bearer "+userModel.getToken())
+                    .getOrderNumber("Bearer " + userModel.getToken())
                     .enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
+                            if (response.isSuccessful() && response.body() != null) {
                                 binding.tvOrderNumber.setText(String.valueOf(response.body()));
 
 
-                            }else
-                            {
+                            } else {
                                 if (response.code() == 500) {
                                     Toast.makeText(OrderSellerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else if (response.code()==401)
-                                {
+                                } else if (response.code() == 401) {
                                     Toast.makeText(OrderSellerActivity.this, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(OrderSellerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
-                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -348,22 +334,20 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onFailure(Call<Integer> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(OrderSellerActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(OrderSellerActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(OrderSellerActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(OrderSellerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
@@ -371,39 +355,35 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
 
     private void getOrderDetails() {
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(lang)
-                    .getOrderDetails("Bearer "+userModel.getToken(),notificationModel.getOrder_id())
+                    .getOrderDetails("Bearer " + userModel.getToken(), notificationModel.getOrder_id())
                     .enqueue(new Callback<OrderDataModel.OrderModel>() {
                         @Override
                         public void onResponse(Call<OrderDataModel.OrderModel> call, Response<OrderDataModel.OrderModel> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
+                            if (response.isSuccessful() && response.body() != null) {
                                 orderModel = response.body();
                                 updateUI(response.body());
 
-                            }else
-                            {
-                                 if (response.code() == 500) {
+                            } else {
+                                if (response.code() == 500) {
                                     Toast.makeText(OrderSellerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                }else if (response.code()==401)
-                                {
+                                } else if (response.code() == 401) {
                                     Toast.makeText(OrderSellerActivity.this, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(OrderSellerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                     try {
 
-                                        Log.e("error",response.code()+"_"+response.errorBody().string());
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -415,22 +395,20 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onFailure(Call<OrderDataModel.OrderModel> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(OrderSellerActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(OrderSellerActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(OrderSellerActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(OrderSellerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
@@ -460,8 +438,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.edtValue.setEnabled(false);
         sellerModel.setItem_value(String.valueOf(orderModel.getPrice()));
 
-        if (orderModel.getConditions()!=null)
-        {
+        if (orderModel.getConditions() != null) {
             binding.rb1.setChecked(true);
             binding.rb2.setChecked(false);
             binding.rb1.setEnabled(false);
@@ -473,17 +450,16 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
             binding.edtCondition.setVisibility(View.VISIBLE);
 
 
-        }else
-            {
-                binding.rb1.setChecked(false);
-                binding.rb2.setChecked(true);
-                binding.rb1.setEnabled(false);
-                binding.rb2.setEnabled(false);
-                sellerModel.setCondition(false);
-                sellerModel.setCondition("");
-                binding.edtCondition.setVisibility(View.GONE);
+        } else {
+            binding.rb1.setChecked(false);
+            binding.rb2.setChecked(true);
+            binding.rb1.setEnabled(false);
+            binding.rb2.setEnabled(false);
+            sellerModel.setCondition(false);
+            sellerModel.setCondition("");
+            binding.edtCondition.setVisibility(View.GONE);
 
-            }
+        }
 
        /* period.clear();
         period.add(orderModel.getDays_left()+getString(R.string.day));
@@ -558,10 +534,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
     private void updateCityAdapter(Cities_Payment_Bank_Model body) {
 
-        if (notificationModel!=null)
-        {
-            if (orderModel!=null)
-            {
+        if (notificationModel != null) {
+            if (orderModel != null) {
                 cityList.clear();
                 cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
 
@@ -572,8 +546,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                 binding.spinnerCity.setAdapter(cityAdapter);
             }
 
-        }else
-        {
+        } else {
             if (userModel != null) {
                 cityList.clear();
                 cityList.add(new Cities_Payment_Bank_Model.City("إختر", "Choose"));
@@ -596,12 +569,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         }
 
 
-
-       // bankList.addAll(body.getBanks());
+        // bankList.addAll(body.getBanks());
         bankAdapter.notifyDataSetChanged();
-
-
-
 
 
     }
@@ -616,7 +585,6 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         adapter = new SpinnerAdapter(period, this);
         binding.spinnerPeriod.setAdapter(adapter);
     }*/
-
 
 
     @Override
@@ -659,7 +627,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
             RequestBody conditions_part = Common.getRequestBodyText(sellerModel.getCondition());
             RequestBody bank_id_part = Common.getRequestBodyText(sellerModel.getBank_name());
             RequestBody bank_account_part = Common.getRequestBodyText(sellerModel.getAccount_number());
-            RequestBody bank_iban_part = Common.getRequestBodyText(sellerModel.getIban_number()+"SA");
+            RequestBody bank_iban_part = Common.getRequestBodyText(sellerModel.getIban_number() + "SA");
 
             MultipartBody.Part image = Common.getMultiPart(this, Uri.parse(sellerModel.getImage_uri()), "item_pic");
 
@@ -670,6 +638,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
+                                preferences.saveAccountIBAN(OrderSellerActivity.this,sellerModel.getIban_number());
                                 CreateDialogAlert(response.body().getId());
                             } else {
                                 try {
@@ -685,11 +654,10 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                                     Toast.makeText(OrderSellerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                } else if (response.code()==401)
-                                {
-                                    Toast.makeText(OrderSellerActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 401) {
+                                    Toast.makeText(OrderSellerActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
 
-                                }else {
+                                } else {
                                     Toast.makeText(OrderSellerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -722,9 +690,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         }
     }
 
-    private void sellerUpdateOrder(SellerModel sellerModel)
-    {
-Log.e("data",notificationModel.getOrder_id()+"");
+    private void sellerUpdateOrder(SellerModel sellerModel) {
+        Log.e("data", notificationModel.getOrder_id() + "");
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -741,7 +708,7 @@ Log.e("data",notificationModel.getOrder_id()+"");
             MultipartBody.Part image = Common.getMultiPart(this, Uri.parse(sellerModel.getImage_uri()), "item_pic");
 
             Api.getService(lang)
-                    .sellerUpdateOrder(token,bank_name_part,bank_account_part,bank_iban_part,order_id_part,not_id_part,image)
+                    .sellerUpdateOrder(token, bank_name_part, bank_account_part, bank_iban_part, order_id_part, not_id_part, image)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -765,11 +732,10 @@ Log.e("data",notificationModel.getOrder_id()+"");
                                     Toast.makeText(OrderSellerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
 
-                                } else if (response.code()==401)
-                                {
-                                    Toast.makeText(OrderSellerActivity.this,"User Unauthenticated", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 401) {
+                                    Toast.makeText(OrderSellerActivity.this, "User Unauthenticated", Toast.LENGTH_SHORT).show();
 
-                                }else {
+                                } else {
                                     Toast.makeText(OrderSellerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -939,18 +905,16 @@ Log.e("data",notificationModel.getOrder_id()+"");
                 }
             }
 
-        }else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
+        } else if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
 
 
-                if (notificationModel==null)
-                {
-                    sendOrder(sellerModel);
+            if (notificationModel == null) {
+                sendOrder(sellerModel);
 
-                }else
-                {
+            } else {
 
-                    sellerUpdateOrder(sellerModel);
-                }
+                sellerUpdateOrder(sellerModel);
+            }
 
 
         }
