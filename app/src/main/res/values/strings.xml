@@ -142,7 +142,7 @@
     <string name="blokced">User is blocked</string>
     <string name="most">should 22 sell</string>
     <string name="most2">should 9 sell</string>
-    <string name="app_fee">Application fee is <font color='#025f6b'>3%</font> and the minimum is <font color='#025f6b'>35</font> SAR.</string>
+    <string name="app_fee">Application fee is <font color='#025f6b'>4%</font> and the minimum is <font color='#025f6b'>35</font> SAR.</string>
     <string name="complete_order">Complete Order</string>
     <string name="commission">Commission</string>
     <string name="more3">More</string>

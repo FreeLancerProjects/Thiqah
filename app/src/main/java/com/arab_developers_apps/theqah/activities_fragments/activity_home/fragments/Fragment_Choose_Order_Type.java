@@ -17,6 +17,9 @@ import com.arab_developers_apps.theqah.activities_fragments.activity_order_buyer
 import com.arab_developers_apps.theqah.activities_fragments.activity_order_seller.OrderSellerActivity;
 import com.arab_developers_apps.theqah.databinding.FragmentChooseOrderTypeBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
+import com.arab_developers_apps.theqah.models.UserModel;
+import com.arab_developers_apps.theqah.preferences.Preferences;
+import com.arab_developers_apps.theqah.share.Common;
 
 import java.util.Locale;
 
@@ -27,6 +30,9 @@ public class Fragment_Choose_Order_Type extends Fragment implements Listeners.Ba
     private FragmentChooseOrderTypeBinding binding;
     private String lang;
     private HomeActivity activity;
+    private UserModel userModel;
+    private Preferences preferences;
+
 
     public static Fragment_Choose_Order_Type newInstance() {
         return new Fragment_Choose_Order_Type();
@@ -42,6 +48,8 @@ public class Fragment_Choose_Order_Type extends Fragment implements Listeners.Ba
 
     private void initView() {
         activity = (HomeActivity) getActivity();
+        preferences = Preferences.newInstance();
+        userModel = preferences.getUserData(activity);
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
@@ -56,14 +64,26 @@ public class Fragment_Choose_Order_Type extends Fragment implements Listeners.Ba
 
     @Override
     public void orderBuyer() {
-        Intent intent = new Intent(activity, BuyerActivity.class);
-        startActivity(intent);
+        if (userModel!=null){
+            Intent intent = new Intent(activity, BuyerActivity.class);
+            startActivity(intent);
+        }else {
+            Common.CreateNoSignAlertDialog(activity);
+        }
+
     }
 
     @Override
     public void orderSeller() {
-        Intent intent = new Intent(activity, OrderSellerActivity.class);
-        startActivity(intent);
+
+        if (userModel!=null){
+            Intent intent = new Intent(activity, OrderSellerActivity.class);
+            startActivity(intent);
+        }else {
+            Common.CreateNoSignAlertDialog(activity);
+        }
+
+
 
     }
 }
