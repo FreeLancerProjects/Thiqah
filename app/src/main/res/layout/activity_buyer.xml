@@ -21,6 +21,9 @@
         <variable
             name="userModel"
             type="com.arab_developers_apps.theqah.models.UserModel" />
+        <variable
+            name="model"
+            type="com.arab_developers_apps.theqah.models.AboutAppModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -209,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp"
-                    android:text="@string/app_fee"
+                    android:text='@{@string/app_fee+model.per+" "+@string/app_min+" "+model.thiqah_average_value+@string/sar}'
                     android:layout_marginTop="8dp"
                     />
                 <TextView

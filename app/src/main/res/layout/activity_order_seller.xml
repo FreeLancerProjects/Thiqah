@@ -27,6 +27,10 @@
             name="userModel"
             type="com.arab_developers_apps.theqah.models.UserModel" />
 
+        <variable
+            name="model"
+            type="com.arab_developers_apps.theqah.models.AboutAppModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -250,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp"
-                    android:text="@string/app_fee"
+                    android:text='@{@string/app_fee+model.per+" "+@string/app_min+" "+model.thiqah_average_value+@string/sar}'
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -405,20 +409,7 @@
                     android:textSize="15sp"
                     android:text="@string/period_to_close_deal"
                     android:layout_marginTop="8dp" />
-                <!-- <FrameLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="35dp"
-                     android:background="@drawable/edt_order"
-                     android:layout_marginTop="8dp"
-                     >
-                     <Spinner
-                         android:id="@+id/spinnerPeriod"
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         app:backgroundTint="@color/colorPrimary"
 
-                         />
-                 </FrameLayout>-->
 
 
                 <LinearLayout
@@ -428,18 +419,20 @@
                     android:weightSum="1"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edt_order"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
 
                     >
 
                     <EditText
                         android:id="@+id/edtPeriod"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="35dp"
-                        android:layout_marginTop="8dp"
+                        android:background="@color/transparent"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:singleLine="true"
-                        android:background="@drawable/edt_order"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:inputType="text"
@@ -448,9 +441,8 @@
 
                         />
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/black"
                         android:textSize="15sp"

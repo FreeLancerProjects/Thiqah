@@ -77,7 +77,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
     private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
     private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private final String camera_permission = Manifest.permission.CAMERA;
-    private double chargeAmount = -1;
+    private double chargeAmount = 0;
     private CityAdapter cityAdapter;
     private SpinnerAdapter bankAdapter;
     private List<String> bankList;
@@ -401,6 +401,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
                                 aboutAppModel = response.body();
+                                binding.setModel(aboutAppModel);
                             } else {
 
                                 if (response.code() == 422) {
@@ -747,17 +748,7 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
         }
     }
 
-    /*private void setUpAdapter() {
-        period.add(getString(R.string.choose));
-        for (int i = 1; i < 31; i++) {
-            days.add(i);
-            period.add(i + " " + getString(R.string.day));
-        }
 
-        adapter = new SpinnerAdapter(period, this);
-        binding.spinnerPeriod.setAdapter(adapter);
-    }
-*/
 
 
     @Override

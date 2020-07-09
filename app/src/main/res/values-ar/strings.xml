@@ -143,7 +143,9 @@
     <string name="blokced">تم حظر المستخدم</string>
     <string name="most">يجب ان يكون 22 خانة</string>
     <string name="most2">يجب ان يكون 9 خانة</string>
-    <string name="app_fee">عمولة التطبيق <font color='#025f6b'>4%</font> والحد الادنى <font color='#025f6b'>35</font> ريال.</string>
+    <string name="app_fee">عمولة التطبيق</string>
+    <string name="app_min">وحد ادنى</string>
+
     <string name="complete_order">إكمال الطلب</string>
     <string name="commission">العمولة</string>
     <string name="more3">أكثر</string>

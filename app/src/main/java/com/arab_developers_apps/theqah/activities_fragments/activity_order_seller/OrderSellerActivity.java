@@ -27,6 +27,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.arab_developers_apps.theqah.R;
 import com.arab_developers_apps.theqah.activities_fragments.about_app.AboutAppActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_order_buyer.BuyerActivity;
 import com.arab_developers_apps.theqah.adapters.CityAdapter;
 import com.arab_developers_apps.theqah.adapters.SpinnerAdapter;
 import com.arab_developers_apps.theqah.adapters.SpinnerBankAdapter;
@@ -35,6 +36,7 @@ import com.arab_developers_apps.theqah.databinding.DialogAlertBinding;
 import com.arab_developers_apps.theqah.databinding.DialogSelectImageBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
 import com.arab_developers_apps.theqah.language.LanguageHelper;
+import com.arab_developers_apps.theqah.models.AboutAppModel;
 import com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model;
 import com.arab_developers_apps.theqah.models.NotificationDataModel;
 import com.arab_developers_apps.theqah.models.OrderDataModel;
@@ -287,7 +289,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
             }
         });
 */
-
+        getCommission();
         getCities();
 
 
@@ -477,6 +479,58 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
 
     }
 
+    private void getCommission() {
+        try {
+
+
+            Api.getService(lang)
+                    .appData()
+                    .enqueue(new Callback<AboutAppModel>() {
+                        @Override
+                        public void onResponse(Call<AboutAppModel> call, Response<AboutAppModel> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                binding.setModel(response.body());
+                            } else {
+
+                                if (response.code() == 422) {
+                                    Toast.makeText(OrderSellerActivity.this, getString(R.string.em_exist), Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 500) {
+                                    Toast.makeText(OrderSellerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+
+                                } else {
+                                    Toast.makeText(OrderSellerActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                    try {
+
+                                        Log.e("error", response.code() + "_" + response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<AboutAppModel> call, Throwable t) {
+                            try {
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(OrderSellerActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(OrderSellerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
 
     private void getCities() {
         try {
@@ -638,7 +692,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
-                                preferences.saveAccountIBAN(OrderSellerActivity.this,sellerModel.getIban_number());
+                                preferences.saveAccountIBAN(OrderSellerActivity.this, sellerModel.getIban_number());
                                 CreateDialogAlert(response.body().getId());
                             } else {
                                 try {

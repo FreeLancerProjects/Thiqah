@@ -142,6 +142,7 @@ public class Fragment_Main extends Fragment {
                             if (response.isSuccessful() && response.body() != null) {
 
                                 videoPath = response.body().getVideo_link();
+                                Log.e("vid",videoPath);
                                 activity.videoPath = videoPath;
                                 binding.btnPlay.setVisibility(View.VISIBLE);
                             } else {

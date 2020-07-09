@@ -15,6 +15,7 @@ public class AboutAppModel implements Serializable {
     private String about_us;
     private String terms;
     private String guarantees;
+    private int per;
     private int thiqah_rate;
     private int thiqah_average_amount;
     private int thiqah_average_value;
@@ -74,5 +75,9 @@ public class AboutAppModel implements Serializable {
 
     public int getThiqah_average_value() {
         return thiqah_average_value;
+    }
+
+    public int getPer() {
+        return per;
     }
 }
