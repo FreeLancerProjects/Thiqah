@@ -71,7 +71,7 @@
     <string name="message">Message</string>
     <string name="inv_now">Invalid now</string>
     <string name="forget_password">Forget Password</string>
-    <string name="recov_msg">Recover your account.We will send you a link to change your password</string>
+    <string name="recov_msg">Recover your account.We will send you confirm code to change your password</string>
     <string name="enter_code">Enter code</string>
     <string name="we_ll_never_share_or_sell_your_phone_number_your_privacy_is_100_guaranteed">We\'ll never share or sell your phone number your privacy is 100% guaranteed.</string>
     <string name="enter_the_sms_verification_code_below_that_was_sent_to_your_mobile_phone">Enter the SMS verification code below that was sent to your mobile phone</string>
@@ -159,6 +159,10 @@
     <string name="time">Time :</string>
     <string name="make_sure_that_you_are_in_the_safe_place_for_your_financial_transactions">Make sure that you are in the safe place for your financial transactions</string>
     <string name="only_number">Only numbers</string>
+    <string name="before_make_order">Before making a new order, please transfer the amount and commission to Theqah App</string>
+    <string name="new_password">New Password</string>
+    <string name="phone_not_exist">Phone not exist</string>
+    <string name="inv_code">Invalid code</string>
 
 
 </resources>

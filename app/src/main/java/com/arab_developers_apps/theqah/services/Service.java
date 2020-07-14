@@ -6,6 +6,7 @@ import com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model;
 import com.arab_developers_apps.theqah.models.CommentDataModel;
 import com.arab_developers_apps.theqah.models.ComplainDataModel;
 import com.arab_developers_apps.theqah.models.GuideModel;
+import com.arab_developers_apps.theqah.models.NotificationCountModel;
 import com.arab_developers_apps.theqah.models.NotificationDataModel;
 import com.arab_developers_apps.theqah.models.OrderDataModel;
 import com.arab_developers_apps.theqah.models.OrderIdModel;
@@ -217,6 +218,31 @@ public interface Service {
     @POST("/api/payment-single")
     Call<PaymentDataModel> getPaymentDetails(@Header("Authorization") String header,
                                              @Field("order_id") int order_id);
+
+    @GET("/api/notifications-unread")
+    Call<NotificationCountModel> getNotificationCount(@Header("Authorization") String header);
+
+
+    @FormUrlEncoded
+    @POST("/api/send-phone")
+    Call<ResponseBody> sendPhoneNumberToSendCode(@Field("mobile_code") String mobile_code,
+                                                 @Field("mobile_number") String mobile_number
+    );
+
+    @FormUrlEncoded
+    @POST("/api/send-code")
+    Call<ResponseBody> validatePhoneNumber(@Field("mobile_code") String mobile_code,
+                                           @Field("mobile_number") String mobile_number,
+                                           @Field("confirmed_code") String confirmed_code
+    );
+
+
+    @FormUrlEncoded
+    @POST("/api/update-password")
+    Call<ResponseBody> updatePassword(@Field("mobile_code") String mobile_code,
+                                      @Field("mobile_number") String mobile_number,
+                                      @Field("password") String password
+    );
 
 }
 

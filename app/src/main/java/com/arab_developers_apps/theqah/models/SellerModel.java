@@ -11,8 +11,11 @@ import androidx.databinding.ObservableField;
 
 import com.arab_developers_apps.theqah.BR;
 import com.arab_developers_apps.theqah.R;
+import com.arab_developers_apps.theqah.tags.Tags;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class SellerModel extends BaseObservable implements Serializable {
     // private String order_number;
@@ -380,7 +383,7 @@ public class SellerModel extends BaseObservable implements Serializable {
 
             if (TextUtils.isEmpty(item_value)) {
                 error_item_value.set(context.getString(R.string.field_req));
-            } else {
+            }else {
                 error_item_value.set(null);
             }
 

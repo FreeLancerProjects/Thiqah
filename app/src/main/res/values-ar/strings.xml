@@ -72,7 +72,7 @@
     <string name="message">الرسالة</string>
     <string name="inv_now">غير متاح الان</string>
     <string name="forget_password">نسيت كلمة المرور</string>
-    <string name="recov_msg">سنرسل لك رابطا على البريد الخاص بكم لتغيير كلمة المرور.</string>
+    <string name="recov_msg">سنرسل لك رمزا للتحقق من رقم الجوال لتغيير كلمة المرور.</string>
     <string name="enter_code">أدخل الرمز</string>
     <string name="we_ll_never_share_or_sell_your_phone_number_your_privacy_is_100_guaranteed">بياناتك في الحفظ والصون لدينا، ماراح نشارك بياناتك مع اي احد ولأي سبب.</string>
     <string name="enter_the_sms_verification_code_below_that_was_sent_to_your_mobile_phone">أرجو منك إدخال الرمز المرسل إلى هاتفك الجوال.</string>
@@ -159,6 +159,10 @@
     <string name="time">الوقت :  </string>
     <string name="make_sure_that_you_are_in_the_safe_place_for_your_financial_transactions">تأكد إنك في المكان الامن لمعاملاتك المالية</string>
     <string name="only_number">ارقام فقط</string>
+    <string name="before_make_order">قبل تنفيذ طلب جديد يرجى تحويل المبلغ والعمولة لتطبيق ثقة</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="phone_not_exist">رقم الجوال غير موجود</string>
+    <string name="inv_code">كود خطأ</string>
 
 
 </resources>

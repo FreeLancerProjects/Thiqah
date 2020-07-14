@@ -125,7 +125,6 @@
                             android:layout_height="30dp"
                             android:background="@color/transparent"
                             android:hint="@string/phone"
-                            android:inputType="phone"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
                             android:singleLine="true"
@@ -139,6 +138,7 @@
                             app:layout_constraintStart_toEndOf="@id/tvCode"
                             app:layout_constraintTop_toTopOf="parent"
                             android:maxLength="10"
+                            android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
                             />
@@ -225,6 +225,7 @@
                                 android:textColorHint="@color/gray4"
                                 android:text="@={loginModel.password}"
                                 error="@{loginModel.error_password}"
+
 
                                 />
 

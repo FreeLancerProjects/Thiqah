@@ -48,6 +48,7 @@ import com.arab_developers_apps.theqah.models.UserModel;
 import com.arab_developers_apps.theqah.preferences.Preferences;
 import com.arab_developers_apps.theqah.remote.Api;
 import com.arab_developers_apps.theqah.share.Common;
+import com.arab_developers_apps.theqah.tags.Tags;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -776,12 +777,11 @@ public class BuyerActivity extends AppCompatActivity implements Listeners.BackLi
 
         try {
 
-            Log.e("phone",buyerModel.getPhone2());
             String token = "Bearer "+userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText(buyerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(buyerModel.getPhone2()));
             RequestBody reason_part = Common.getRequestBodyText(buyerModel.getTransfer_purpose());
-            RequestBody price_part = Common.getRequestBodyText(buyerModel.getPrice());
-            RequestBody day_part = Common.getRequestBodyText(buyerModel.getPeriod());
+            RequestBody price_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(buyerModel.getPrice()));
+            RequestBody day_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(buyerModel.getPeriod()));
             RequestBody conditions_part = Common.getRequestBodyText(buyerModel.getCondition());
             RequestBody bank_id_part = Common.getRequestBodyText(buyerModel.getBank_name());
             RequestBody shipping_id_part = Common.getRequestBodyText(buyerModel.getShipping_method());

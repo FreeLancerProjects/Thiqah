@@ -198,7 +198,6 @@
                             android:layout_height="30dp"
                             android:background="@color/transparent"
                             android:hint="@string/phone"
-                            android:inputType="phone"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:singleLine="true"
@@ -210,6 +209,7 @@
                             app:layout_constraintEnd_toStartOf="@id/imagePhoneCode"
                             app:layout_constraintStart_toEndOf="@id/viewPhoneCode"
                             android:maxLength="10"
+                            android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
                             app:layout_constraintTop_toTopOf="parent" />

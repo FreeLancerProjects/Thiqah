@@ -316,7 +316,7 @@
                         android:background="@android:color/transparent"
                         android:text="@={sellerModel.item_value}"
                         error="@{sellerModel.error_item_value}"
-                        android:inputType="numberDecimal"
+                        android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
                         />
@@ -435,9 +435,9 @@
                         android:singleLine="true"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:inputType="text"
                         android:text="@={sellerModel.period}"
                         error="@{sellerModel.error_period}"
+                        android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
                         />
                     <TextView
@@ -511,10 +511,10 @@
                     android:background="@drawable/edt_order"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:inputType="text"
                     android:text="@={sellerModel.account_number}"
                     error="@{sellerModel.error_account_number}"
                     android:maxLength="16"
+
 
                     />
 
@@ -550,7 +550,6 @@
                         android:background="@color/transparent"
                         android:text="@={sellerModel.iban_number}"
                         error="@{sellerModel.error_iban_number}"
-
                         android:inputType="text" />
 
                     <TextView
@@ -597,10 +596,10 @@
                         android:background="@color/transparent"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:inputType="phone"
                         android:text="@={sellerModel.phone2}"
                         error="@{sellerModel.error_phone2}"
                         android:maxLength="9"
+                        android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
                         />

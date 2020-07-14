@@ -274,7 +274,7 @@
                         android:background="@android:color/transparent"
                         android:text="@={buyerModel.item_value}"
                         error="@{buyerModel.error_item_value}"
-                        android:inputType="numberDecimal"
+                        android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
 
@@ -441,9 +441,9 @@
                         android:background="@color/transparent"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:inputType="number"
                         android:text="@={buyerModel.period}"
                         error="@{buyerModel.error_period}"
+                        android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
                         />
 
@@ -558,10 +558,10 @@
                     android:background="@color/transparent"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:inputType="phone"
                     android:text="@={buyerModel.phone2}"
                     error="@{buyerModel.error_phone2}"
                     android:maxLength="9"
+                    android:digits="0123456789٠١٢٣٤٥٦٧٨٩"
 
 
                     />

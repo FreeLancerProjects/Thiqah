@@ -27,6 +27,7 @@ import com.arab_developers_apps.theqah.models.SignUpModel;
 import com.arab_developers_apps.theqah.preferences.Preferences;
 import com.arab_developers_apps.theqah.remote.Api;
 import com.arab_developers_apps.theqah.share.Common;
+import com.arab_developers_apps.theqah.tags.Tags;
 import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
@@ -240,7 +241,7 @@ public class Fragment_Sign_Up extends Fragment implements OnCountryPickerListene
             dialog.setCancelable(false);
             dialog.show();
             Api.getService(lang)
-                    .sign_up(phone_code, phone)
+                    .sign_up(phone_code, Tags.convertArabicNumberToEnglish(phone))
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

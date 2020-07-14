@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,11 +43,13 @@ import com.arab_developers_apps.theqah.models.Cities_Payment_Bank_Model;
 import com.arab_developers_apps.theqah.models.NotificationDataModel;
 import com.arab_developers_apps.theqah.models.OrderDataModel;
 import com.arab_developers_apps.theqah.models.OrderIdModel;
+import com.arab_developers_apps.theqah.models.SaveModel;
 import com.arab_developers_apps.theqah.models.SellerModel;
 import com.arab_developers_apps.theqah.models.UserModel;
 import com.arab_developers_apps.theqah.preferences.Preferences;
 import com.arab_developers_apps.theqah.remote.Api;
 import com.arab_developers_apps.theqah.share.Common;
+import com.arab_developers_apps.theqah.tags.Tags;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -134,13 +138,20 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.setSellerListener(this);
+
+        if (preferences.getIBAN(this)!=null){
+            if (!preferences.getIBAN(this).getIban().isEmpty()&&!preferences.getIBAN(this).getAccountNumber().isEmpty()) {
+                sellerModel.setIban_number(preferences.getIBAN(this).getIban());
+                sellerModel.setAccount_number(preferences.getIBAN(this).getAccountNumber());
+                binding.edtIban.setText(preferences.getIBAN(this).getIban());
+                binding.edtAccountNumber.setText(preferences.getIBAN(this).getAccountNumber());
+
+            }
+        }
+
+
         binding.setSellerModel(sellerModel);
 
-        if (!preferences.getIBAN(this).isEmpty()) {
-            sellerModel.setIban_number(preferences.getIBAN(this));
-            binding.setSellerModel(sellerModel);
-            binding.edtIban.setText(preferences.getIBAN(this));
-        }
 
         if (notificationModel != null) {
             getOrderNumber();
@@ -289,6 +300,24 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
             }
         });
 */
+
+       binding.edtValue.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+
+           }
+       });
         getCommission();
         getCities();
 
@@ -674,14 +703,14 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         try {
 
             String token = "Bearer " + userModel.getToken();
-            RequestBody phone_part = Common.getRequestBodyText(sellerModel.getPhone2());
+            RequestBody phone_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(sellerModel.getPhone2()));
             RequestBody reason_part = Common.getRequestBodyText(sellerModel.getTransfer_purpose());
-            RequestBody price_part = Common.getRequestBodyText(sellerModel.getItem_value());
-            RequestBody day_part = Common.getRequestBodyText(sellerModel.getPeriod());
+            RequestBody price_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(sellerModel.getItem_value()));
+            RequestBody day_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(sellerModel.getPeriod()));
             RequestBody conditions_part = Common.getRequestBodyText(sellerModel.getCondition());
             RequestBody bank_id_part = Common.getRequestBodyText(sellerModel.getBank_name());
-            RequestBody bank_account_part = Common.getRequestBodyText(sellerModel.getAccount_number());
-            RequestBody bank_iban_part = Common.getRequestBodyText(sellerModel.getIban_number() + "SA");
+            RequestBody bank_account_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(sellerModel.getAccount_number()));
+            RequestBody bank_iban_part = Common.getRequestBodyText(Tags.convertArabicNumberToEnglish(sellerModel.getIban_number())+ "SA");
 
             MultipartBody.Part image = Common.getMultiPart(this, Uri.parse(sellerModel.getImage_uri()), "item_pic");
 
@@ -692,7 +721,8 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
                         public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
                             dialog.dismiss();
                             if (response.isSuccessful() && response.body() != null) {
-                                preferences.saveAccountIBAN(OrderSellerActivity.this, sellerModel.getIban_number());
+                                SaveModel saveModel = new SaveModel(sellerModel.getIban_number(),sellerModel.getAccount_number());
+                                preferences.saveAccountIBAN(OrderSellerActivity.this, saveModel);
                                 CreateDialogAlert(response.body().getId());
                             } else {
                                 try {

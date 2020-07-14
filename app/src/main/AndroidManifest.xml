@@ -9,10 +9,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:name="com.arab_developers_apps.theqah.language.App"
+        android:name=".language.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,12 +22,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name="com.arab_developers_apps.theqah.activities_fragments.activity_payment_details.PaymentDetailsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
+        <activity android:name=".activities_fragments.activity_code_verification.CodeVerificationActivity"></activity>
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_splash_2.Splash2Activity"
+            android:name=".activities_fragments.activity_payment_details.PaymentDetailsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities_fragments.activity_splash_2.Splash2Activity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter android:label="thiqah">
@@ -42,32 +43,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_image.ImageActivity"
+            android:name=".activities_fragments.activity_image.ImageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_appeal_details.AppealDetailsActivity"
+            android:name=".activities_fragments.activity_appeal_details.AppealDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_appeal.AppealActivity"
+            android:name=".activities_fragments.activity_appeal.AppealActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.comments_activity.CommentsActivity"
+            android:name=".activities_fragments.comments_activity.CommentsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.order_details.OrderDetailsActivity"
+            android:name=".activities_fragments.order_details.OrderDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.my_order.MyOrderActivity"
+            android:name=".activities_fragments.my_order.MyOrderActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <service
-            android:name="com.arab_developers_apps.theqah.notification.FireBaseMessaging"
+            android:name=".notification.FireBaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -75,80 +76,74 @@
         </service>
 
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.bank_account.BankActivity"
+            android:name=".activities_fragments.bank_account.BankActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_order_buyer.BuyerActivity"
+            android:name=".activities_fragments.activity_order_buyer.BuyerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_order_seller.OrderSellerActivity"
+            android:name=".activities_fragments.activity_order_seller.OrderSellerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_video.VideoActivity"
+            android:name=".activities_fragments.activity_video.VideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_forget_password.ForgetPasswordActivity"
+            android:name=".activities_fragments.activity_forget_password.ForgetPasswordActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_guide.GuideActivity"
+            android:name=".activities_fragments.activity_guide.GuideActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_notification.NotificationActivity"
+            android:name=".activities_fragments.activity_notification.NotificationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:parentActivityName="com.arab_developers_apps.theqah.activities_fragments.activity_home.HomeActivity"
+            android:parentActivityName=".activities_fragments.activity_home.HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_contact.ContactUsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.about_app.AboutAppActivity"
+            android:name=".activities_fragments.activity_contact.ContactUsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_info.InfoActivity"
+            android:name=".activities_fragments.about_app.AboutAppActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_home.HomeActivity"
+            android:name=".activities_fragments.activity_info.InfoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities_fragments.activity_home.HomeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"></action>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"></category>
-                <category android:name="android.intent.category.BROWSABLE"></category>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
                     android:host="thiqah-sa.com"
                     android:path="/launch"
-                    android:scheme="http">
-
-                </data>
+                    android:scheme="http"></data>
             </intent-filter>
-
         </activity>
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_splash.SplashActivity"
+            android:name=".activities_fragments.activity_splash.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
-
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arab_developers_apps.theqah.activities_fragments.activity_sign_in.SignInActivity"
+            android:name=".activities_fragments.activity_sign_in.SignInActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
     </application>

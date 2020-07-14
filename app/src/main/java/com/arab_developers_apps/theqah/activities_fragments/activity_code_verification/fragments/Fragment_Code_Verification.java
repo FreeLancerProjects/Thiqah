@@ -1,4 +1,4 @@
-package com.arab_developers_apps.theqah.activities_fragments.activity_sign_in;
+package com.arab_developers_apps.theqah.activities_fragments.activity_code_verification.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,7 +17,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.arab_developers_apps.theqah.R;
+import com.arab_developers_apps.theqah.activities_fragments.activity_code_verification.CodeVerificationActivity;
 import com.arab_developers_apps.theqah.activities_fragments.activity_home.HomeActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_sign_in.SignInActivity;
 import com.arab_developers_apps.theqah.databinding.FragmentCodeVerificationBinding;
 import com.arab_developers_apps.theqah.models.SignUpModel;
 import com.arab_developers_apps.theqah.models.UserModel;
@@ -36,14 +38,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Code_Verification extends Fragment {
-    private static final String TAG ="DATA";
-    private SignInActivity activity;
+    private static final String TAG1 ="DATA1";
+    private static final String TAG2 ="DATA2";
+
+    private CodeVerificationActivity activity;
     private FragmentCodeVerificationBinding binding;
     private boolean canResend = true;
-    private SignUpModel signUpModel;
     private CountDownTimer countDownTimer;
     private String lang;
     private Preferences preferences;
+    private String phone_code;
+    private String phone;
 
     @Nullable
     @Override
@@ -54,10 +59,12 @@ public class Fragment_Code_Verification extends Fragment {
         return view;
     }
 
-    public static Fragment_Code_Verification newInstance(SignUpModel signUpModel)
+    public static Fragment_Code_Verification newInstance(String phone_code,String phone)
     {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(TAG,signUpModel);
+        bundle.putSerializable(TAG1,phone_code);
+        bundle.putSerializable(TAG2,phone);
+
         Fragment_Code_Verification fragment_code_verification = new Fragment_Code_Verification();
         fragment_code_verification.setArguments(bundle);
         return fragment_code_verification;
@@ -65,7 +72,7 @@ public class Fragment_Code_Verification extends Fragment {
 
     private void initView() {
 
-        activity = (SignInActivity) getActivity();
+        activity = (CodeVerificationActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
@@ -82,7 +89,8 @@ public class Fragment_Code_Verification extends Fragment {
         Bundle bundle = getArguments();
         if (bundle!=null)
         {
-           signUpModel = (SignUpModel) bundle.getSerializable(TAG);
+           phone_code = bundle.getString(TAG1);
+           phone = bundle.getString(TAG2);
 
         }
 
@@ -95,6 +103,7 @@ public class Fragment_Code_Verification extends Fragment {
         if (!TextUtils.isEmpty(code))
         {
             Common.CloseKeyBoard(activity,binding.edtCode);
+            binding.edtCode.setError(null);
             ValidateCode(code);
         }else
             {
@@ -104,36 +113,29 @@ public class Fragment_Code_Verification extends Fragment {
 
     private void ValidateCode(String code)
     {
+        Log.e("phone_code",phone_code+"__"+phone+"_"+code);
         try {
             ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
             dialog.setCancelable(false);
             dialog.show();
             Api.getService(lang)
-                    .verifyCode(signUpModel.getPhone_code(),Tags.convertArabicNumberToEnglish(signUpModel.getPhone()),"1",signUpModel.getPassword(),code,signUpModel.getName(),signUpModel.getEmail(),signUpModel.getCity_id())
-                    .enqueue(new Callback<UserModel>() {
+                    .validatePhoneNumber(phone_code,phone,code)
+                    .enqueue(new Callback<ResponseBody>() {
                         @Override
-                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             dialog.dismiss();
                             if (response.isSuccessful()&&response.body()!=null)
                             {
-                                preferences.create_update_userData(activity,response.body());
-                                preferences.createSession(activity, Tags.session_login);
-                                Intent intent = new Intent(activity, HomeActivity.class);
-                                startActivity(intent);
-                                activity.finish();
+                                activity.displayFragmentNewPassword();
 
                             }else
                             {
 
                                 if (response.code() == 422) {
-                                    Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, R.string.inv_code, Toast.LENGTH_SHORT).show();
                                 } else if (response.code() == 500) {
                                     Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
 
-
-                                }else if (response.code()==401)
-                                {
-                                    Toast.makeText(activity, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
                                 }else
                                 {
@@ -152,7 +154,7 @@ public class Fragment_Code_Verification extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<UserModel> call, Throwable t) {
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
                             try {
                                 dialog.dismiss();
                                 if (t.getMessage()!=null)
@@ -201,7 +203,7 @@ public class Fragment_Code_Verification extends Fragment {
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(lang)
-                .reSendCode(signUpModel.getPhone_code(),Tags.convertArabicNumberToEnglish(signUpModel.getPhone()))
+                .reSendCode(phone_code,phone)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

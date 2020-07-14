@@ -3,6 +3,7 @@ package com.arab_developers_apps.theqah.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.arab_developers_apps.theqah.models.SaveModel;
 import com.arab_developers_apps.theqah.models.UserModel;
 import com.google.gson.Gson;
 
@@ -58,19 +59,26 @@ public class Preferences {
 
 
 
-    public void saveAccountIBAN(Context context,String iban)
+    public void saveAccountIBAN(Context context, SaveModel saveModel)
     {
+
         SharedPreferences preferences = context.getSharedPreferences("ibanPref",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("iban",iban);
+        Gson gson = new Gson();
+        String userDataGson = gson.toJson(saveModel);
+        editor.putString("iban",userDataGson);
         editor.apply();
+
     }
 
 
-    public String getIBAN(Context context)
+    public SaveModel getIBAN(Context context)
     {
+
         SharedPreferences preferences = context.getSharedPreferences("ibanPref",Context.MODE_PRIVATE);
-        return preferences.getString("iban","");
+        String dataGson = preferences.getString("iban","");
+        return new Gson().fromJson(dataGson,SaveModel.class);
+
     }
 
 

@@ -1,12 +1,21 @@
 package com.arab_developers_apps.theqah.activities_fragments.activity_home;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,9 +28,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -42,6 +53,8 @@ import com.arab_developers_apps.theqah.activities_fragments.comments_activity.Co
 import com.arab_developers_apps.theqah.activities_fragments.my_order.MyOrderActivity;
 import com.arab_developers_apps.theqah.databinding.DialogLanguageBinding;
 import com.arab_developers_apps.theqah.language.LanguageHelper;
+import com.arab_developers_apps.theqah.models.FireBaseNotModel;
+import com.arab_developers_apps.theqah.models.NotificationCountModel;
 import com.arab_developers_apps.theqah.models.UserModel;
 import com.arab_developers_apps.theqah.preferences.Preferences;
 import com.arab_developers_apps.theqah.remote.Api;
@@ -83,6 +96,7 @@ public class HomeActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     public String videoPath = "";
     private String lang;
+    private boolean isFirstTime = true;
 
 
     @Override
@@ -145,6 +159,7 @@ public class HomeActivity extends AppCompatActivity
         flNotification.setOnClickListener(view -> {
 
             if (userModel != null) {
+                updateNotificationCount(0);
                 navigateToNotificationActivity();
             } else {
                 Common.CreateNoSignAlertDialog(HomeActivity.this);
@@ -175,6 +190,8 @@ public class HomeActivity extends AppCompatActivity
         }else {
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
+
+            getNotificationCount();
         }
     }
 
@@ -256,13 +273,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void updateNotificationCount(int count) {
-        if (count > 0) {
-            tvNotificationCount.setText(String.valueOf(count));
-            tvNotificationCount.setVisibility(View.VISIBLE);
-        } else {
-            tvNotificationCount.setText(String.valueOf(count));
-            tvNotificationCount.setVisibility(View.GONE);
-        }
+        tvNotificationCount.setText(String.valueOf(count));
     }
 
 
@@ -316,6 +327,10 @@ public class HomeActivity extends AppCompatActivity
     }
     public void displayFragmentChooseOrderType()
     {
+        if (isFirstTime){
+            isFirstTime = false;
+            manageNotification();
+        }
         selectOrder();
 
         if (fragment_choose_order_type==null)
@@ -641,11 +656,10 @@ public class HomeActivity extends AppCompatActivity
            // EventBus.getDefault().unregister(this);
         }
     }
-    /*
     private void getNotificationCount()
     {
         Api.getService(Tags.base_url)
-                .getNotifications(userModel.getUser().getId(),"count_unread")
+                .getNotificationCount("Bearer "+userModel.getToken())
                 .enqueue(new Callback<NotificationCountModel>() {
                     @Override
                     public void onResponse(Call<NotificationCountModel> call, Response<NotificationCountModel> response) {
@@ -674,5 +688,88 @@ public class HomeActivity extends AppCompatActivity
                         }catch (Exception e){}
                     }
                 });
-    }*/
+    }
+
+
+    private void manageNotification() {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            sendNotificationNew();
+        }else
+        {
+            sendNotificationOld();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void sendNotificationNew()
+    {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logo_512);
+
+        String channel_id = "my_channel_02";
+        CharSequence channel_name = "my_channel_name";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        NotificationChannel mChannel = new NotificationChannel(channel_id,channel_name,importance);
+        mChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
+                .build()
+        );
+        mChannel.enableLights(true);
+        mChannel.setShowBadge(true);
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setChannelId(channel_id);
+        builder.setSmallIcon(R.drawable.ic_not);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setAutoCancel(true);
+        builder.setLargeIcon(bitmap);
+        builder.setContentTitle(getString(R.string.app_name));
+        builder.setStyle(new NotificationCompat.BigTextStyle()
+                .setBigContentTitle(getString(R.string.app_name))
+                .bigText(getString(R.string.before_make_order))
+
+        );
+
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (manager!=null)
+        {
+            FireBaseNotModel fireBaseNotModel = new FireBaseNotModel(true);
+            EventBus.getDefault().post(fireBaseNotModel);
+
+            manager.createNotificationChannel(mChannel);
+            manager.notify("thiqah",0,builder.build());
+
+        }
+    }
+
+    private void sendNotificationOld()
+    {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logo_512);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setSmallIcon(R.drawable.ic_not);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setAutoCancel(true);
+        builder.setLargeIcon(bitmap);
+        builder.setContentTitle(getString(R.string.app_name));
+        builder.setStyle(new NotificationCompat.BigTextStyle()
+                .setBigContentTitle(getString(R.string.app_name))
+                .bigText(getString(R.string.before_make_order))
+
+        );
+
+
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (manager!=null)
+        {
+            manager.notify("thiqah",0,builder.build());
+
+        }
+    }
 }

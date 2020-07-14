@@ -171,7 +171,7 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
         try {
 
             Api.getService(lang)
-                    .login(phone_code,phone,"1",password)
+                    .login(phone_code,Tags.convertArabicNumberToEnglish(phone),"1",password)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
