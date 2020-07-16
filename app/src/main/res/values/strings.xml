@@ -77,7 +77,7 @@
     <string name="enter_the_sms_verification_code_below_that_was_sent_to_your_mobile_phone">Enter the SMS verification code below that was sent to your mobile phone</string>
     <string name="inc_code_verification">Incorrect code verification</string>
     <string name="you_will_receive_4_digit">You will receive 4 digit code on your mobile</string>
-    <string name="resend">Resend</string>
+    <string name="resend">Resend Code</string>
     <string name="confirm">Confirm</string>
     <string name="share">Share</string>
     <string name="order_number">Order number :</string>
@@ -163,6 +163,7 @@
     <string name="new_password">New Password</string>
     <string name="phone_not_exist">Phone not exist</string>
     <string name="inv_code">Invalid code</string>
+    <string name="show">Show</string>
 
 
 </resources>

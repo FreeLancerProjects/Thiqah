@@ -40,7 +40,7 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class VideoActivity extends AppCompatActivity {
 
     private void initView() {
         Paper.init(this);
-        lang = Paper.book().read("lang",Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang","ar");
 
         if (!videoPath.isEmpty())
         {

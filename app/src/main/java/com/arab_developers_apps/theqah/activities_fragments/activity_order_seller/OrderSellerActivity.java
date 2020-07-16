@@ -91,7 +91,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class OrderSellerActivity extends AppCompatActivity implements Listeners.
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         Paper.init(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.setSellerListener(this);

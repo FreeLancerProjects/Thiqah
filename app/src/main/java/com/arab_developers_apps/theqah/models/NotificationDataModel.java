@@ -15,7 +15,7 @@ public class NotificationDataModel implements Serializable {
         return data;
     }
 
-    public class NotificationModel implements Serializable{
+    public static class NotificationModel implements Serializable{
         private int id;
         private int from_phone;
         private int to_phone;

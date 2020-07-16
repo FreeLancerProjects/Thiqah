@@ -22,6 +22,7 @@ import com.arab_developers_apps.theqah.activities_fragments.activity_home.HomeAc
 import com.arab_developers_apps.theqah.activities_fragments.activity_order_buyer.BuyerActivity;
 import com.arab_developers_apps.theqah.activities_fragments.activity_order_seller.OrderSellerActivity;
 import com.arab_developers_apps.theqah.activities_fragments.activity_payment_details.PaymentDetailsActivity;
+import com.arab_developers_apps.theqah.activities_fragments.order_details.OrderDetailsActivity;
 import com.arab_developers_apps.theqah.adapters.MyNotificationAdapter;
 import com.arab_developers_apps.theqah.databinding.ActivityNotificationBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
@@ -62,7 +63,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,6 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         if (intent!=null&&intent.hasExtra("notification"))
         {
             isFromFireBase = true;
-            Log.e("ddd","ffff");
         }
     }
 
@@ -89,7 +89,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
 
         notificationModelList = new ArrayList<>();
         Paper.init(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         preferences = Preferences.newInstance();
@@ -312,12 +312,18 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
 
     }
 
+    public void setItemDataDetails(NotificationDataModel.NotificationModel notificationModel1) {
+        Intent intent = new Intent(this, OrderDetailsActivity.class);
+        intent.putExtra("order_id",notificationModel1.getOrder_id());
+        startActivityForResult(intent,126);
+    }
+
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode==123||requestCode==124||requestCode==125)&&resultCode==RESULT_OK)
+        if ((requestCode==123||requestCode==124||requestCode==125||requestCode==126)&&resultCode==RESULT_OK)
         {
             getNotification();
         }
@@ -351,5 +357,7 @@ public class NotificationActivity extends AppCompatActivity implements Listeners
         }
 
     }
+
+
 }
 

@@ -88,6 +88,13 @@ public class MyNotificationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 activity.setItemData(notificationModel1);
             });
 
+
+            notificationHolder.binding.btnShow.setOnClickListener(view -> {
+
+                NotificationDataModel.NotificationModel notificationModel1 = notificationModelList.get(notificationHolder.getAdapterPosition());
+                activity.setItemDataDetails(notificationModel1);
+            });
+
         } else {
             LoadHolder loadHolder = (LoadHolder) holder;
             loadHolder.binding.progBar.setIndeterminate(true);

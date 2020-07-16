@@ -244,6 +244,14 @@ public interface Service {
                                       @Field("password") String password
     );
 
+
+    @FormUrlEncoded
+    @POST("/api/order-details")
+    Call<OrderDataModel.OrderModel> getOrderById(@Header("Authorization") String header,
+                                                 @Header("lang") String lang,
+                                                 @Field("order_id") int order_id
+    );
+
 }
 
 

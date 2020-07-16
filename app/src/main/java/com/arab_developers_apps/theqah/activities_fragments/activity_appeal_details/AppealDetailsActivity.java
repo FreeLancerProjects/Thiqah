@@ -48,7 +48,7 @@ public class AppealDetailsActivity extends AppCompatActivity implements Listener
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class AppealDetailsActivity extends AppCompatActivity implements Listener
         Paper.init(this);
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         imageList = new ArrayList<>();
         manager = new GridLayoutManager(this,2);
         adapter = new ComplainImagesAdapter(imageList,this);

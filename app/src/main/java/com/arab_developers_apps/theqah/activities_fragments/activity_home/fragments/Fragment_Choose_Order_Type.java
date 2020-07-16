@@ -51,7 +51,7 @@ public class Fragment_Choose_Order_Type extends Fragment implements Listeners.Ba
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(activity);
         Paper.init(activity);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setActions(this);
         binding.setBackListener(this);

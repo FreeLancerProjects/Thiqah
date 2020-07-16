@@ -68,7 +68,7 @@ public class Fragment_Code_Verification extends Fragment {
         activity = (SignInActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.btnConfirm.setOnClickListener(v -> checkData());
 
         binding.btnResend.setOnClickListener(v -> {

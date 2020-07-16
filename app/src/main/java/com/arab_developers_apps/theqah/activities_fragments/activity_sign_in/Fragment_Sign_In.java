@@ -65,7 +65,7 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
         activity = (SignInActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setLoginModel(loginModel);
         binding.setCreateAccountListener(this);

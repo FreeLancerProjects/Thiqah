@@ -26,7 +26,7 @@ public class CityAdapter extends BaseAdapter {
         this.cityList = cityList;
         this.context = context;
         Paper.init(context);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
     }
 
     @Override

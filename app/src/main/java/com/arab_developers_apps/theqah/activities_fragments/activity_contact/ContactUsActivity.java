@@ -55,7 +55,7 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,28 +72,25 @@ public class ContactUsActivity extends AppCompatActivity  implements Listeners.B
         Paper.init(this);
         intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel","+"+ binding.call.getText().toString(), null));
 
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.setContactListener(this);
         binding.setShowCountryListener(this);
         binding.setContactModel(contactModel);
         createCountryDialog();
-        binding.call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(intent!=null) {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(ContactUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(ContactUsActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-                        } else {
-                            startActivity(intent);
-                        }
+        binding.call.setOnClickListener(view -> {
+            if(intent!=null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(ContactUsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(ContactUsActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
                     } else {
                         startActivity(intent);
                     }
-                } }
-        });
+                } else {
+                    startActivity(intent);
+                }
+            } });
         binding.imageWhats.setOnClickListener(view -> {
             if (!phone.isEmpty())
             {

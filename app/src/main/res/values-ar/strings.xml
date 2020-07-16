@@ -78,7 +78,7 @@
     <string name="enter_the_sms_verification_code_below_that_was_sent_to_your_mobile_phone">أرجو منك إدخال الرمز المرسل إلى هاتفك الجوال.</string>
     <string name="inc_code_verification">رمز التحقق غير صحيح</string>
     <string name="you_will_receive_4_digit">ارسلنا لك رمز التفعيل على جوالك نرجو منك إدخال الرمز.</string>
-    <string name="resend">أعد الارسال</string>
+    <string name="resend">أعد الارسال رمز التحقق</string>
     <string name="confirm">تحقق</string>
     <string name="share">مشاركة</string>
     <string name="order_number">رقم الطلب :</string>
@@ -163,6 +163,7 @@
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="phone_not_exist">رقم الجوال غير موجود</string>
     <string name="inv_code">كود خطأ</string>
+    <string name="show">عرض</string>
 
 
 </resources>

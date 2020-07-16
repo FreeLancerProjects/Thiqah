@@ -75,7 +75,7 @@ public class Fragment_Main extends Fragment {
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(activity);
         Paper.init(activity);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         categoryModelList = new ArrayList<>();
 
 

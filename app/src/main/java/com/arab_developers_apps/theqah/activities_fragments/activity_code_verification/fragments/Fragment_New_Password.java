@@ -77,7 +77,7 @@ public class Fragment_New_Password extends Fragment {
     private void initView() {
         activity = (CodeVerificationActivity) getActivity();
         Paper.init(activity);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
 
         Bundle bundle = getArguments();
         if (bundle != null) {

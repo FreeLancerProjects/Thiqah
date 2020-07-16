@@ -9,6 +9,6 @@ public class App extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LanguageHelper.updateResources(base, Preferences.newInstance().getSelectedLanguage(base)));
+        super.attachBaseContext(LanguageHelper.updateResources(base,"ar"));
     }
 }

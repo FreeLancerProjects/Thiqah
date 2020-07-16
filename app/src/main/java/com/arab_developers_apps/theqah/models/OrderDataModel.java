@@ -51,7 +51,7 @@ public class OrderDataModel implements Serializable {
         private String buyer_city_title;
         private int buyer_complained;
         private int seller_complained;
-
+        private NotificationDataModel.NotificationModel notification;
         private String created_at;
         private String updated_at;
 
@@ -61,6 +61,10 @@ public class OrderDataModel implements Serializable {
 
         public String getUpdated_at() {
             return updated_at;
+        }
+
+        public NotificationDataModel.NotificationModel getNotification() {
+            return notification;
         }
 
         public int getId() {

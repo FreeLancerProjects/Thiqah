@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,15 +19,21 @@ import androidx.databinding.DataBindingUtil;
 
 import com.arab_developers_apps.theqah.R;
 import com.arab_developers_apps.theqah.activities_fragments.activity_appeal.AppealActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_appeal_details.AppealDetailsActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_order_buyer.BuyerActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_order_seller.OrderSellerActivity;
+import com.arab_developers_apps.theqah.activities_fragments.activity_payment_details.PaymentDetailsActivity;
 import com.arab_developers_apps.theqah.databinding.ActivityOrderDetailsBinding;
 import com.arab_developers_apps.theqah.databinding.DialogRateBinding;
 import com.arab_developers_apps.theqah.interfaces.Listeners;
 import com.arab_developers_apps.theqah.language.LanguageHelper;
+import com.arab_developers_apps.theqah.models.NotificationCountModel;
 import com.arab_developers_apps.theqah.models.OrderDataModel;
 import com.arab_developers_apps.theqah.models.UserModel;
 import com.arab_developers_apps.theqah.preferences.Preferences;
 import com.arab_developers_apps.theqah.remote.Api;
 import com.arab_developers_apps.theqah.share.Common;
+import com.arab_developers_apps.theqah.tags.Tags;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -50,7 +57,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
 
     @Override
@@ -64,11 +71,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
 
     private void initView() {
         Paper.init(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
+        binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         binding.btnEnd.setOnClickListener(view -> CreateRateDialog());
         binding.btnAppeal.setOnClickListener(view -> {
             int type = 0;
@@ -85,106 +93,233 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
             startActivityForResult(intent, 1);
         });
 
+        binding.btnDetails.setOnClickListener(v -> {
+
+            if (orderModel.getNotification().getAction()==2)
+            {
+
+                Intent intent = new Intent(this, OrderSellerActivity.class);
+                intent.putExtra("notification",orderModel.getNotification());
+                startActivityForResult(intent,123);
+
+            }else if (orderModel.getNotification().getAction()==3)
+            {
+                Intent intent = new Intent(this, BuyerActivity.class);
+                intent.putExtra("notification",orderModel.getNotification());
+                startActivityForResult(intent,124);
+
+
+            }
+            else if (orderModel.getNotification().getAction()==4)
+            {
+
+                Intent intent = new Intent(this, PaymentDetailsActivity.class);
+                intent.putExtra("order_id",orderModel.getNotification().getOrder_id());
+                intent.putExtra("notification_id",orderModel.getNotification().getId());
+                startActivity(intent);
+            }
+
+            else if (orderModel.getNotification().getAction()==6)
+            {
+                //confirmMoney(notificationModel1.getOrder_id(),notificationModel1.getId());
+            }
+            else if (orderModel.getNotification().getAction()==8)
+            {
+
+                Intent intent = new Intent(this, AppealDetailsActivity.class);
+                intent.putExtra("order_id",orderModel.getNotification().getOrder_id());
+                intent.putExtra("phone_number",String.valueOf(orderModel.getNotification().getFrom_phone()));
+                startActivityForResult(intent,125);
+            }
+
+        });
 
     }
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            orderModel = (OrderDataModel.OrderModel) intent.getSerializableExtra("data");
-            binding.setOrderModel(orderModel);
 
-            if (orderModel.getStatus() < 2) {
-                if (orderModel.getBank_transfer_pic() != null) {
-                    binding.llTransferImage.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llTransferImage.setVisibility(View.GONE);
+            if (intent.hasExtra("order_id")){
+                int order_id = intent.getIntExtra("order_id",0);
+                getOrderById(order_id);
+            }else {
+                orderModel = (OrderDataModel.OrderModel) intent.getSerializableExtra("data");
+                updateOrderUI();
+            }
 
-                }
+        }
+    }
 
-                if (orderModel.getItem_pic() != null) {
-                    binding.llItemImage.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llItemImage.setVisibility(View.GONE);
+    private void updateOrderUI() {
 
-                }
+        binding.setOrderModel(orderModel);
 
-
+        if (orderModel.getStatus() < 2) {
+            if (orderModel.getBank_transfer_pic() != null) {
+                binding.llTransferImage.setVisibility(View.VISIBLE);
             } else {
-                if (orderModel.getBank_transfer_pic() != null) {
-                    binding.llTransferImage.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llTransferImage.setVisibility(View.GONE);
+                binding.llTransferImage.setVisibility(View.GONE);
 
-                }
-
-                if (orderModel.getItem_pic() != null) {
-
-                    binding.llItemImage.setVisibility(View.VISIBLE);
-                } else {
-                    binding.llItemImage.setVisibility(View.GONE);
-
-                }
             }
 
-
-            if (orderModel.getStatus() == 0) {
-                binding.tvTransState.setVisibility(View.GONE);
-                binding.ll.setVisibility(View.VISIBLE);
-
-                step1();
-
-            } else if (orderModel.getStatus() == 1 || orderModel.getStatus() == 2) {
-                binding.ll.setVisibility(View.VISIBLE);
-                binding.tvTransState.setVisibility(View.GONE);
-
-                step2();
-            } else if (orderModel.getStatus() == 3) {
-                binding.ll.setVisibility(View.GONE);
-                binding.tvTransState.setVisibility(View.VISIBLE);
-                binding.btnEnd.setVisibility(View.GONE);
-
-
-            } else if (orderModel.getStatus() == 4) {
-                binding.ll.setVisibility(View.VISIBLE);
-                binding.tvTransState.setVisibility(View.GONE);
-
-                step3();
-
-            } else if (orderModel.getStatus() == 5) {
-                binding.ll.setVisibility(View.VISIBLE);
-                binding.tvTransState.setVisibility(View.GONE);
-                step4();
-            } else if (orderModel.getStatus() == 6) {
-                step5();
+            if (orderModel.getItem_pic() != null) {
+                binding.llItemImage.setVisibility(View.VISIBLE);
+            } else {
+                binding.llItemImage.setVisibility(View.GONE);
 
             }
 
 
-            if (orderModel.getStatus() >= 4) {
+        } else {
+            if (orderModel.getBank_transfer_pic() != null) {
+                binding.llTransferImage.setVisibility(View.VISIBLE);
+            } else {
+                binding.llTransferImage.setVisibility(View.GONE);
 
-                if (userModel.getUser().getMobile_number().equals(orderModel.getBuyer_phone())) {
-                    if (orderModel.getBuyer_complained() == 1)
-                    {
-                        binding.btnAppeal.setVisibility(View.GONE);
-                    }else
-                        {
-                            binding.btnAppeal.setVisibility(View.VISIBLE);
+            }
 
-                        }
-                } else if (userModel.getUser().getMobile_number().equals(orderModel.getSeller_phone())) {
+            if (orderModel.getItem_pic() != null) {
 
-                    if (orderModel.getSeller_complained() == 1)
-                    {
-                        binding.btnAppeal.setVisibility(View.GONE);
-                    }else
-                    {
-                        binding.btnAppeal.setVisibility(View.VISIBLE);
+                binding.llItemImage.setVisibility(View.VISIBLE);
+            } else {
+                binding.llItemImage.setVisibility(View.GONE);
 
-                    }
+            }
+        }
+
+
+        if (orderModel.getStatus() == 0) {
+            binding.tvTransState.setVisibility(View.GONE);
+            binding.ll.setVisibility(View.VISIBLE);
+
+            step1();
+
+        } else if (orderModel.getStatus() == 1 || orderModel.getStatus() == 2) {
+            binding.ll.setVisibility(View.VISIBLE);
+            binding.tvTransState.setVisibility(View.GONE);
+
+            step2();
+        } else if (orderModel.getStatus() == 3) {
+            binding.ll.setVisibility(View.GONE);
+            binding.tvTransState.setVisibility(View.VISIBLE);
+            binding.btnEnd.setVisibility(View.GONE);
+
+
+        } else if (orderModel.getStatus() == 4) {
+            binding.ll.setVisibility(View.VISIBLE);
+            binding.tvTransState.setVisibility(View.GONE);
+
+            step3();
+
+        } else if (orderModel.getStatus() == 5) {
+            binding.ll.setVisibility(View.VISIBLE);
+            binding.tvTransState.setVisibility(View.GONE);
+            step4();
+        } else if (orderModel.getStatus() == 6) {
+            step5();
+
+        }
+
+
+        if (orderModel.getStatus() >= 4) {
+
+            if (userModel.getUser().getMobile_number().equals(orderModel.getBuyer_phone())) {
+                if (orderModel.getBuyer_complained() == 1)
+                {
+                    binding.btnAppeal.setVisibility(View.GONE);
+                }else
+                {
+                    binding.btnAppeal.setVisibility(View.VISIBLE);
+
+                }
+            } else if (userModel.getUser().getMobile_number().equals(orderModel.getSeller_phone())) {
+
+                if (orderModel.getSeller_complained() == 1)
+                {
+                    binding.btnAppeal.setVisibility(View.GONE);
+                }else
+                {
+                    binding.btnAppeal.setVisibility(View.VISIBLE);
+
                 }
             }
         }
+
+
+        if (orderModel.getNotification()!=null){
+            Log.e("data",orderModel.getNotification().getMessage_body()+"__");
+            if (orderModel.getNotification().getAction() == 2 || orderModel.getNotification().getAction() == 3) {
+                binding.btnDetails.setVisibility(View.VISIBLE);
+                binding.btnReceiveMoney.setVisibility(View.GONE);
+
+            } else if (orderModel.getNotification().getAction() == 4) {
+                binding.btnReceiveMoney.setVisibility(View.GONE);
+                binding.btnDetails.setVisibility(View.VISIBLE);
+
+            }
+
+            else if (orderModel.getNotification().getAction() == 6) {
+                binding.btnReceiveMoney.setVisibility(View.GONE);
+                binding.btnDetails.setVisibility(View.GONE);
+
+            } else if (orderModel.getNotification().getAction() == 8) {
+                binding.btnReceiveMoney.setVisibility(View.GONE);
+                binding.btnDetails.setVisibility(View.VISIBLE);
+
+
+            } else {
+                binding.btnReceiveMoney.setVisibility(View.GONE);
+                binding.btnDetails.setVisibility(View.GONE);
+
+            }
+
+        }
+
+    }
+
+    private void getOrderById(int order_id) {
+        binding.consContainer.setVisibility(View.GONE);
+        binding.progBar.setVisibility(View.VISIBLE);
+        Log.e("lang",lang);
+        Api.getService(Tags.base_url)
+                .getOrderById("Bearer "+userModel.getToken(),lang,order_id)
+                .enqueue(new Callback<OrderDataModel.OrderModel>() {
+                    @Override
+                    public void onResponse(Call<OrderDataModel.OrderModel> call, Response<OrderDataModel.OrderModel> response) {
+                        if (response.isSuccessful())
+                        {
+                            if (response.body()!=null)
+                            {
+
+                                orderModel = response.body();
+                                Log.e("title",response.body().getNotification().getOrder_id()+"__"+response.body().getNotification().getId()+"__action"+response.body().getNotification().getAction());
+                                Log.e("body",response.body().getNotification().getMessage_body()+"__");
+
+                                binding.setOrderModel(orderModel);
+                                updateOrderUI();
+                                binding.consContainer.setVisibility(View.VISIBLE);
+                                binding.progBar.setVisibility(View.GONE);
+                            }
+
+                        }else
+                        {
+                            try {
+                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderDataModel.OrderModel> call, Throwable t) {
+                        try
+                        {
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
     }
 
 
@@ -552,6 +687,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements Listeners
         if (requestCode == 1 && resultCode == RESULT_OK) {
             binding.btnAppeal.setVisibility(View.GONE);
             refreshOrder = true;
+        }if ((requestCode==123||requestCode==124||requestCode==125)&&resultCode==RESULT_OK)
+        {
+            setResult(RESULT_OK);
+            finish();
         }
     }
 

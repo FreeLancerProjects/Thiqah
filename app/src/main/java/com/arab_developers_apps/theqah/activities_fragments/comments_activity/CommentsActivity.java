@@ -45,7 +45,7 @@ public class CommentsActivity extends AppCompatActivity implements Listeners.Bac
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class CommentsActivity extends AppCompatActivity implements Listeners.Bac
     {
         commentModelList = new ArrayList<>();
         Paper.init(this);
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -119,6 +119,12 @@ public class CommentsActivity extends AppCompatActivity implements Listeners.Bac
 
                             }else
                             {
+                                try {
+
+                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 if (response.code() == 500) {
                                     Toast.makeText(CommentsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
 
@@ -131,12 +137,7 @@ public class CommentsActivity extends AppCompatActivity implements Listeners.Bac
                                 {
                                     Toast.makeText(CommentsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
-                                    try {
 
-                                        Log.e("error",response.code()+"_"+response.errorBody().string());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
                                 }
                             }
                         }

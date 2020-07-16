@@ -72,7 +72,7 @@ public class Fragment_Sign_Up extends Fragment implements OnCountryPickerListene
         activity = (SignInActivity) getActivity();
         Paper.init(activity);
         preferences = Preferences.newInstance();
-        lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setBackListener(this);
         binding.setShowCountryListener(this);
